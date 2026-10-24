@@ -15,6 +15,26 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+/* ══════════════════════════════════════════════
+   TRIK CSS: MENGHILANGKAN BADGE NETLIFY
+   ══════════════════════════════════════════════ */
+#netlify-badge, 
+.netlify-badge,
+a[href*="netlify.com"][target="_blank"],
+iframe[src*="netlify"],
+div[style*="position: fixed"][style*="bottom"],
+a[style*="position: fixed"][style*="bottom"],
+[id*="netlify"][style*="position: fixed"] {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  z-index: -9999 !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+}
+
 /* === THEME: APPLE MUSIC STYLE === */
 :root {
   --bg: #ffffff;
@@ -1316,7 +1336,11 @@ const A = {
       const list = document.getElementById('cls-list');
       if (!list) return;
       
-      let localHtml = `<p style="text-align:center; padding:10px; background:var(--erb); color:var(--er); border-radius:8px; font-size:12px; margin-bottom:12px"><b>⚠️ Server Offline:</b> Menampilkan kelas yang tersimpan di HP ini.</p>`;
+      let localHtml = `<div style="text-align:center; padding:12px; background:var(--erb); color:var(--er); border-radius:12px; font-size:12px; margin-bottom:16px">
+        <b>⚠️ Server Offline</b><br>
+        <span style="opacity:0.8">Menampilkan data yang tersimpan di HP ini.</span>
+        <button class="btn sm" style="margin-top:8px; background:#fff; color:var(--er); border:1px solid var(--erb); width:100%" onclick="A.listcls()">Coba Lagi</button>
+      </div>`;
       let found = 0;
       
       for (let i = 0; i < localStorage.length; i++) {
@@ -1557,13 +1581,20 @@ const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJ
 async function rpc(fn, a) {
   let r;
   try {
+    // Tambahkan timeout agar tidak loading terus jika server down
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 detik timeout
+
     r = await fetch(SB_URL + '/rest/v1/rpc/' + fn, {
       method: 'POST',
       headers: { apikey: SB_KEY, 'Content-Type': 'application/json' },
-      body: JSON.stringify(a)
+      body: JSON.stringify(a),
+      signal: controller.signal
     });
+    clearTimeout(timeoutId);
   } catch (e) {
-    // Tangkap error jaringan (Failed to fetch)
+    // Tangkap error jaringan (Failed to fetch / Timeout)
+    if (e.name === 'AbortError') throw new Error('Waktu koneksi habis (Timeout). Periksa koneksi internet Anda.');
     throw new Error('Gagal terhubung ke server. Pastikan internet stabil atau jalankan via HTTPS.');
   }
   
@@ -1622,7 +1653,8 @@ function push() {
       toast(e.message, 'er');
       updateSyncUI('error');
       dirty = 0;
-      await pull(1);
+      // Jangan langsung pull jika error network, biarkan user pakai data lokal
+      // await pull(1); 
     }
     busy = 0; dirty = 0;
   }, 350);
