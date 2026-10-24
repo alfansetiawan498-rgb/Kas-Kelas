@@ -1,0 +1,2016 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>KasKelas — Uang Kas Digital</title>
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#fa2d48">
+
+<!-- Hubungkan ke Manifest -->
+<link rel="manifest" href="manifest.json">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* === THEME: APPLE MUSIC STYLE === */
+:root {
+  --bg: #ffffff;
+  --sf: #f5f5f7;
+  --tx: #1d1d1f;
+  --mu: #86868b;
+  --bd: #e5e5ea;
+  --pri: #fa2d48;
+  --pri-l: #ff5e73;
+  --grad: linear-gradient(135deg, #fa2d48 0%, #ff5e73 100%);
+  --pt: #ffffff;
+  --ok: #34c759;
+  --er: #ff3b30;
+  --okb: #e8f8ee;
+  --erb: #ffebea;
+  --sh: 0 4px 12px rgba(0, 0, 0, 0.04);
+  --sh-lg: 0 10px 30px rgba(0, 0, 0, 0.08);
+  color-scheme: light;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+html[data-role="b"] { --pri: #fa2d48; --pri-l: #ff5e73; --grad: linear-gradient(135deg, #fa2d48 0%, #ff5e73 100%); }
+html[data-role="s"] { --pri: #007aff; --pri-l: #5ac8fa; --grad: linear-gradient(135deg, #007aff 0%, #5ac8fa 100%); }
+html[data-role="w"] { --pri: #af52de; --pri-l: #da8aff; --grad: linear-gradient(135deg, #af52de 0%, #da8aff 100%); }
+
+@media(prefers-color-scheme:dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #000000; --sf: #1c1c1e; --tx: #f2f2f7; --mu: #8e8e93; --bd: #38383a;
+    --pt: #ffffff; --okb: rgba(52, 199, 89, 0.15); --erb: rgba(255, 59, 48, 0.15);
+    --sh: 0 4px 12px rgba(0, 0, 0, 0.2); --sh-lg: 0 10px 30px rgba(0, 0, 0, 0.4);
+    color-scheme: dark;
+  }
+}
+html[data-theme="dark"] {
+  --bg: #000000; --sf: #1c1c1e; --tx: #f2f2f7; --mu: #8e8e93; --bd: #38383a;
+  --pt: #ffffff; --okb: rgba(52, 199, 89, 0.15); --erb: rgba(255, 59, 48, 0.15);
+  --sh: 0 4px 12px rgba(0, 0, 0, 0.2); --sh-lg: 0 10px 30px rgba(0, 0, 0, 0.4);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+body {
+  margin: 0; background: var(--bg); color: var(--tx);
+  font: 15px/1.5 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.01em;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+h1, h2, h3 { margin: 0; letter-spacing: -0.03em; font-weight: 700; }
+h3 { font-size: 20px; }
+small, .mu { color: var(--mu); font-weight: 400; } small { font-size: 13px; }
+#root { max-width: 640px; margin: 0 auto; padding: 0 20px 100px; }
+
+/* Header & Nav */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; display: flex; justify-content: space-between; align-items: center; padding: 20px 0; background: var(--bg); margin: 0 -20px; padding-left: 20px; padding-right: 20px; border-bottom: 1px solid var(--bd); }
+.brand { display: flex; gap: 12px; align-items: center; }
+.brand b { display: block; line-height: 1.2; font-weight: 600; font-size: 16px; }
+.brand small { display: block; font-size: 12px; font-weight: 400; }
+.rt { display: flex; align-items: center; gap: 8px; }
+.ic { width: 22px; height: 22px; stroke-width: 2; }
+.nav { position: fixed; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; padding: 12px 20px calc(12px + env(safe-area-inset-bottom, 0px)); z-index: 6; pointer-events: none; background: var(--bg); border-top: 1px solid var(--bd); }
+.nav > div { pointer-events: auto; display: flex; gap: 4px; width: 100%; max-width: 480px; }
+.nav button { flex: 1; border: 0; background: none; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 10px; font-weight: 500; color: var(--mu); padding: 8px 2px; border-radius: 12px; cursor: pointer; transition: .2s; }
+.nav button.on { color: var(--pri); }
+
+/* UI Elements */
+.view > * { margin-bottom: 24px; }
+.an > * { animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(15px) scale(0.98); } }
+
+.card { background: var(--sf); border-radius: 20px; padding: 20px; border: 1px solid transparent; transition: .2s; }
+.rc { text-align: left; cursor: pointer; display: grid; gap: 4px; color: var(--tx); transition: .2s; font: inherit; }
+.rc:active { transform: scale(0.98); }
+
+/* Hero */
+.hero { background: var(--grad); color: #fff; border-radius: 24px; padding: 28px; position: relative; overflow: hidden; box-shadow: var(--sh-lg); }
+.hero::after { content: ""; position: absolute; right: -40px; top: -40px; width: 180px; height: 180px; border-radius: 50%; border: 30px solid rgba(255,255,255,0.1); }
+.hero small { color: rgba(255,255,255,0.8); font-weight: 500; text-transform: uppercase; letter-spacing: 1px; font-size: 11px; }
+.big { font-size: clamp(36px, 10vw, 48px); font-weight: 700; margin: 4px 0 8px; letter-spacing: -1.5px; }
+
+/* Buttons & Inputs */
+.btn { border: 0; background: var(--pri); color: var(--pt); padding: 14px 24px; border-radius: 14px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: .2s; font-size: 15px; }
+.btn:active { transform: scale(0.96); opacity: 0.8; }
+.btn.pri { background: var(--grad); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+.btn.ghost { background: var(--bg); color: var(--tx); border: 1px solid var(--bd); }
+.btn.red { background: var(--er); color: #fff; }
+.btn.sm { padding: 8px 16px; font-size: 13px; border-radius: 10px; }
+.btn.full { width: 100%; }
+.ib { border: 0; background: var(--sf); color: var(--mu); width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; cursor: pointer; transition: .2s; }
+.ib:active { transform: scale(0.9); }
+.lnk { background: none; border: 0; color: var(--pri); cursor: pointer; font-weight: 500; padding: 10px 0; display: inline-block; font-size: 14px; }
+.f { display: grid; gap: 8px; margin-bottom: 20px; }
+.f span { font-size: 13px; font-weight: 500; color: var(--tx); }
+input, select, textarea { width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--bd); background: var(--bg); outline: 0; transition: .2s; font-size: 15px; font-weight: 400; color: var(--tx); }
+input:focus, select:focus, textarea:focus { border-color: var(--pri); background: var(--sf); box-shadow: 0 0 0 3px var(--pri-l); }
+
+/* Grid & Badges */
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.chip { font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 8px; background: var(--bg); color: var(--tx); white-space: nowrap; }
+.chip.r { background: var(--erb); color: var(--er); }
+.chip.g { background: var(--bd); color: var(--tx); }
+.chip.p { background: #fff3cd; color: #8a6d00; }
+@media(prefers-color-scheme:dark) { :root:not([data-theme="light"]) .chip.p { background: rgba(255,204,0,0.18); color: #ffcc00; } }
+html[data-theme="dark"] .chip.p { background: rgba(255,204,0,0.18); color: #ffcc00; }
+.pos { color: var(--ok); font-weight: 600; }
+.neg { color: var(--er); font-weight: 600; }
+
+/* Lists & Tables */
+.row { display: flex; align-items: center; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--bd); }
+.row:last-child { border: 0; padding-bottom: 0; }
+.m { flex: 1; min-width: 0; } .m b { display: block; overflow: hidden; text-overflow: ellipsis; font-size: 15px; font-weight: 500; margin-bottom: 2px; }
+.rowh { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 16px; }
+.gw { overflow-x: auto; border-radius: 16px; background: var(--sf); padding: 4px; }
+.gw table { border-collapse: collapse; width: 100%; }
+.gw th, .gw td { padding: 12px 8px; text-align: center; white-space: nowrap; font-size: 13px; border-bottom: 1px solid var(--bd); }
+.gw th:first-child, .gw td:first-child { position: sticky; left: 0; background: var(--sf); text-align: left; max-width: 140px; overflow: hidden; text-overflow: ellipsis; z-index: 1; padding-left: 16px; border-top-left-radius: 12px; border-bottom-left-radius: 12px; }
+.gw thead th { color: var(--mu); font-size: 12px; font-weight: 500; }
+.gw tbody tr:last-child td { border-bottom: 0; }
+.cl { width: 34px; height: 34px; border-radius: 10px; border: 1px solid var(--bd); background: var(--bg); color: var(--mu); cursor: pointer; font-weight: 600; transition: .2s; }
+.cl.ok { background: var(--ok); border-color: var(--ok); color: #fff; }
+.cl.part { background: #ffcc00; border-color: #ffcc00; color: #fff; }
+.cl:disabled { cursor: default; }
+
+/* Modals */
+#mod { position: fixed; inset: 0; z-index: 30; background: rgba(0, 0, 0, 0.4); display: none; align-items: flex-end; justify-content: center; backdrop-filter: blur(4px); }
+#mod.on { display: flex; }
+.sheet { background: var(--bg); width: 100%; max-width: 520px; border-radius: 24px 24px 0 0; padding: 24px 20px calc(24px + env(safe-area-inset-bottom, 0px)); animation: slideUp .3s cubic-bezier(.16, 1, .3, 1); max-height: 90vh; overflow: auto; }
+@keyframes slideUp { from { transform: translateY(100%); } }
+.sheet p { margin: 8px 0 20px; }
+@media(min-width: 600px) { #mod { align-items: center; } .sheet { border-radius: 24px; } }
+
+/* Toast */
+#toast { position: fixed; left: 50%; bottom: 100px; transform: translate(-50%, 20px); background: var(--tx); color: var(--bg); padding: 12px 24px; border-radius: 100px; opacity: 0; transition: .3s; z-index: 60; font-weight: 500; font-size: 13px; max-width: 90vw; pointer-events: none; text-align: center; box-shadow: var(--sh-lg); }
+#toast.on { opacity: 1; transform: translate(-50%, 0); }
+#toast.er { background: var(--er); color: #fff; }
+
+/* Splash */
+#splash, #wel { position: fixed; inset: 0; z-index: 50; display: grid; place-content: center; justify-items: center; gap: 16px; text-align: center; background: var(--bg); color: var(--tx); transition: transform .5s ease, opacity .4s; }
+#splash.out { transform: translateY(-100%); opacity: 0; }
+#wel { opacity: 0; pointer-events: none; } #wel.on { opacity: 1; pointer-events: auto; }
+#splash h1 { font-size: 40px; font-weight: 700; color: var(--tx); margin-top: 20px; letter-spacing: -1px; }
+#splash p { margin: 0; color: var(--mu); font-weight: 400; }
+.bar { width: 160px; height: 4px; background: var(--sf); border-radius: 4px; overflow: hidden; margin-top: 20px; }
+.bar i { display: block; height: 100%; width: 0; background: var(--pri); animation: ld 1.5s .3s forwards; }
+@keyframes ld { to { width: 100%; } }
+
+/* Chart */
+.chart { display: flex; gap: 12px; align-items: flex-end; height: 160px; margin: 24px 0 12px; padding: 0 8px; }
+.bc { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; height: 100%; gap: 8px; }
+.bs { display: flex; gap: 4px; align-items: flex-end; width: 100%; height: 100%; justify-content: center; }
+.bs i { width: 45%; max-width: 20px; min-height: 4px; border-radius: 6px 6px 2px 2px; transform-origin: bottom; animation: gr 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+@keyframes gr { from { transform: scaleY(0); } }
+.bi { background: var(--pri); }
+.bo { background: var(--mu); }
+.lg2 { display: flex; gap: 16px; font-size: 12px; font-weight: 400; color: var(--mu); justify-content: center; }
+.lg2 i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: middle; }
+.tabs { display: flex; gap: 8px; justify-content: center; margin-bottom: 20px; }
+.tabs button { border: 0; background: var(--sf); padding: 8px 16px; font-weight: 500; font-size: 13px; color: var(--mu); cursor: pointer; transition: .2s; border-radius: 100px; }
+.tabs button.on { background: var(--pri); color: #fff; }
+.bc.w .bs i { width: 60%; max-width: 24px; }
+
+/* ══════════════════════════════════════════════
+   LAPORAN — Invoice Style + Horizontal Scroll
+   ══════════════════════════════════════════════ */
+.rep-wrap {
+  position: relative;
+  margin: 0 -20px;
+  padding: 0 20px;
+}
+.rep-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--bd) transparent;
+}
+.rep-scroll::-webkit-scrollbar { height: 6px; }
+.rep-scroll::-webkit-scrollbar-track { background: transparent; }
+.rep-scroll::-webkit-scrollbar-thumb { background: var(--bd); border-radius: 3px; }
+.rep-inner {
+  min-width: 560px;
+  padding: 4px 2px 8px;
+}
+.rep {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--tx);
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+}
+
+/* Hint geser */
+.scroll-hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--mu);
+  margin: 0 0 10px;
+  font-weight: 500;
+  opacity: 1;
+  transition: opacity .3s;
+}
+.scroll-hint.gone { opacity: 0; }
+.scroll-hint svg { width: 14px; height: 14px; animation: slideHint 1.6s ease-in-out infinite; }
+@keyframes slideHint {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(4px); }
+}
+
+/* Kop */
+.rep .rh {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid var(--tx);
+}
+.rep .rh .rh-brand svg { display: block; }
+.rep .rh .rh-text { flex: 1; }
+.rep .rh .rh-school {
+  font-size: 10px;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: var(--mu);
+  font-weight: 500;
+  margin: 0 0 3px;
+  white-space: nowrap;
+}
+.rep .rh .rh-title {
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--tx);
+  margin: 0;
+  letter-spacing: -0.4px;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+.rep .rh .rh-sub {
+  font-size: 11px;
+  color: var(--mu);
+  margin: 3px 0 0;
+  font-weight: 400;
+  white-space: nowrap;
+}
+.rep .rh .rh-meta {
+  text-align: right;
+  font-size: 9.5px;
+  color: var(--mu);
+  line-height: 1.65;
+  flex-shrink: 0;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+}
+.rep .rh .rh-meta b { color: var(--tx); font-weight: 500; }
+
+/* Hero Saldo */
+.rep .rhero {
+  border: 1px solid var(--bd);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-bottom: 12px;
+  background: var(--sf);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+.rep .rhero .rhero-l {
+  font-size: 10px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--mu);
+  font-weight: 500;
+  margin: 0 0 4px;
+}
+.rep .rhero .rhero-v {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--tx);
+  margin: 0;
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+.rep .rhero .rhero-r {
+  text-align: right;
+  font-size: 10px;
+  color: var(--mu);
+  line-height: 1.7;
+  white-space: nowrap;
+}
+.rep .rhero .rhero-r b { color: var(--tx); font-weight: 500; }
+
+/* Grid ringkasan 3 kolom */
+.rep .rgrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--bd);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+.rep .rgrid .rcell {
+  padding: 14px 12px;
+  border-right: 1px solid var(--bd);
+}
+.rep .rgrid .rcell:last-child { border-right: 0; }
+.rep .rgrid .rcell-l {
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--mu);
+  font-weight: 500;
+  margin: 0 0 5px;
+  white-space: nowrap;
+}
+.rep .rgrid .rcell-v {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--tx);
+  margin: 0;
+  letter-spacing: -0.2px;
+  white-space: nowrap;
+}
+.rep .rgrid .rcell-v.pos { color: var(--ok); }
+.rep .rgrid .rcell-v.neg { color: var(--er); }
+
+/* Judul section */
+.rep .rsec {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.3px;
+  color: var(--mu);
+  margin: 0 0 10px;
+}
+
+/* Tabel invoice-style */
+.rep table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 24px;
+  font-size: 12.5px;
+  table-layout: auto;
+}
+.rep table thead th {
+  text-align: left;
+  padding: 8px 0;
+  font-size: 9.5px;
+  font-weight: 500;
+  color: var(--mu);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  border-bottom: 1px solid var(--tx);
+  white-space: nowrap;
+}
+.rep table thead th:last-child { text-align: right; }
+.rep table tbody td {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--bd);
+  font-weight: 400;
+  color: var(--tx);
+  vertical-align: middle;
+}
+.rep table tbody tr:last-child td { border-bottom: none; }
+.rep table tbody td:last-child { text-align: right; }
+.rep table .saldo-row td {
+  border-top: 1px solid var(--tx);
+  border-bottom: none;
+  padding-top: 12px;
+  padding-bottom: 0;
+  font-weight: 500;
+  color: var(--tx);
+}
+.rep table .saldo-row td:first-child {
+  font-weight: 500;
+  color: var(--mu);
+  text-transform: uppercase;
+  font-size: 9.5px;
+  letter-spacing: 1px;
+}
+
+/* Progress bar tipis */
+.rep .rprog {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-end;
+}
+.rep .rprog .rprog-track {
+  flex: 1;
+  max-width: 90px;
+  height: 4px;
+  background: var(--bd);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.rep .rprog .rprog-fill {
+  height: 100%;
+  background: var(--tx);
+  border-radius: 2px;
+}
+.rep .rprog .rprog-text {
+  font-size: 10.5px;
+  color: var(--mu);
+  font-weight: 400;
+  min-width: 42px;
+  text-align: right;
+  white-space: nowrap;
+}
+.rep .rstatus-lunas { color: var(--ok); font-weight: 500; white-space: nowrap; }
+.rep .rstatus-tunggak { color: var(--er); font-weight: 500; white-space: nowrap; }
+
+/* Footer */
+.rep .rfoot {
+  margin-top: 32px;
+  padding-top: 12px;
+  border-top: 1px solid var(--bd);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 9px;
+  color: var(--mu);
+  line-height: 1.6;
+  gap: 16px;
+}
+.rep .rfoot .rfoot-l { text-align: left; white-space: nowrap; }
+.rep .rfoot .rfoot-r { text-align: right; white-space: nowrap; }
+
+/* ── PRINT ── */
+@media print {
+  @page { size: A4 portrait; margin: 15mm; }
+  html[data-paper="f4"] @page { size: 215mm 330mm portrait; margin: 15mm; }
+
+  html, body { background: #fff !important; }
+  body { font-family: 'Inter', -apple-system, sans-serif !important; color: #111 !important; font-size: 10px; }
+  .top, .nav, #splash, #wel, #toast, #mod, .np, .tabs, .rowh, button, input, select, textarea, .scroll-hint { display: none !important; }
+
+  #root { max-width: none !important; padding: 0 !important; margin: 0 !important; }
+  .view { margin: 0 !important; }
+  .card { background: #fff !important; box-shadow: none !important; border: 0 !important; padding: 0 !important; margin: 0 !important; border-radius: 0 !important; }
+  .rep-wrap { margin: 0 !important; padding: 0 !important; }
+  .rep-scroll {
+    overflow: visible !important;
+    padding: 0 !important;
+  }
+  .rep-inner {
+    min-width: 0 !important;
+    padding: 0 !important;
+  }
+  .rep { padding: 0 !important; }
+
+  .rep .rh { border-bottom-color: #111 !important; }
+  .rep .rh .rh-school { color: #666 !important; white-space: normal !important; }
+  .rep .rh .rh-title { color: #111 !important; font-size: 17px !important; white-space: normal !important; }
+  .rep .rh .rh-sub { color: #555 !important; white-space: normal !important; }
+  .rep .rh .rh-meta { color: #555 !important; white-space: normal !important; }
+  .rep .rh .rh-meta b { color: #111 !important; }
+
+  .rep .rhero {
+    background: #f7f7f7 !important;
+    border-color: #ccc !important;
+    flex-wrap: wrap !important;
+  }
+  .rep .rhero .rhero-l { color: #666 !important; }
+  .rep .rhero .rhero-v { color: #111 !important; font-size: 20px !important; white-space: normal !important; }
+  .rep .rhero .rhero-r { color: #555 !important; white-space: normal !important; }
+  .rep .rhero .rhero-r b { color: #111 !important; }
+
+  .rep .rgrid { border-color: #ccc !important; }
+  .rep .rgrid .rcell { border-right-color: #ccc !important; }
+  .rep .rgrid .rcell-l { color: #666 !important; white-space: normal !important; }
+  .rep .rgrid .rcell-v { color: #111 !important; white-space: normal !important; }
+  .rep .rgrid .rcell-v.pos { color: #111 !important; }
+  .rep .rgrid .rcell-v.neg { color: #111 !important; }
+
+  .rep .rsec { color: #444 !important; }
+
+  .rep table thead th { color: #555 !important; border-bottom-color: #111 !important; white-space: normal !important; }
+  .rep table tbody td { color: #111 !important; border-bottom-color: #ddd !important; white-space: normal !important; word-break: break-word !important; }
+  .rep table .saldo-row td { border-top-color: #111 !important; color: #111 !important; }
+  .rep table .saldo-row td:first-child { color: #666 !important; }
+
+  .rep .rprog-track { background: #ddd !important; }
+  .rep .rprog-fill { background: #111 !important; }
+  .rep .rprog-text { color: #555 !important; }
+  .rep .rstatus-lunas { color: #111 !important; }
+  .rep .rstatus-tunggak { color: #111 !important; }
+
+  .rep .rfoot { color: #777 !important; border-top-color: #ccc !important; }
+  .rep .rfoot .rfoot-l, .rep .rfoot .rfoot-r { white-space: normal !important; }
+
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+  /* Pastikan konten laporan tidak terpotong saat cetak */
+  .rep-scroll,
+  .rep-scroll * {
+    overflow: visible !important;
+    max-width: none !important;
+  }
+  .rep-inner,
+  .rep {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+  .rep table {
+    width: 100% !important;
+    table-layout: fixed !important;
+  }
+  .rep .rh,
+  .rep .rhero {
+    flex-wrap: wrap !important;
+  }
+}
+</style>
+</head>
+<body>
+<div id="splash">
+  <svg width="90" height="90" viewBox="0 0 96 96" fill="none">
+    <rect width="96" height="96" rx="24" fill="var(--pri)"/>
+    <path d="M28 36h34a8 8 0 0 1 8 8v18a8 8 0 0 1-8 8H28a8 8 0 0 1-8-8V28a8 8 0 0 1 8-8h28a6 6 0 0 1 6 6" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="62" cy="54" r="6" fill="#fff"/>
+  </svg>
+  <h1>KasKelas</h1><p>Manajemen Uang Kas</p><div class="bar"><i></i></div>
+</div>
+<div id="wel"><svg width="72" height="72" viewBox="0 0 84 84" fill="none" stroke="var(--ok)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><circle class="ck" cx="42" cy="42" r="38"/><path class="ck" d="M27 43l10 10 20-22"/></svg><h2 class="serif" id="wt" style="color:var(--tx);font-size:24px;font-weight:600"></h2><p id="ws" style="font-weight:400;color:var(--mu)"></p></div>
+<div id="root"></div><div id="mod"></div><div id="toast"></div>
+<input type="file" id="fileRestore" style="display:none" accept=".json" onchange="restore(this)">
+
+<script>
+const $ = s => document.querySelector(s), mem = {};
+const h = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const rp = n => 'Rp ' + Math.round(n).toLocaleString('id-ID');
+const DAY = 86400000;
+
+const MASTER_KEY = "2026-SMKN1-MALTENG-XI-TJKT-RAHASIA"; 
+
+const rd = (d) => {
+  if (!d) return '-';
+  const dateObj = typeof d === 'string' && d.includes('-') && d.length === 10
+    ? new Date(d.replace(/-/g, '/'))
+    : new Date(d);
+  return dateObj.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+};
+
+const ld = k => { try { const r = localStorage.getItem(k); if (r) return JSON.parse(r) } catch (e) {} return mem[k] || null };
+const sv = (k, v) => { mem[k] = v; try { localStorage.setItem(k, JSON.stringify(v)) } catch (e) {} };
+async function hx(s) {
+  try {
+    const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
+    return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join('');
+  } catch (e) {
+    let x = 5381; for (const c of s) x = (x * 33) ^ c.charCodeAt(0);
+    return String(x >>> 0);
+  }
+}
+
+const today = () => {
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+};
+
+const norm = s => String(s || '').toUpperCase().replace(/[^A-Z0-9-]/g, '');
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+
+let C = null, S = { v: 'land' };
+
+const addDaysLocal = (dateStr, days) => {
+  const d = new Date(dateStr.replace(/-/g, '/'));
+  d.setDate(d.getDate() + days);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${dd}`;
+};
+
+const nominalForWeek = (w) => {
+  const snap = (C && C.nomSnap) || {};
+  let found = null;
+  for (const k in snap) {
+    if (+k <= w && (found === null || +k > +found)) found = k;
+  }
+  return found !== null ? +snap[found] : +(C ? C.nominal : 0);
+};
+
+const payStatus = (val, nominal) => {
+  if (!val) return 0;
+  return (+val >= +nominal) ? 2 : 1;
+};
+
+const loginLock = { fails: 0, until: 0 };
+const checkLoginLock = () => {
+  if (Date.now() < loginLock.until) {
+    const s = Math.ceil((loginLock.until - Date.now()) / 1000);
+    throw new Error(`Terlalu banyak percobaan. Coba lagi dalam ${s} detik.`);
+  }
+};
+const noteLoginFail = () => {
+  loginLock.fails++;
+  if (loginLock.fails >= 5) {
+    loginLock.until = Date.now() + 30000;
+    loginLock.fails = 0;
+  }
+};
+const noteLoginOk = () => { loginLock.fails = 0; loginLock.until = 0; };
+
+const curWk = () => {
+  const start = new Date(C.start.replace(/-/g, '/'));
+  const now = new Date(today().replace(/-/g, '/'));
+  const diffDays = Math.floor((now - start) / DAY);
+  return Math.max(0, Math.floor(diffDays / 7));
+};
+
+const wkDate = (w) => rd(addDaysLocal(C.start, w * 7));
+
+const save = () => { persistLocal(); push(); };
+
+function persistLocal() {
+  if (!C || !C.code) return;
+  try { localStorage.setItem('kas:data:' + C.code, JSON.stringify(C)); } catch (e) {}
+}
+
+const I = {
+  home: 'M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M9 22V12h6v10',
+  grid: 'M3 3h7v7H3z M14 3h7v7h-7z M14 14h7v7h-7z M3 14h7v7H3z',
+  swap: 'M17 1l4 4-4 4 M3 11V9a4 4 0 0 1 4-4h14 M7 23l-4-4 4-4 M21 13v2a4 4 0 0 1-4 4H3',
+  users: 'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z M23 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75',
+  file: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6 M16 13H8 M16 17H8',
+  sliders: 'M4 21v-7 M4 10V3 M12 21v-9 M12 8V3 M20 21v-5 M20 12V3 M1 14h6 M9 8h6 M17 16h6',
+  logout: 'M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4 M16 17l5-5-5-5 M21 12H9',
+  plus: 'M12 5v14 M5 12h14',
+  trash: 'M3 6h18 M8 6V4h8v2 M19 6l-1 14H6L5 6',
+  shield: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z',
+  moon: 'M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z',
+  sun: 'M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10z M12 1v2 M12 21v2 M4.22 4.22l1.42 1.42 M18.36 18.36l1.42 1.42 M1 12h2 M21 12h2 M4.22 19.78l1.42-1.42 M18.36 5.64l1.42-1.42',
+  edit: 'M12 20h9 M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z',
+  bell: 'M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9 M13.7 21a2 2 0 0 1-3.4 0',
+  cloud: 'M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z',
+  check: 'M20 6L9 17l-5-5',
+  info: 'M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z M12 16v-4 M12 8h.01',
+  whatsapp: 'M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z',
+  download: 'M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4 M7 10l5 5 5-5 M12 15V3',
+  fileText: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6 M16 13H8 M16 17H8 M10 9H8',
+  chevronRight: 'M9 18l6-6-6-6'
+};
+const ic = n => `<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="${I[n]}"/></svg>`;
+const icw = n => `<svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px"><path d="${I[n]}"/></svg>`;
+
+const mk = s => `<svg width="${s}" height="${s}" viewBox="0 0 96 96"><rect width="96" height="96" rx="24" fill="var(--pri)"/><path d="M28 36h34a8 8 0 0 1 8 8v18a8 8 0 0 1-8 8H28a8 8 0 0 1-8-8V28a8 8 0 0 1 8-8h28a6 6 0 0 1 6 6" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="62" cy="54" r="6" fill="#fff"/></svg>`;
+
+function toast(m, t) {
+  const e = $('#toast');
+  e.textContent = m;
+  e.className = 'on ' + (t || '');
+  clearTimeout(toast.t);
+  toast.t = setTimeout(() => e.className = '', 2500);
+}
+
+const modal = (x, autoFocus = true) => {
+  const m = $('#mod');
+  m.innerHTML = '<div class="sheet" role="document">' + x + '</div>';
+  m.setAttribute('role', 'dialog');
+  m.setAttribute('aria-modal', 'true');
+  m.classList.add('on');
+  if (autoFocus) {
+    setTimeout(() => {
+      const f = m.querySelector('input:not([type=hidden]), select, textarea, button');
+      if (f && !f.hasAttribute('data-a')) f.focus();
+    }, 50);
+  }
+};
+const closeM = () => {
+  const m = $('#mod');
+  m.classList.remove('on');
+  m.removeAttribute('role');
+  m.removeAttribute('aria-modal');
+  m.innerHTML = '';
+};
+
+const ask = (m, fn, onCancel) => {
+  A._y = fn;
+  A._n = onCancel || null;
+  modal(`<h3>Konfirmasi</h3><p class="mu">${m}</p><div class="g2"><button class="btn ghost" data-a="no">Batal</button><button class="btn red" data-a="yes">Ya, lanjutkan</button></div>`, false);
+};
+
+const ss = (id) => {
+  const p = C.pay[id] || {};
+  const t = curWk() + 1;
+  let l = 0, part = 0, debt = 0;
+  for (let w = 0; w < t; w++) {
+    const nom = nominalForWeek(w);
+    const val = +p[w] || 0;
+    if (val >= nom) l++;
+    else if (val > 0) { part++; debt += (nom - val); }
+    else debt += nom;
+  }
+  return { l, part, u: t - l - part, t, debt, unpaidWeeks: t - l };
+};
+
+function st() {
+  let p = 0;
+  for (const s in C.pay) for (const w in C.pay[s]) p += +C.pay[s][w] || 0;
+  const sm = t => C.tx.filter(x => x.t == t).reduce((a, x) => a + x.a, 0);
+  const i = sm('in'), o = sm('out'), cw = curWk();
+  let debt = 0, thisPaid = 0;
+  C.students.forEach(s => {
+    const z = ss(s.id);
+    debt += z.debt;
+    if (payStatus((C.pay[s.id] || {})[cw], nominalForWeek(cw)) === 2) thisPaid++;
+  });
+  return { p, i, o, saldo: p + i - o, n: C.students.length, debt, thisPaid };
+}
+
+const RL = { b: 'Bendahara', s: 'Siswa', w: 'Wali Kelas' };
+
+const TABS = {
+  b: [['home','home','Beranda'],['iuran','grid','Iuran'],['tx','swap','Kas'],['sis','users','Siswa'],['lap','file','Laporan'],['set','sliders','Setelan']],
+  s: [['home','home','Beranda'],['iuran','grid','Iuran'],['tx','swap','Riwayat'],['about','info','Tentang']],
+  w: [['home','home','Beranda'],['tg','bell','Tunggakan'],['iuran','grid','Iuran'],['tx','swap','Kas'],['lap','file','Laporan'],['about','info','Tentang']]
+};
+
+/* ---------- Views ---------- */
+const vLand = () => `<section class="view land" style="text-align:center;padding-top:6vh"><div style="display:flex;justify-content:center">${mk(80)}</div><h1 style="font-size:38px;margin:24px 0 8px;font-weight:700;color:var(--tx);letter-spacing:-1px">KasKelas</h1><p class="mu" style="font-weight:400;font-size:15px">Uang kas rapi, transparan, dan aman.</p>
+<div class="cards" style="display:grid;gap:12px;margin:32px 0 20px;text-align:left">
+<button class="card rc" data-a="login" data-r="b"><div style="color:var(--pri);margin-bottom:8px">${ic('shield')}</div><b>Masuk Bendahara</b><small class="mu">Kelola iuran, transaksi, dan laporan</small></button>
+<button class="card rc" data-a="login" data-r="s"><div style="color:var(--pri);margin-bottom:8px">${ic('users')}</div><b>Masuk Siswa</b><small class="mu">Lihat saldo dan status iuran</small></button>
+<button class="card rc" data-a="login" data-r="w"><div style="color:var(--pri);margin-bottom:8px">${ic('users')}</div><b>Masuk Wali Kelas</b><small class="mu">Pantau tunggakan siswa</small></button></div>
+<button class="btn ghost full" data-a="reg" style="margin-bottom:24px">${ic('plus')} Daftarkan kelas baru</button>
+<button class="lnk" data-a="about_public" style="font-size:14px">Tentang KasKelas</button></section>`;
+
+const vLogin = () => `<section class="view auth"><button class="lnk" data-a="home">← Kembali</button><div class="card"><h3>Login ${RL[S.r]}</h3><p class="mu" style="margin:4px 0 24px">Masukkan kode kelas dan PIN.</p>
+<form data-f="login">
+  <label class="f"><span>Kode kelas</span><input name="code" id="login-code" required autocomplete="off" placeholder="mis. XII-IPA-1" style="text-transform:uppercase"></label>
+  <label class="f"><span>PIN</span><input name="pin" id="login-pin" type="password" autocomplete="new-password" inputmode="numeric" maxlength="8" required placeholder="••••"></label>
+  <button class="btn full pri" style="margin-top:8px">Masuk</button>
+  <div style="text-align:center; margin-top:16px; display:flex; flex-direction:column; gap:8px;">
+    ${S.r == 's' ? `<button type="button" class="lnk" style="margin:0" data-a="forgot">Lupa PIN?</button>` : ''}
+    ${S.r != 's' ? `<button type="button" class="lnk" style="margin:0" data-a="forgot_admin">Lupa PIN ${RL[S.r]}?</button>` : ''}
+    <button type="button" class="lnk" style="margin:0" data-a="listcls">Lihat Daftar Kelas Terdaftar</button>
+  </div>
+</form></div></section>`;
+
+const vForgot = () => `<section class="view auth"><button class="lnk" data-a="login" data-r="s">← Kembali ke Login</button><div class="card"><h3>Lupa PIN Siswa</h3><p class="mu" style="margin:4px 0 24px">Masukkan kode kelas dan nama lengkapmu untuk mereset PIN.</p>
+<form data-f="forgot">
+  <label class="f"><span>Kode Kelas</span><input name="code" required autocomplete="off" placeholder="XII-IPA-1" style="text-transform:uppercase"></label>
+  <label class="f"><span>Nama Kamu</span><input name="name" required placeholder="Nama persis seperti di daftar absen"></label>
+  <label class="f"><span>PIN Baru (Angka)</span><input name="pin" type="password" inputmode="numeric" maxlength="8" required placeholder="4-8 angka"></label>
+  <button class="btn full pri" style="margin-top:8px">Reset PIN</button>
+</form></div></section>`;
+
+const vForgotAdmin = () => `<section class="view auth"><button class="lnk" data-a="login" data-r="${S.r}">← Kembali ke Login</button><div class="card"><h3>Lupa PIN ${RL[S.r]}</h3><p class="mu" style="margin:4px 0 24px">Masukkan Kode Kelas dan Kode Pemulihan yang kamu dapatkan saat mendaftar.</p>
+<form data-f="forgot_admin">
+  <input type="hidden" name="r" value="${S.r}">
+  <label class="f"><span>Kode Kelas</span><input name="code" required autocomplete="off" placeholder="XII-IPA-1" style="text-transform:uppercase"></label>
+  <label class="f"><span>Kode Pemulihan</span><input name="rec" required placeholder="mis. RC-9X2B-7Y4A" style="text-transform:uppercase"></label>
+  <label class="f"><span>PIN Baru (Angka)</span><input name="pin" type="password" inputmode="numeric" maxlength="8" required placeholder="4-8 angka"></label>
+  <button class="btn full pri" style="margin-top:8px">Reset PIN</button>
+</form></div></section>`;
+
+const vReg = () => `<section class="view auth"><button class="lnk" data-a="home">← Kembali</button><div class="card"><h3>Daftarkan Kelas</h3><p class="mu" style="margin:4px 0 24px">Kode kelas dan PIN dipakai untuk masuk. Catat dan simpan baik-baik.</p>
+<form data-f="reg"><label class="f"><span>Nama sekolah</span><input name="school" required maxlength="50" placeholder="SMA Negeri 1 …"></label>
+<label class="f"><span>Nama kelas</span><input name="name" required maxlength="30" placeholder="XII IPA 1"></label>
+<label class="f"><span>Kode kelas (unik)</span><input name="code" required maxlength="20" placeholder="XII-IPA-1" style="text-transform:uppercase"></label>
+<div class="g2"><label class="f"><span>Iuran per minggu (Rp)</span><input name="nom" type="number" min="0" step="500" value="5000" required></label><label class="f"><span>Mulai tanggal</span><input name="start" type="date" value="${today()}" required></label></div>
+<div class="g2"><label class="f"><span>PIN bendahara</span><input name="pb" type="password" inputmode="numeric" maxlength="8" required placeholder="4–8 angka"></label><label class="f"><span>PIN siswa</span><input name="ps" type="password" inputmode="numeric" maxlength="8" required placeholder="4–8 angka"></label></div>
+<label class="f"><span>PIN wali kelas</span><input name="pw" type="password" inputmode="numeric" maxlength="8" required placeholder="4–8 angka (beda dari lainnya)"></label><button class="btn full pri" style="margin-top:8px">Buat kelas</button></form></div></section>`;
+
+const hdr = () => `<header class="top np"><div class="brand">${mk(36)}<div><b>${h(C.name)}</b><small>${h(C.school)}</small></div></div><div class="rt"><span class="chip" id="sync-status" style="background:var(--okb);color:var(--ok);border-color:transparent">${ic('check')}</span><button class="ib" data-a="theme" aria-label="Ganti tema">${ic('moon')}</button><button class="ib" data-a="logout" aria-label="Keluar">${ic('logout')}</button></div></header>`;
+const nav = () => `<nav class="nav np"><div>${TABS[S.role].map(([k, i, l]) => `<button class="${S.tab == k ? 'on' : ''}" data-a="tab" data-k="${k}">${ic(i)}${l}</button>`).join('')}</div></nav>`;
+
+const txRow = (t, del) => `<div class="row"><div class="m"><b>${h(t.note)}</b><small>${rd(t.d)} · ${t.t == 'in' ? 'Pemasukan' : 'Pengeluaran'}${t.c ? ' · ' + h(t.c) : ''}</small></div><span class="${t.t == 'in' ? 'pos' : 'neg'}">${t.t == 'in' ? '+' : '−'}${rp(t.a)}</span>${del ? `<button class="ib" style="width:32px;height:32px;background:transparent" data-a="etx" data-id="${t.id}" aria-label="Edit transaksi">${ic('edit')}</button><button class="ib" style="width:32px;height:32px;background:transparent" data-a="dtx" data-id="${t.id}" aria-label="Hapus transaksi">${ic('trash')}</button>` : ''}</div>`;
+
+const mine = () => {
+  const id = S.me || '', sd = C.students.find(x => x.id == id);
+  let r = '';
+  if (sd) {
+    const z = ss(id);
+    r = `<div class="row"><div class="m"><b>${z.l} dari ${z.t} minggu lunas${z.part ? ` (${z.part} parsial)` : ''}</b><small>${z.debt ? 'Tunggakan ' + rp(z.debt) : 'Tidak ada tunggakan'}</small></div><span class="chip ${z.debt ? 'r' : ''}">${z.debt ? 'Tunggakan ' + rp(z.debt) : 'Lunas semua'}</span></div>`;
+  }
+  return `<div class="card"><h3>Cek status saya</h3><select data-c="me" style="margin-top:12px"><option value="">Pilih namamu…</option>${C.students.map(x => `<option value="${x.id}" ${x.id == id ? 'selected' : ''}>${h(x.n)}</option>`).join('')}</select>${r}</div>`;
+};
+
+function vChartM() {
+  const m = {};
+  const add = (d, k, a) => {
+    const y = String(d).slice(0, 7);
+    (m[y] = m[y] || { i: 0, o: 0 })[k] += a;
+  };
+  for (const s in C.pay) for (const w in C.pay[s]) add(addDaysLocal(C.start, +w * 7), 'i', +C.pay[s][w] || 0);
+  C.tx.forEach(t => add(t.d, t.t == 'in' ? 'i' : 'o', t.a));
+  const ks = Object.keys(m).sort().slice(-6);
+  if (!ks.length) return '';
+  const mx = Math.max(...ks.map(k => Math.max(m[k].i, m[k].o)), 1);
+  return `<div class="card"><h3>Arus kas bulanan</h3><div class="chart">${ks.map(k => `<div class="bc"><div class="bs"><i class="bi" style="height:${m[k].i / mx * 100}%"></i><i class="bo" style="height:${m[k].o / mx * 100}%"></i></div><small>${new Date(k + '-01').toLocaleDateString('id-ID', { month: 'short' })}</small></div>`).join('')}</div><div class="lg2"><span><i class="bi"></i>Masuk</span><span><i class="bo"></i>Keluar</span></div></div>`;
+}
+
+function vChartW() {
+  const cw = curWk(), n = C.students.length, ws = [];
+  if (!n) return '';
+  for (let w = Math.max(0, cw - 7); w <= cw; w++) {
+    let a = 0;
+    C.students.forEach(s => a += +((C.pay[s.id] || {})[w]) || 0);
+    const startStr = addDaysLocal(C.start, w * 7);
+    const endStr = addDaysLocal(C.start, (w + 1) * 7);
+    const out = C.tx.filter(t => t.t == 'out' && t.d >= startStr && t.d < endStr).reduce((s, t) => s + t.a, 0);
+    ws.push([w, a, out]);
+  }
+  const tg = n * C.nominal;
+  const mx = Math.max(tg, ...ws.map(x => x[2]), 1);
+  return `<div class="card"><h3>Arus Kas Mingguan</h3><small class="mu">Iuran masuk vs pengeluaran</small><div class="chart">${ws.map(([w, a, out]) => `<div class="bc w"><div class="bs"><i class="bi" style="height:${tg ? Math.max(2, a / tg * 100) : 2}%"></i><i class="bo" style="height:${mx ? Math.max(2, out / mx * 100) : 2}%"></i></div><small>M${w + 1}</small></div>`).join('')}</div><div class="lg2"><span><i class="bi"></i>Masuk</span><span><i class="bo"></i>Keluar</span></div></div>`;
+}
+
+function vChart() {
+  const w = S.cm != 'm';
+  return `<div class="tabs np"><button class="${w ? 'on' : ''}" data-a="cm" data-k="w">Mingguan</button><button class="${w ? '' : 'on'}" data-a="cm" data-k="m">Bulanan</button></div>` + (w ? vChartW() : vChartM());
+}
+
+const vAct = () => {
+  if (S.role == 's') return mine();
+  const cw = curWk();
+  if (!C.students.length) return S.role == 'b' ? `<div class="card"><h3>Mulai dari sini</h3><div class="row"><span class="chip">1</span><div class="m"><b>Tambah siswa</b><small>Boleh sekaligus dengan nomor WA</small></div><button class="btn sm pri" data-a="tab" data-k="sis">Buka</button></div><div class="row"><span class="chip">2</span><div class="m"><b>Bagikan kode kelas dan PIN</b><small>PIN siswa ke teman, PIN wali ke wali kelas</small></div></div></div>` : '';
+  const l = C.students.filter(s => ss(s.id).debt > 0);
+  const waBlastBtn = (S.role == 'b' || S.role == 'w') && l.length ? `<button class="btn sm" style="background:var(--okb);color:var(--ok)" data-a="wa_blast">${icw('whatsapp')} WA Blast</button>` : '';
+  return `<div class="card"><div class="rowh"><div><h3>Belum lunas</h3><small>${l.length} siswa</small></div>${waBlastBtn}</div>${l.slice(0, 6).map(s => `<div class="row"><div class="m"><b>${h(s.n)}</b></div><span class="chip r">${rp(ss(s.id).debt)}</span></div>`).join('') || '<p class="pos" style="text-align:center;padding:20px 0">Semua sudah lunas</p>'}${l.length > 6 ? `<small style="display:block;text-align:center;margin-top:12px">+${l.length - 6} lainnya</small>` : ''}</div>`;
+};
+
+function vHome() {
+  const s = st(), pct = s.n ? Math.round(s.thisPaid / s.n * 100) : 0;
+  const rec = [...C.tx].sort((a, b) => b.d.localeCompare(a.d)).slice(0, 5);
+  return `<div class="hero">
+    <small>Saldo kas saat ini</small>
+    <div class="big" data-n="${s.saldo}">${rp(s.saldo)}</div>
+    <small style="color:rgba(255,255,255,0.8)">${h(C.name)} · ${rd(today())}</small>
+  </div>
+  <div class="g2">
+    <div class="card" style="padding:16px"><small class="mu">Pemasukan</small><b class="pos" style="display:block;font-size:18px;margin-top:4px">${rp(s.p + s.i)}</b></div>
+    <div class="card" style="padding:16px"><small class="mu">Pengeluaran</small><b class="neg" style="display:block;font-size:18px;margin-top:4px">${rp(s.o)}</b></div>
+    <div class="card" style="padding:16px"><small class="mu">Tunggakan</small><b style="display:block;font-size:18px;margin-top:4px">${rp(s.debt)}</b></div>
+    <div class="card" style="padding:16px"><small class="mu">Lunas minggu ini</small><div style="display:flex;align-items:center;gap:10px;margin-top:6px"><div style="width:36px;height:36px;border-radius:50%;background:conic-gradient(var(--pri) ${pct}%, var(--bd) 0);display:grid;place-items:center"><span style="width:28px;height:28px;border-radius:50%;background:var(--sf);display:grid;place-items:center;font-size:9px;font-weight:600">${pct}%</span></div><b style="margin:0;font-size:18px">${s.thisPaid}/${s.n}</b></div></div>
+  </div>
+  ${vAct()}${vChart()}
+  <div class="card"><h3>Transaksi terakhir</h3>${rec.length ? rec.map(t => txRow(t)).join('') : '<p class="mu" style="text-align:center;padding:20px 0">Belum ada transaksi.</p>'}</div>`;
+}
+
+function vIuran() {
+  const ro = S.role != 'b', cw = curWk(), W = [...Array(cw + 1).keys()];
+  const head = W.map(w => `<th>M${w + 1}</th>`).join('');
+  const rows = C.students.map(s => {
+    const p = C.pay[s.id] || {};
+    const z = ss(s.id);
+    const cells = W.map(w => {
+      const nom = nominalForWeek(w);
+      const val = +p[w] || 0;
+      const stt = payStatus(val, nom);
+      const cls = stt === 2 ? 'ok' : stt === 1 ? 'part' : '';
+      const label = stt === 2 ? 'lunas' : stt === 1 ? 'parsial ' + rp(val) : 'belum bayar';
+      return `<td><button class="cl ${cls}" ${ro ? 'disabled' : `data-a="pay" data-s="${s.id}" data-w="${w}"`} aria-label="Minggu ${w + 1} ${label}">${stt === 2 ? '✓' : stt === 1 ? '½' : '·'}</button></td>`;
+    }).join('');
+    const btnTagih = (S.role == 'b' || S.role == 'w') && z.debt ? `<br><button class="btn sm" style="background:var(--okb);color:var(--ok);padding:2px 6px;font-size:10px;margin-top:4px" data-a="was" data-id="${s.id}">${icw('whatsapp')} Tagih</button>` : '';
+    return `<tr><td data-a="det" data-id="${s.id}" style="cursor:pointer"><b>${h(s.n)}</b>${btnTagih}</td>${cells}<td class="${z.debt ? 'neg' : 'pos'}">${z.debt ? rp(z.debt) : 'Lunas'}</td></tr>`;
+  }).join('');
+  const waBlastBtn = (S.role == 'b' || S.role == 'w') ? `<div style="display:flex;gap:8px"><button class="btn sm" style="background:var(--okb);color:var(--ok)" data-a="wa_blast">${icw('whatsapp')} Blast</button>${S.role == 'b' ? `<button class="btn sm pri" data-a="all">Lunasi</button>` : ''}</div>` : '';
+  return `<div class="card"><div class="rowh" style="margin:0"><div><h3>Iuran mingguan</h3><small>${rp(C.nominal)} / minggu · mulai ${rd(C.start)}</small></div>${ro && S.role == 's' ? '' : waBlastBtn}</div></div>
+  ${C.students.length ? `<input data-q placeholder="Cari nama siswa…" class="np" style="margin-bottom:12px" value="${h(S.fq || '')}" oninput="S.fq=this.value;applySearch(this.value)"><div class="gw" id="gw"><table><thead><tr><th>Nama / Aksi</th>${head}<th>Tunggakan</th></tr></thead><tbody>${rows}</tbody></table></div>` : `<div class="card mu">Belum ada siswa. ${ro ? '' : 'Tambahkan di tab Siswa.'}</div>`}`;
+}
+
+function vTx() {
+  const ro = S.role != 'b', s = st();
+  let l = [...C.tx].sort((a, b) => b.d.localeCompare(a.d));
+  return `<div class="card">
+    <div class="rowh"><div><h3>Buku kas</h3><small>Iuran ${rp(s.p)}</small></div>${ro ? '' : `<div style="display:flex;gap:8px"><button class="btn sm" data-a="btx">Batch</button><button class="btn sm pri" data-a="atx">${ic('plus')} Catat</button></div>`}</div>
+    <div style="display:flex;gap:10px;margin-bottom:16px">
+      <input id="search-tx" placeholder="Cari keterangan..." value="${h(S.fq || '')}" oninput="applySearch(this.value)" style="flex:1">
+      <select onchange="S.ft=this.value;render(false)" style="width:110px" aria-label="Filter jenis">
+        <option value="">Semua</option>
+        <option value="in" ${S.ft == 'in' ? 'selected' : ''}>Masuk</option>
+        <option value="out" ${S.ft == 'out' ? 'selected' : ''}>Keluar</option>
+      </select>
+    </div>
+    <div id="tx-list">
+      ${l.length ? l.map(t => txRow(t, !ro)).join('') : '<p class="mu" style="text-align:center">Tidak ada transaksi ditemukan.</p>'}
+    </div>
+  </div>`;
+}
+
+const vSis = () => `<div class="card"><h3>Tambah siswa</h3><form data-f="sis" style="margin-top:12px"><label class="f"><span>Satu siswa per baris: Nama, Nomor WA (opsional)</span><textarea name="n" rows="3" required placeholder="Andi, 08123456789&#10;Budi, 08129876543"></textarea></label><button class="btn full pri">${ic('plus')} Tambahkan</button></form></div>
+<div class="card"><h3>Daftar siswa (${C.students.length})</h3>${C.students.map((s, i) => `<div class="row"><span class="chip">${i + 1}</span><div class="m"><b>${h(s.n)}</b><small>${h(s.hp || 'Belum ada nomor WA')}</small></div><button class="ib" style="background:transparent" data-a="esis" data-id="${s.id}" aria-label="Edit siswa">${ic('edit')}</button><button class="ib" style="background:transparent" data-a="dsis" data-id="${s.id}" aria-label="Hapus siswa">${ic('trash')}</button></div>`).join('') || '<p class="mu">Belum ada siswa.</p>'}</div>`;
+
+/* ═══════════════════════════════════════════════
+   LAPORAN — Invoice Style + Swipe Horizontal
+   ═══════════════════════════════════════════════ */
+function vLap() {
+  const s = st();
+  const cats = {};
+  C.tx.filter(t => t.t == 'out').forEach(t => {
+    const c = t.c || 'Lainnya';
+    cats[c] = (cats[c] || 0) + t.a;
+  });
+
+  const now = new Date();
+  const timeStr = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+  const clockStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+
+  const lunas = C.students.filter(x => ss(x.id).debt === 0).length;
+  const belum = C.students.length - lunas;
+
+  const ymd = String(now.getFullYear()) + String(now.getMonth() + 1).padStart(2, '0');
+  const noLap = `${String(C.code).replace(/[^A-Z0-9]/gi, '').slice(0, 6).toUpperCase()}/${ymd}/KAS`;
+
+  return `<div class="card">
+  <div class="rowh np" style="flex-wrap:wrap; justify-content:center; gap:8px">
+    <button class="btn sm ghost" data-a="print_menu" style="flex:1">${ic('fileText')} Unduh PDF</button>
+    <button class="btn sm pri" data-a="print_menu" style="flex:1">${ic('file')} Cetak</button>
+  </div>
+
+  <div class="scroll-hint" id="scroll-hint">
+    Geser ke samping untuk melihat laporan lengkap ${ic('chevronRight')}
+  </div>
+
+  <div class="rep-wrap">
+    <div class="rep-scroll" id="rep-scroll">
+      <div class="rep-inner">
+        <div class="rep" id="rep-area">
+
+          <!-- KOP -->
+          <div class="rh">
+            <div class="rh-brand">
+              <svg width="42" height="42" viewBox="0 0 96 96"><rect width="96" height="96" rx="20" fill="var(--tx)"/><path d="M28 36h34a8 8 0 0 1 8 8v18a8 8 0 0 1-8 8H28a8 8 0 0 1-8-8V28a8 8 0 0 1 8-8h28a6 6 0 0 1 6 6" stroke="var(--bg)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="62" cy="54" r="6" fill="var(--bg)"/></svg>
+            </div>
+            <div class="rh-text">
+              <p class="rh-school">${h(C.school)}</p>
+              <h1 class="rh-title">Laporan Keuangan Kas Kelas</h1>
+              <p class="rh-sub">${h(C.name)} &middot; Periode s.d. ${timeStr}</p>
+            </div>
+            <div class="rh-meta">
+              <div>No. <b>${h(noLap)}</b></div>
+              <div>Dicetak <b>${timeStr}</b></div>
+              <div>Pukul <b>${clockStr} WIT</b></div>
+            </div>
+          </div>
+
+          <!-- HERO SALDO -->
+          <div class="rhero">
+            <div>
+              <p class="rhero-l">Saldo Kas Tersedia</p>
+              <p class="rhero-v">${rp(s.saldo)}</p>
+            </div>
+            <div class="rhero-r">
+              <div>Iuran terkumpul <b>${rp(s.p)}</b></div>
+              <div>Pemasukan lain <b>${rp(s.i)}</b></div>
+            </div>
+          </div>
+
+          <!-- GRID RINGKASAN -->
+          <div class="rgrid">
+            <div class="rcell">
+              <p class="rcell-l">Total Pemasukan</p>
+              <p class="rcell-v pos">${rp(s.p + s.i)}</p>
+            </div>
+            <div class="rcell">
+              <p class="rcell-l">Total Pengeluaran</p>
+              <p class="rcell-v neg">${rp(s.o)}</p>
+            </div>
+            <div class="rcell">
+              <p class="rcell-l">Tunggakan Siswa</p>
+              <p class="rcell-v">${rp(s.debt)}</p>
+            </div>
+          </div>
+
+          <!-- REKAP PENGELUARAN -->
+          <p class="rsec">Rekap Pengeluaran</p>
+          <table>
+            <thead><tr><th>Kategori</th><th style="text-align:right">Jumlah</th></tr></thead>
+            <tbody>
+              ${Object.keys(cats).length
+                ? Object.keys(cats).map(c => `<tr><td>${h(c)}</td><td>${rp(cats[c])}</td></tr>`).join('')
+                : '<tr><td colspan="2" style="text-align:left;color:var(--mu)">Belum ada pengeluaran tercatat</td></tr>'}
+              ${Object.keys(cats).length
+                ? `<tr class="saldo-row"><td>Total pengeluaran</td><td>${rp(s.o)}</td></tr>`
+                : ''}
+            </tbody>
+          </table>
+
+          <!-- STATUS IURAN SISWA -->
+          <p class="rsec">Status Iuran Siswa</p>
+          <p style="font-size:11px;color:var(--mu);margin:-4px 0 12px">
+            ${lunas} dari ${C.students.length} siswa telah lunas &middot; ${belum} siswa masih memiliki tunggakan
+          </p>
+          <table>
+            <thead><tr>
+              <th style="width:36%">Nama Siswa</th>
+              <th style="text-align:right;width:34%">Progress</th>
+              <th style="text-align:right;width:30%">Status</th>
+            </tr></thead>
+            <tbody>
+              ${C.students.map(x => {
+                const z = ss(x.id);
+                const pct = z.t ? Math.round(z.l / z.t * 100) : 0;
+                return `<tr>
+                  <td>${h(x.n)}</td>
+                  <td>
+                    <div class="rprog">
+                      <div class="rprog-track"><div class="rprog-fill" style="width:${pct}%"></div></div>
+                      <span class="rprog-text">${z.l}/${z.t}</span>
+                    </div>
+                  </td>
+                  <td>${z.debt
+                    ? `<span class="rstatus-tunggak">${rp(z.debt)}</span>`
+                    : `<span class="rstatus-lunas">Lunas</span>`}</td>
+                </tr>`;
+              }).join('') || '<tr><td colspan="3" style="text-align:left;color:var(--mu)">Belum ada siswa</td></tr>'}
+            </tbody>
+          </table>
+
+          <!-- FOOTER -->
+          <div class="rfoot">
+            <div class="rfoot-l">
+              Laporan ini dihasilkan otomatis oleh KasKelas.<br>
+              Data bersifat real-time dan dapat berubah.
+            </div>
+            <div class="rfoot-r">
+              No. ${h(noLap)}<br>
+              Hal. 1 / 1
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>`;
+}
+
+const vSet = () => `<div class="card"><h3>Info kelas</h3><p class="mu" style="margin:8px 0 0">Kode kelas: <b style="color:var(--tx)">${h(C.code)}</b></p><form data-f="info" style="margin-top:16px"><label class="f"><span>Sekolah</span><input name="school" value="${h(C.school)}" required maxlength="50"></label><label class="f"><span>Kelas</span><input name="name" value="${h(C.name)}" required maxlength="30"></label><label class="f"><span>Iuran per minggu (Rp)</span><input name="nom" type="number" min="0" step="500" value="${C.nominal}" required></label><small>Perubahan nominal tidak berlaku retroaktif — minggu lalu tetap pakai nominal lama.</small><button class="btn full pri" style="margin-top:16px">Simpan</button></form></div>
+<div class="card"><h3>Ganti PIN</h3><form data-f="pin" style="margin-top:16px"><label class="f"><span>PIN bendahara saat ini</span><input name="o" type="password" inputmode="numeric" maxlength="8" required></label><div class="g2"><label class="f"><span>PIN bendahara baru</span><input name="pb" type="password" inputmode="numeric" maxlength="8" placeholder="Kosong = tetap"></label><label class="f"><span>PIN siswa baru</span><input name="ps" type="password" inputmode="numeric" maxlength="8" placeholder="Kosong = tetap"></label></div><label class="f"><span>PIN wali kelas baru</span><input name="pw" type="password" inputmode="numeric" maxlength="8" placeholder="Kosong = tetap"></label><button class="btn full pri" style="margin-top:8px">Perbarui PIN</button></form></div>
+<div class="card"><h3>Kode Pemulihan</h3><p class="mu">Gunakan kode ini jika kamu lupa PIN Bendahara atau Wali Kelas. Jangan bagikan ke siapa pun!</p><div style="display:flex;gap:10px;align-items:center;margin-top:12px"><input value="${h(C.rec_code || 'Memuat...')}" readonly style="font-family:monospace;font-weight:600;letter-spacing:1px;text-align:center;background:var(--bg);color:var(--tx)"><button class="btn sm" data-a="cp_rec">Copy</button></div></div>
+<div class="card"><h3>Cadangan data</h3><p class="mu">Data tersimpan aman di server. Unduh cadangan berkala sebagai arsip pribadi.</p>
+<div style="display:flex;flex-direction:column;gap:8px;margin-top:12px">
+  <button class="btn ghost full" data-a="bak">Unduh Cadangan (JSON)</button>
+  <button class="btn ghost full" data-a="rst_file">Pulihkan dari File</button>
+</div>
+</div>
+<div class="card">
+  <h3>Tentang Aplikasi</h3>
+  <p class="mu">Kenali lebih dekat KasKelas — dibuat oleh siswa, untuk siswa.</p>
+  <button class="btn full pri" style="margin-top:12px" data-a="about">${ic('info')} Lihat Tentang KasKelas</button>
+</div>
+<div class="card"><h3 style="color:var(--er)">Zona bahaya</h3><p class="mu">Tindakan ini permanen dan tidak bisa dibatalkan. Pastikan Anda sudah memiliki cadangan (backup).</p>
+<div style="display:flex;flex-direction:column;gap:8px;margin-top:16px">
+  <button class="btn ghost" style="color:var(--er);border-color:var(--erb)" data-a="clear_data">Hapus Seluruh Data Kas</button>
+  <button class="btn red full" data-a="rst">Hapus Kelas Permanen</button>
+</div>
+</div>`;
+
+const V = { home: vHome, iuran: vIuran, tx: vTx, sis: vSis, lap: vLap, set: vSet };
+
+V.tg = () => {
+  const l = C.students.map(s => ({ s, z: ss(s.id) })).filter(x => x.z.debt > 0).sort((a, b) => b.z.debt - a.z.debt);
+  const waBlastBtn = (S.role == 'b' || S.role == 'w') && l.length ? `<button class="btn sm" style="background:var(--okb);color:var(--ok)" data-a="wa_blast">${icw('whatsapp')} WA Blast</button>` : '';
+  return `<div class="card"><div class="rowh"><div><h3>Belum melunasi</h3><small>${l.length} dari ${C.students.length} siswa · total ${rp(st().debt)}</small></div>${waBlastBtn}</div>${l.map(x => `<div class="row"><div class="m"><b>${h(x.s.n)}</b><small>${x.z.unpaidWeeks} minggu belum lunas · ${rp(x.z.debt)}</small></div>${(S.role == 'b' || S.role == 'w') && x.s.hp ? `<button class="btn sm" style="background:var(--okb);color:var(--ok)" data-a="was" data-id="${x.s.id}">${icw('whatsapp')} Tagih</button>` : '<span class="chip g">Tanpa WA</span>'}</div>`).join('') || '<p class="pos">Semua siswa sudah lunas</p>'}</div>`;
+};
+
+V.about = () => `<div class="card">
+  <div style="text-align:center;margin-bottom:24px">
+    ${mk(72)}
+    <h2 style="margin:16px 0 4px;font-size:24px;font-weight:600;letter-spacing:-0.5px">KasKelas</h2>
+    <p class="mu" style="margin:0;font-size:12px;letter-spacing:0.5px;text-transform:uppercase">Uang Kas Digital untuk Kelas Modern</p>
+    <span class="chip" style="margin-top:10px;background:var(--grad);color:#fff;border:0">v1.0 &middot; Edisi TJKT</span>
+  </div>
+
+  <div class="card" style="margin-bottom:12px">
+    <h3 style="font-size:15px">Apa itu KasKelas?</h3>
+    <p style="margin:8px 0 0;line-height:1.7;color:var(--tx);font-size:14px">
+      KasKelas adalah aplikasi manajemen uang kas kelas berbasis web yang dirancang khusus untuk memudahkan bendahara, wali kelas, dan siswa dalam mengelola iuran mingguan secara digital. Transparan, akuntabel, dan bisa diakses kapan saja dari HP.
+    </p>
+  </div>
+
+  <div class="card" style="margin-bottom:12px">
+    <h3 style="font-size:15px">Fungsi Utama</h3>
+    <ul style="margin:10px 0 0;padding-left:20px;line-height:1.9;color:var(--tx);font-size:14px">
+      <li>Catat iuran mingguan per siswa dengan status lunas, parsial, atau belum</li>
+      <li>Kelola transaksi kas pemasukan & pengeluaran dengan kategori</li>
+      <li>Pantau tunggakan siswa secara otomatis & real-time</li>
+      <li>Kirim pengingat WA langsung ke siswa yang belum lunas</li>
+      <li>Cetak laporan premium siap tanda tangan wali kelas</li>
+      <li>Multi-role access: Bendahara, Siswa, Wali Kelas</li>
+      <li>Backup & restore data dalam format JSON</li>
+    </ul>
+  </div>
+
+  <div class="card" style="margin-bottom:12px">
+    <h3 style="font-size:15px">Manfaat</h3>
+    <ul style="margin:10px 0 0;padding-left:20px;line-height:1.9;color:var(--tx);font-size:14px">
+      <li>Hemat waktu — tidak perlu tulis manual di buku kas</li>
+      <li>Transparan — semua siswa bisa cek status iurannya sendiri</li>
+      <li>Akuntabel — setiap rupiah tercatat dan bisa diaudit</li>
+      <li>Anti manipulasi — PIN terenkripsi SHA-256 & role terpisah</li>
+      <li>Ramah lingkungan — paperless, kurangi penggunaan kertas</li>
+      <li>Cloud-synced — data aman tersimpan di server</li>
+    </ul>
+  </div>
+
+  <div class="card" style="margin-bottom:12px">
+    <h3 style="font-size:15px">Filosofi & Alasan</h3>
+    <p style="margin:8px 0 0;line-height:1.7;color:var(--tx);font-size:14px">
+      KasKelas lahir dari keresahan sederhana: <i>"Kenapa urusan uang kas kelas masih pakai buku tulis yang gampang hilang, sobek, dan susah dicek?"</i>
+    </p>
+    <p style="margin:8px 0 0;line-height:1.7;color:var(--tx);font-size:14px">
+      Kami percaya bahwa kejujuran finansial harus dimulai dari hal kecil — dari kelas. Ketika siswa terbiasa melihat uang kas yang transparan, mereka belajar nilai integritas, tanggung jawab, dan kepercayaan. Itulah misi KasKelas: <i>"Menumbuhkan budaya transparansi finansial sejak dari bangku sekolah."</i>
+    </p>
+  </div>
+
+  <div class="card" style="margin-bottom:12px">
+    <h3 style="font-size:15px">Kenapa Pilih KasKelas?</h3>
+    <div style="display:grid;gap:12px;margin-top:12px">
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div style="width:24px;height:24px;border-radius:50%;background:var(--okb);color:var(--ok);display:grid;place-items:center;flex-shrink:0;margin-top:2px">${ic('check')}</div>
+        <div><b style="font-size:14px;font-weight:500">Pencatatan 1 Klik</b><p style="margin:2px 0 0;font-size:13px;color:var(--mu)">Jauh lebih cepat dibanding manual.</p></div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div style="width:24px;height:24px;border-radius:50%;background:var(--okb);color:var(--ok);display:grid;place-items:center;flex-shrink:0;margin-top:2px">${ic('check')}</div>
+        <div><b style="font-size:14px;font-weight:500">Transparansi Penuh</b><p style="margin:2px 0 0;font-size:13px;color:var(--mu)">Semua siswa bisa memantau secara mandiri.</p></div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div style="width:24px;height:24px;border-radius:50%;background:var(--okb);color:var(--ok);display:grid;place-items:center;flex-shrink:0;margin-top:2px">${ic('check')}</div>
+        <div><b style="font-size:14px;font-weight:500">Backup Cloud</b><p style="margin:2px 0 0;font-size:13px;color:var(--mu)">Data aman, tidak takut hilang.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:12px;background:var(--grad);border:0;color:#fff">
+    <h3 style="font-size:15px;color:#fff">Dibuat Oleh</h3>
+    <div style="display:flex;align-items:center;gap:16px;margin-top:12px">
+      <div style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,0.2);display:grid;place-items:center;font-size:24px;font-weight:600;color:#fff;flex-shrink:0">AS</div>
+      <div>
+        <p style="margin:0;font-weight:600;font-size:16px;color:#fff">Alfan Setiawan</p>
+        <p style="margin:2px 0 0;font-size:13px;color:rgba(255,255,255,0.85)">Creator & Developer</p>
+      </div>
+    </div>
+    <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.2);font-size:13px;line-height:1.8;color:rgba(255,255,255,0.95)">
+      <div>Kelas: XI TJKT 1</div>
+      <div>Jurusan: Teknik Jaringan Komputer & Telekomunikasi</div>
+      <div>Sekolah: SMK Negeri 1 Maluku Tengah</div>
+    </div>
+    <p style="margin:16px 0 0;font-size:12px;color:rgba(255,255,255,0.75);font-style:italic;text-align:center">
+      "Dibuat oleh siswa, untuk kebaikan bersama."
+    </p>
+  </div>
+
+  <div class="card" style="text-align:center">
+    <p style="margin:0;font-size:12px;color:var(--mu);line-height:1.8">
+      KasKelas v1.0<br>
+      © ${new Date().getFullYear()} Alfan Setiawan<br>
+      SMK Negeri 1 Maluku Tengah · XI TJKT 1
+    </p>
+  </div>
+</div>`;
+
+function setRoleTheme(r) { document.documentElement.dataset.role = r || ''; }
+
+function render(an = true) {
+  const y = scrollY, g = $('#gw'), sl = g && g.scrollLeft, r = $('#root');
+  if (!C) {
+    r.innerHTML = (S.v == 'login' ? vLogin : S.v == 'reg' ? vReg : S.v == 'forgot' ? vForgot : S.v == 'forgot_admin' ? vForgotAdmin : vLand)();
+    setRoleTheme(S.r);
+  } else {
+    r.innerHTML = hdr() + `<main class="view ${an ? 'an' : ''}">` + V[S.tab]() + '</main>' + nav();
+    setRoleTheme(S.role);
+  }
+  if (an) document.querySelectorAll('[data-n]').forEach(cu);
+  const n = $('#gw');
+  if (n) n.scrollLeft = (sl == null || an) ? n.scrollWidth : sl;
+
+  if (C && S.tab === 'lap') setupRepScroll();
+
+  if (an) {
+    scrollTo(0, 0);
+  } else {
+    scrollTo(0, y);
+  }
+}
+
+function setupRepScroll() {
+  const sc = $('#rep-scroll');
+  const hint = $('#scroll-hint');
+  if (!sc || !hint) return;
+
+  const update = () => {
+    const canScroll = sc.scrollWidth > sc.clientWidth + 2;
+    const atEnd = sc.scrollLeft + sc.clientWidth >= sc.scrollWidth - 4;
+    hint.classList.toggle('gone', !canScroll || atEnd);
+  };
+
+  if (window.innerWidth >= 640) hint.classList.add('gone');
+
+  sc.addEventListener('scroll', update, { passive: true });
+  setTimeout(update, 100);
+}
+
+function applySearch(val) {
+  S.fq = val;
+  const v = val.toLowerCase();
+  if (S.tab === 'tx') {
+    const rows = document.querySelectorAll('#tx-list .row');
+    rows.forEach(r => {
+      const txt = r.textContent.toLowerCase();
+      r.style.display = txt.includes(v) ? '' : 'none';
+    });
+  } else if (S.tab === 'iuran') {
+    const rows = document.querySelectorAll('#gw tbody tr');
+    rows.forEach(r => {
+      const txt = r.firstChild.textContent.toLowerCase();
+      r.style.display = txt.includes(v) ? '' : 'none';
+    });
+  }
+}
+
+function enter() {
+  C.nomSnap = C.nomSnap || { 0: +C.nominal || 0 };
+  render();
+  $('#wt').textContent = 'Selamat datang';
+  $('#ws').textContent = RL[S.role] + ' · ' + C.name;
+  const w = $('#wel');
+  w.classList.add('on');
+  setTimeout(() => w.classList.remove('on'), 1600);
+}
+
+/* ---------- Actions ---------- */
+const A = {
+  _y: null,
+  _n: null,
+  home() { S.v = 'land'; render(); },
+  login(d) { S = { v: 'login', r: d.r }; render(); },
+  forgot() { S.v = 'forgot'; render(); },
+  forgot_admin() { S.v = 'forgot_admin'; render(); },
+  reg() { S.v = 'reg'; render(); },
+  tab(d) { S.tab = d.k; S.fq = ''; S.ft = ''; render(); },
+  about() { S.tab = 'about'; render(); },
+  about_public() {
+    modal(V.about() + '<button class="btn full ghost" style="margin-top:8px" data-a="no">Tutup</button>', false);
+  },
+  logout() {
+    ask('Apakah Anda yakin ingin keluar dari akun ini?', () => {
+      C = null; S = { v: 'land' }; closeM(); render();
+    });
+  },
+  listcls() {
+    modal(`
+      <div id="cls-title" onclick="A._devClick()" style="cursor:pointer; user-select:none;">
+        <h3>Daftar Kelas Terdaftar</h3>
+      </div>
+      <p class="mu">Pilih kelas di bawah ini untuk mengisi kode kelas secara otomatis, atau klik ikon untuk mengedit/menghapus.</p>
+      <div id="cls-list" style="max-height:50vh;overflow:auto;"><p class="mu" style="text-align:center;padding:20px 0">Memuat data...</p></div>
+      <button class="btn ghost full" style="margin-top:16px" data-a="no">Tutup</button>
+    `);
+    
+    rpc('kk_list_classes').then(data => {
+      const list = document.getElementById('cls-list');
+      if (!list) return;
+      if (!data || !data.length) {
+        list.innerHTML = '<p class="mu" style="text-align:center;padding:20px 0">Belum ada kelas terdaftar di server.</p>';
+        return;
+      }
+      const grouped = {};
+      data.forEach(c => {
+        const sch = c.school || 'Tanpa Sekolah';
+        if (!grouped[sch]) grouped[sch] = [];
+        grouped[sch].push(c);
+      });
+      let html = '';
+      for (const sch in grouped) {
+        html += `<div style="margin-bottom:16px"><b style="display:block;font-size:13px;color:var(--mu);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;font-weight:500">${h(sch)}</b>`;
+        grouped[sch].forEach(c => {
+          html += `<div class="row" style="padding:12px 0; border-bottom:1px solid var(--bd)">
+            <div class="m" style="cursor:pointer" onclick="A.fill_code('${h(c.code)}')">
+              <b>${h(c.name)}</b><small>${h(c.code)}</small>
+            </div>
+            <button class="ib" style="color:var(--pri)" onclick="A.editcls('${h(c.code)}', '${h(c.name)}', '${h(c.school)}')" aria-label="Edit kelas">${ic('edit')}</button>
+            <button class="ib" style="color:var(--er)" onclick="A.delcls('${h(c.code)}', '${h(c.name)}')" aria-label="Hapus kelas">${ic('trash')}</button>
+            <button class="btn sm pri" onclick="A.fill_code('${h(c.code)}')">Pilih</button>
+          </div>`;
+        });
+        html += `</div>`;
+      }
+      list.innerHTML = html;
+    }).catch(err => {
+      // ── FALLBACK OFFLINE: Baca dari LocalStorage jika server gagal ──
+      const list = document.getElementById('cls-list');
+      if (!list) return;
+      
+      let localHtml = `<p style="text-align:center; padding:10px; background:var(--erb); color:var(--er); border-radius:8px; font-size:12px; margin-bottom:12px"><b>⚠️ Server Offline:</b> Menampilkan kelas yang tersimpan di HP ini.</p>`;
+      let found = 0;
+      
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key.startsWith('kas:data:')) {
+          try {
+            const c = JSON.parse(localStorage.getItem(key));
+            if (c && c.code) {
+              localHtml += `<div class="row" style="padding:12px 0; border-bottom:1px solid var(--bd)">
+                <div class="m" style="cursor:pointer" onclick="A.fill_code('${h(c.code)}')">
+                  <b>${h(c.name)}</b><small>${h(c.school)} · ${h(c.code)}</small>
+                </div>
+                <button class="btn sm pri" onclick="A.fill_code('${h(c.code)}')">Pilih</button>
+              </div>`;
+              found++;
+            }
+          } catch(e) {}
+        }
+      }
+      
+      if (found > 0) {
+        list.innerHTML = localHtml;
+      } else {
+        list.innerHTML = `<p class="pos" style="text-align:center;padding:20px 0;color:var(--er)">Gagal memuat: ${h(err.message)}<br><br>Belum ada data kelas yang tersimpan di HP ini.</p>`;
+      }
+    });
+  },
+  _devCount: 0,
+  _devClick() {
+    this._devCount = (this._devCount || 0) + 1;
+    if (this._devCount >= 5) {
+      this._devCount = 0;
+      modal(`
+        <h3 style="color:var(--er)">Mode Developer</h3>
+        <p class="mu">Masukkan Kunci Master untuk mengizinkan penghapusan kelas apa pun tanpa PIN.</p>
+        <form data-f="devkey">
+          <label class="f"><input name="k" type="password" required autofocus placeholder="Kunci Master"></label>
+          <button class="btn red full" style="margin-top:8px">Buka Akses</button>
+        </form>
+      `);
+    }
+  },
+  fill_code(c) {
+    closeM();
+    S.v = 'login';
+    render();
+    setTimeout(() => { const inp = document.querySelector('input[name="code"]'); if (inp) inp.value = c; }, 100);
+  },
+  delcls(c, n) {
+    closeM();
+    const isDev = S.devMode;
+    modal(`<h3>Hapus Kelas</h3><p class="mu">Kelas <b>${h(n)} (${h(c)})</b> akan dihapus permanen. ${isDev ? 'Anda dalam Mode Developer, tidak perlu PIN.' : 'Masukkan PIN Bendahara untuk melanjutkan.'}</p>
+    <form data-f="delcls"><input type="hidden" name="code" value="${h(c)}">
+      ${isDev ? `<input type="hidden" name="pin" value="__DEV__">` : `<label class="f"><span>PIN Bendahara</span><input name="pin" type="password" inputmode="numeric" maxlength="8" required autofocus></label>`}
+      <button class="btn red full" style="margin-top:8px">Hapus Kelas</button>
+    </form>`);
+  },
+  editcls(c, n, s) {
+    closeM();
+    modal(`<h3>Edit Info Kelas</h3><p class="mu">Ubah nama kelas atau sekolah. Masukkan PIN Bendahara untuk menyimpan perubahan.</p>
+    <form data-f="editcls">
+      <input type="hidden" name="code" value="${h(c)}">
+      <label class="f"><span>Nama Kelas</span><input name="name" value="${h(n)}" required maxlength="30"></label>
+      <label class="f"><span>Nama Sekolah</span><input name="school" value="${h(s)}" required maxlength="50"></label>
+      <label class="f"><span>PIN Bendahara (Verifikasi)</span><input name="pin" type="password" inputmode="numeric" maxlength="8" required autofocus placeholder="••••"></label>
+      <button class="btn full pri" style="margin-top:8px">Simpan Perubahan</button>
+    </form>`);
+  },
+  pay(d) {
+    const sid = d.s, w = +d.w;
+    const p = C.pay[sid] = C.pay[sid] || {};
+    const nom = nominalForWeek(w);
+    if (p[w]) { ask('Hapus pembayaran minggu ini?', () => { delete p[w]; save(); render(false); }); return; }
+    modal(`<h3>Bayar Iuran</h3><p class="mu">Masukkan nominal yang dibayarkan. Tagihan standar minggu ini: ${rp(nom)}</p>
+    <form data-f="pay_custom"><input type="hidden" name="s" value="${sid}"><input type="hidden" name="w" value="${w}">
+      <label class="f"><span>Nominal (Rp)</span><input name="a" type="number" min="1" value="${nom}" required autofocus></label>
+      <button class="btn full pri" style="margin-top:8px">Simpan Pembayaran</button>
+    </form>`);
+  },
+  all() {
+    ask('Tandai semua siswa lunas untuk minggu ini?', () => {
+      const w = curWk();
+      const nom = nominalForWeek(w);
+      C.students.forEach(s => {
+        const p = C.pay[s.id] = C.pay[s.id] || {};
+        const cur = +p[w] || 0;
+        if (cur < nom) p[w] = nom;
+      });
+      save(); render(false); toast('Semua siswa ditandai lunas');
+    });
+  },
+  atx() {
+    modal(`<h3>Catat transaksi</h3><form data-f="tx">
+    <div class="seg" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0">
+      <label><input type="radio" name="t" value="out" checked class="sr-only"><span style="display:block;text-align:center;padding:12px;border:1px solid var(--bd);border-radius:12px;cursor:pointer;background:var(--bg);font-weight:500">Pengeluaran</span></label>
+      <label><input type="radio" name="t" value="in" class="sr-only"><span style="display:block;text-align:center;padding:12px;border:1px solid var(--bd);border-radius:12px;cursor:pointer;background:var(--bg);font-weight:500">Pemasukan</span></label>
+    </div>
+    <label class="f"><span>Jumlah (Rp)</span><input name="a" type="number" min="1" required></label>
+    <label class="f"><span>Kategori</span><select name="c">${CATS.map(c => `<option>${c}</option>`).join('')}</select></label>
+    <label class="f"><span>Keterangan</span><input name="note" required maxlength="60" placeholder="mis. Beli spidol"></label>
+    <label class="f"><span>Tanggal</span><input name="d" type="date" value="${today()}" required></label>
+    <button class="btn full pri" style="margin-top:8px">Simpan</button></form>`);
+  },
+  btx() {
+    modal(`<h3>Catat Banyak Transaksi</h3><p class="mu">Format: Tanggal | jenis(in/out) | Nominal | Keterangan. Satu baris satu transaksi.</p><form data-f="btx"><label class="f"><textarea name="n" rows="6" required placeholder="2023-10-25 | out | 15000 | Beli sapu&#10;in | 50000 | Donasi orang tua"></textarea></label><button class="btn full pri" style="margin-top:8px">Simpan Semua</button></form>`);
+  },
+  etx(d) {
+    const t = C.tx.find(x => x.id == d.id) || { t: 'out', d: today(), note: '', a: '', c: '' };
+    modal(`<h3>Ubah transaksi</h3>
+    <form data-f="tx"><input type="hidden" name="id" value="${h(d.id)}">
+    <div class="seg" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0">
+      <label><input type="radio" name="t" value="out" ${t.t == 'out' ? 'checked' : ''} class="sr-only"><span style="display:block;text-align:center;padding:12px;border:1px solid var(--bd);border-radius:12px;cursor:pointer;background:var(--bg);font-weight:500">Pengeluaran</span></label>
+      <label><input type="radio" name="t" value="in" ${t.t == 'in' ? 'checked' : ''} class="sr-only"><span style="display:block;text-align:center;padding:12px;border:1px solid var(--bd);border-radius:12px;cursor:pointer;background:var(--bg);font-weight:500">Pemasukan</span></label>
+    </div>
+    <label class="f"><span>Jumlah (Rp)</span><input name="a" type="number" min="1" required value="${t.a}"></label>
+    <label class="f"><span>Kategori</span><select name="c">${CATS.map(c => `<option ${c == t.c ? 'selected' : ''}>${c}</option>`).join('')}</select></label>
+    <label class="f"><span>Keterangan</span><input name="note" required maxlength="60" value="${h(t.note)}"></label>
+    <label class="f"><span>Tanggal</span><input name="d" type="date" value="${t.d}" required></label>
+    <button class="btn full pri" style="margin-top:8px">Simpan Perubahan</button></form>`);
+  },
+  dtx(d) { ask('Hapus transaksi ini?', () => { C.tx = C.tx.filter(t => t.id != d.id); save(); render(false); }); },
+  dsis(d) { ask('Hapus siswa ini beserta catatan iurannya?', () => { C.students = C.students.filter(s => s.id != d.id); delete C.pay[d.id]; save(); render(false); }); },
+  esis(d) {
+    const s = C.students.find(x => x.id == d.id); if (!s) return;
+    modal(`<h3>Edit Siswa</h3><form data-f="esis"><input type="hidden" name="id" value="${s.id}"><label class="f"><span>Nama</span><input name="n" required value="${h(s.n)}" maxlength="40"></label><label class="f"><span>Nomor WA</span><input name="hp" value="${h(s.hp || '')}" maxlength="16"></label><button class="btn full pri" style="margin-top:8px">Simpan</button></form>`);
+  },
+  print_menu() {
+    modal(`
+      <h3>Pilih Kertas Cetak</h3>
+      <p class="mu" style="margin-bottom:12px">Pilih ukuran kertas. Jika ingin menyimpan sebagai file PDF, pada menu cetak HP Anda, ubah tujuan printer menjadi <b>"Simpan sebagai PDF" (Save as PDF)</b>.</p>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px">
+        <button class="btn ghost full" data-a="do_print" data-k="a4" style="justify-content:flex-start">
+          <div style="text-align:left">
+            <b>Kertas A4 (Standar)</b><br><small class="mu">Ukuran 210 x 297 mm</small>
+          </div>
+        </button>
+        <button class="btn ghost full" data-a="do_print" data-k="f4" style="justify-content:flex-start">
+          <div style="text-align:left">
+            <b>Kertas F4 / Folio</b><br><small class="mu">Ukuran 215 x 330 mm (Lebih panjang)</small>
+          </div>
+        </button>
+      </div>
+    `);
+  },
+  do_print(d) {
+    document.documentElement.dataset.paper = d.k;
+    closeM();
+    setTimeout(() => { window.print(); }, 100);
+  },
+  clear_data() {
+    ask('Hapus seluruh data (termasuk siswa, iuran, dan transaksi)? Aplikasi akan kembali seperti baru.', () => {
+      C.students = []; C.pay = {}; C.tx = []; save(); render(false); toast('Seluruh data berhasil dihapus');
+    });
+  },
+  rst() {
+    modal(`<h3>Hapus kelas</h3><p class="mu">Seluruh data kelas ini dihapus dari perangkat dan tidak bisa dikembalikan kecuali ada file cadangan. Masukkan PIN bendahara.</p><form data-f="rst"><label class="f"><input name="p" type="password" inputmode="numeric" maxlength="8" required placeholder="PIN bendahara"></label><button class="btn red full" style="margin-top:8px">Hapus permanen</button></form>`);
+  },
+  rst_file() { $('#fileRestore').click(); },
+  yes() {
+    const f = A._y;
+    A._y = null;
+    A._n = null;
+    closeM();
+    if (typeof f === 'function') setTimeout(f, 50);
+  },
+  no() {
+    const c = A._n;
+    A._y = null;
+    A._n = null;
+    closeM();
+    if (typeof c === 'function') setTimeout(c, 50);
+  },
+  cp_rec() { navigator.clipboard.writeText(C.rec_code).then(() => toast('Kode disalin!')).catch(() => toast('Gagal menyalin', 'er')); },
+  det(d) {
+    const s = C.students.find(x => x.id == d.id); if (!s) return;
+    const p = C.pay[s.id] || {}, z = ss(s.id);
+    let r = '';
+    for (let w = curWk(); w >= 0; w--) {
+      const nom = nominalForWeek(w);
+      const val = +p[w] || 0;
+      const stt = payStatus(val, nom);
+      const label = stt === 2 ? 'Lunas ' + rp(val) : stt === 1 ? 'Parsial ' + rp(val) + ' / ' + rp(nom) : 'Belum';
+      r += `<div class="row"><div class="m"><b>Minggu ${w + 1}</b><small>${wkDate(w)}</small></div><span class="chip ${stt === 2 ? '' : stt === 1 ? 'p' : 'r'}">${label}</span></div>`;
+    }
+    modal(`<h3>${h(s.n)}</h3><p class="mu">${z.l} lunas · ${z.part} parsial · tunggakan ${rp(z.debt)}</p><div style="max-height:50vh;overflow:auto">${r}</div>`);
+  },
+  cm(d) { S.cm = d.k; render(false); },
+  theme() {
+    const cur = document.documentElement.dataset.theme;
+    const isSysDark = matchMedia('(prefers-color-scheme:dark)').matches;
+    const next = !cur ? (isSysDark ? 'light' : 'dark') : (cur === 'dark' ? 'light' : 'dark');
+    document.documentElement.dataset.theme = next;
+    sv('kas:theme', next);
+    render(false);
+  },
+  bak() { dl(`kas-${C.code}-${today()}.json`, JSON.stringify(C, null, 1), 'application/json'); toast('Cadangan diunduh'); },
+  wa_blast() {
+    if (S.role != 'b' && S.role != 'w') return toast('Hanya Bendahara dan Wali Kelas yang bisa mengirim WA', 'er');
+    const l = C.students.map(s => ({ n: s.n, z: ss(s.id) })).filter(x => x.z.debt > 0);
+    if (!l.length) return toast('Tidak ada tunggakan');
+
+    const pengirim = S.role === 'b' ? 'Bendahara' : 'Wali Kelas';
+    const sapaan = S.role === 'w' ? 'Halo semuanya' : 'Halo teman-teman';
+
+    const msg = `*PENGINGAT UANG KAS ${C.name.toUpperCase()}*\n${C.school}\n\n${sapaan}, ini pesan dari *${pengirim}* ${C.name}.\nBerikut adalah daftar siswa yang belum melunasi uang kas per ${rd(today())}:\n\n` +
+      l.map((x, i) => `${i + 1}. ${x.n} (${x.z.unpaidWeeks} minggu - ${rp(x.z.debt)})`).join('\n') +
+      `\n\nTotal tunggakan: ${rp(st().debt)}\n\nBagi yang namanya tercantum, mohon segera melakukan pembayaran. Terima kasih atas kerja samanya!`;
+    open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+  },
+  was(d) {
+    if (S.role != 'b' && S.role != 'w') return toast('Hanya Bendahara dan Wali Kelas yang bisa mengirim WA', 'er');
+    const s = C.students.find(x => x.id == d.id), z = ss(d.id);
+    if (!s.hp) return toast('Siswa ini belum punya nomor WA', 'er');
+
+    const pengirim = S.role === 'b' ? 'Bendahara' : 'Wali Kelas';
+    const msg = `Halo *${s.n}*,\n\nIni pesan dari *${pengirim}* ${C.name}.\n\nBerdasarkan catatan kami, kamu memiliki tunggakan uang kas sebesar *${rp(z.debt)}* (${z.unpaidWeeks} minggu belum lunas).\n\nMohon segera dibayarkan ya. Terima kasih banyak!`;
+    open('https://wa.me/' + wn(s.hp) + '?text=' + encodeURIComponent(msg), '_blank');
+  }
+};
+
+const CATS = ['Konsumsi', 'ATK', 'Kebersihan', 'Acara', 'Sumbangan', 'Lainnya'];
+function dl(n, d, t) {
+  const u = URL.createObjectURL(new Blob([d], { type: t }));
+  const a = document.createElement('a');
+  a.href = u; a.download = n;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(u), 3000);
+}
+const wn = p => {
+  p = String(p || '').replace(/\D/g, '');
+  return p.startsWith('0') ? '62' + p.slice(1) : p.startsWith('62') ? p : p ? '62' + p : '';
+};
+
+/* ---------- Supabase / Backend ---------- */
+const SB_URL = 'https://csxtgclsmcfxcululzvj.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNzeHRnY2xzbWNmeGN1bHVsenZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI0OTEzMjIsImV4cCI6MjEwODA2NzMyMn0.2n_ELlveamGo_B2AHo2p0Hl8W6VvX0Q9XSnQit4ErbI';
+
+async function rpc(fn, a) {
+  let r;
+  try {
+    r = await fetch(SB_URL + '/rest/v1/rpc/' + fn, {
+      method: 'POST',
+      headers: { apikey: SB_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify(a)
+    });
+  } catch (e) {
+    // Tangkap error jaringan (Failed to fetch)
+    throw new Error('Gagal terhubung ke server. Pastikan internet stabil atau jalankan via HTTPS.');
+  }
+  
+  const j = await r.json().catch(() => null);
+  
+  if (!r.ok) {
+    // Tampilkan pesan error asli dari Supabase jika ada
+    const msg = (j && j.message) ? j.message : 'Gagal terhubung ke server (CORS/Blocked)';
+    throw new Error(msg);
+  }
+  
+  if (j && j.error) throw new Error(j.error);
+  return j;
+}
+
+let pt, busy = 0, dirty = 0;
+
+function updateSyncUI(state) {
+  const el = $('#sync-status');
+  if (!el) return;
+  el.querySelector('svg')?.classList.remove('spin');
+  if (state === 'saving') {
+    el.innerHTML = ic('cloud');
+    el.querySelector('svg')?.classList.add('spin');
+    el.style.background = 'var(--pri-l)';
+    el.style.color = 'var(--pri)';
+  } else if (state === 'error') {
+    el.innerHTML = ic('cloud');
+    el.style.background = 'var(--erb)';
+    el.style.color = 'var(--er)';
+  } else {
+    el.innerHTML = ic('check');
+    el.style.background = 'var(--okb)';
+    el.style.color = 'var(--ok)';
+  }
+}
+
+function push() {
+  if (S.role != 'b') return;
+  if (!S.tok || S.tok === 'offline') { updateSyncUI('ok'); persistLocal(); return; }
+  dirty = 1;
+  updateSyncUI('saving');
+  clearTimeout(pt);
+  pt = setTimeout(async () => {
+    if (busy) return push();
+    busy = 1;
+    try {
+      const d = { ...C };
+      delete d.code; delete d.rec_code;
+      const res = await rpc('kk_save', { p_token: S.tok, p_data: d, p_ver: S.ver });
+      if (res.error) throw new Error(res.error);
+      S.ver = res.ver;
+      updateSyncUI('ok');
+      persistLocal();
+    } catch (e) {
+      toast(e.message, 'er');
+      updateSyncUI('error');
+      dirty = 0;
+      await pull(1);
+    }
+    busy = 0; dirty = 0;
+  }, 350);
+}
+
+async function pull(f) {
+  if (!S.tok || S.tok === 'offline') return;
+  try {
+    const r = await rpc('kk_get', { p_token: S.tok });
+    if (f || r.ver != S.ver) {
+      S.ver = r.ver;
+      C = { ...r.data, code: C.code, nominal: +r.data.nominal || 0, rec_code: C.rec_code, nomSnap: r.data.nomSnap || C.nomSnap || {} };
+      persistLocal();
+      render(false);
+    }
+  } catch (e) {
+    if (/sesi/i.test(e.message)) {
+      A.logout();
+      toast('Sesi berakhir, silakan masuk lagi', 'er');
+    }
+  }
+}
+
+setInterval(() => {
+  if (C && S.tok && !dirty && !busy && !$('#mod').classList.contains('on')) pull();
+}, 20000);
+
+/* ---------- Form Handlers ---------- */
+const F = {
+  async login(d) {
+    try {
+      checkLoginLock();
+      toast('Memeriksa…');
+      const code = norm(d.code);
+      const hashedPin = await hx(d.pin);
+      const r = await rpc('kk_login', { p_code: code, p_pin: hashedPin, p_role: S.r });
+      noteLoginOk();
+      sv('kas:last_code', code);
+      C = { ...r.data, code, nominal: +r.data.nominal || 0, rec_code: r.rec_code, nomSnap: r.data.nomSnap || { 0: +r.data.nominal || 0 } };
+      S = { role: r.role, tab: 'home', tok: r.token, ver: r.ver };
+      persistLocal();
+      enter();
+    } catch (e) {
+      noteLoginFail();
+      toast(e.message, 'er');
+      if (/Kode kelas|PIN salah|tidak ditemukan/i.test(e.message)) {
+        localStorage.removeItem('kas:last_code');
+        render(false);
+      }
+    }
+  },
+  devkey(d) {
+    if (d.k === MASTER_KEY) {
+      S.devMode = true;
+      closeM();
+      toast('Mode Developer Aktif');
+      setTimeout(() => A.listcls(), 300);
+    } else {
+      toast('Kunci Master Salah!', 'er');
+    }
+  },
+  async editcls(d) {
+    try {
+      toast('Menyimpan...');
+      const hashedPin = await hx(d.pin);
+      const r = await rpc('kk_edit_public', {
+        p_code: d.code,
+        p_pin: hashedPin,
+        p_new_name: d.name.trim(),
+        p_new_school: d.school.trim()
+      });
+      if (r.error) throw new Error(r.error);
+
+      toast('Info kelas berhasil diubah!');
+      closeM();
+
+      if (C && C.code === d.code) {
+        C.name = d.name.trim();
+        C.school = d.school.trim();
+        render(false);
+      }
+      setTimeout(() => A.listcls(), 100);
+    } catch (e) {
+      toast(e.message, 'er');
+    }
+  },
+  async pay_custom(d) {
+    const sid = d.s, w = +d.w;
+    const a = Math.round(+d.a);
+    if (!(a > 0)) return toast('Nominal tidak valid', 'er');
+    const nom = nominalForWeek(w);
+    if (a > nom * 12) return toast('Nominal tidak wajar', 'er');
+    const p = C.pay[sid] = C.pay[sid] || {};
+    p[w] = a;
+    save(); closeM(); render(false);
+    toast(a >= nom ? 'Pembayaran lunas dicatat' : 'Pembayaran parsial dicatat');
+  },
+  async delcls(d) {
+    closeM();
+    const isDev = d.pin === '__DEV__';
+
+    if (isDev) {
+      toast('Menghapus paksa...');
+      try {
+        const r = await rpc('kk_delete_dev', { p_code: d.code, p_master: MASTER_KEY });
+        if (r && r.error) throw new Error(r.error);
+
+        toast('Kelas berhasil dihapus paksa');
+        localStorage.removeItem('kas:data:' + d.code);
+        if (localStorage.getItem('kas:last_code') === d.code) localStorage.removeItem('kas:last_code');
+        
+        if (C && C.code === d.code) A.logout();
+        else setTimeout(() => A.listcls(), 300);
+
+      } catch (e) {
+        toast(e.message, 'er');
+      }
+    } else {
+      try {
+        const hashedPin = await hx(d.pin);
+        const r = await rpc('kk_delete_public', { p_code: d.code, p_pin: hashedPin });
+        if (r.error) throw new Error(r.error);
+        toast('Kelas berhasil dihapus');
+        localStorage.removeItem('kas:data:' + d.code);
+        if (localStorage.getItem('kas:last_code') === d.code) localStorage.removeItem('kas:last_code');
+        if (C && C.code === d.code) A.logout();
+        else setTimeout(() => A.listcls(), 300);
+      } catch (e) {
+        toast(e.message, 'er');
+      }
+    }
+  },
+  async forgot(d) {
+    const code = norm(d.code);
+    if (!code) return toast('Kode kelas tidak valid', 'er');
+    if (!/^\d{4,8}$/.test(d.pin)) return toast('PIN baru harus 4-8 angka', 'er');
+    toast('Memproses…');
+    try {
+      const hashedPin = await hx(d.pin);
+      const r = await rpc('kk_reset_pin', { p_code: code, p_name: d.name.trim(), p_new_pin: hashedPin });
+      if (r.error) throw new Error(r.error);
+      toast('PIN berhasil direset. Silakan login.');
+      S.v = 'login'; render();
+    } catch (e) { toast(e.message, 'er'); }
+  },
+  async forgot_admin(d) {
+    const code = norm(d.code);
+    if (!code) return toast('Kode kelas tidak valid', 'er');
+    if (!/^\d{4,8}$/.test(d.pin)) return toast('PIN baru harus 4-8 angka', 'er');
+    toast('Memproses…');
+    try {
+      const hashedPin = await hx(d.pin);
+      const r = await rpc('kk_reset_pin_admin', { p_code: code, p_recovery: d.rec, p_role: d.r, p_new_pin: hashedPin });
+      if (r.error) throw new Error(r.error);
+      toast('PIN berhasil direset. Silakan login.');
+      S.v = 'login'; S.r = d.r; render();
+    } catch (e) { toast(e.message, 'er'); }
+  },
+  async reg(d) {
+    const code = norm(d.code), P = [d.pb, d.ps, d.pw];
+    if (!code) return toast('Kode kelas tidak valid', 'er');
+    if (P.some(x => !/^\d{4,8}$/.test(x))) return toast('Semua PIN harus 4–8 angka', 'er');
+    if (new Set(P).size < 3) return toast('Ketiga PIN harus berbeda', 'er');
+    toast('Membuat kelas…');
+    try {
+      const data = {
+        name: d.name.trim(), school: d.school.trim(),
+        nominal: +d.nom || 0, start: d.start,
+        students: [], pay: {}, tx: [],
+        nomSnap: { 0: +d.nom || 0 }
+      };
+      const pb = await hx(d.pb), ps = await hx(d.ps), pw = await hx(d.pw);
+      const r = await rpc('kk_create', { p_code: code, p_data: data, p_pb: pb, p_ps: ps, p_pw: pw });
+      C = { ...data, code, nominal: +data.nominal, rec_code: r.rec_code };
+      S = { role: 'b', tab: 'home', tok: r.token, ver: r.ver };
+      persistLocal();
+      enter();
+      modal(`<h3 style="color:var(--ok)">Kelas Berhasil Dibuat</h3>
+      <p class="mu">Simpan Kode Pemulihan di bawah ini. Gunakan jika kamu (Bendahara) atau Wali Kelas lupa PIN.</p>
+      <div style="background:var(--bg);padding:16px;border-radius:12px;text-align:center;font-family:monospace;font-size:18px;font-weight:600;letter-spacing:1px;margin-bottom:16px;color:var(--tx);border:1px solid var(--bd)">${r.rec_code}</div>
+      <button class="btn full pri" data-a="cp_rec">Salin Kode</button>
+      <button class="btn full ghost" style="margin-top:8px" data-a="no">Tutup</button>`);
+    } catch (e) { toast(e.message, 'er'); }
+  },
+  async tx(d) {
+    const a = Math.round(+d.a);
+    if (!(a > 0)) return;
+    const old = C.tx.find(x => x.id == d.id);
+    const net = st().saldo + (old ? (old.t == 'out' ? old.a : -old.a) : 0);
+    if (d.t == 'out' && a > net) return toast('Saldo kas tidak cukup', 'er');
+    const n = { id: old ? old.id : uid(), d: d.d, t: d.t, a, c: d.c || 'Lainnya', note: d.note.trim() };
+    if (old) Object.assign(old, n);
+    else C.tx.push(n);
+    save(); closeM(); render(false); toast('Transaksi disimpan');
+  },
+  btx(d) {
+    const lines = d.n.split('\n').map(x => x.trim()).filter(Boolean);
+    let added = 0;
+    lines.forEach(line => {
+      const parts = line.split('|').map(x => x.trim());
+      let dt = today(), type = 'out', amt = 0, note = '';
+      if (parts.length >= 3) {
+        if (/^\d{4}-\d{2}-\d{2}$/.test(parts[0])) {
+          dt = parts[0]; type = parts[1].toLowerCase() == 'in' ? 'in' : 'out'; amt = parseInt(parts[2]); note = parts.slice(3).join(' | ');
+        } else {
+          type = parts[0].toLowerCase() == 'in' ? 'in' : 'out'; amt = parseInt(parts[1]); note = parts.slice(2).join(' | ');
+        }
+      }
+      if (amt > 0) { C.tx.push({ id: uid(), d: dt, t: type, a: amt, c: 'Lainnya', note: note || 'Batch import' }); added++; }
+    });
+    if (!added) return toast('Format tidak valid', 'er');
+    save(); closeM(); render(false); toast(added + ' transaksi ditambahkan');
+  },
+  sis(d) {
+    const n = d.n.split('\n').map(x => x.trim()).filter(Boolean);
+    if (!n.length) return;
+    n.forEach(x => {
+      const [a, b] = x.split(/[,;\t]/);
+      C.students.push({ id: uid(), n: a.trim().slice(0, 40), hp: (b || '').replace(/[^\d+]/g, '').slice(0, 16) });
+    });
+    save(); render(false); toast(n.length + ' siswa ditambahkan');
+  },
+  esis(d) {
+    const s = C.students.find(x => x.id == d.id);
+    if (s) {
+      s.n = d.n.trim(); s.hp = d.hp.replace(/[^\d+]/g, '').slice(0, 16);
+      save(); closeM(); render(false); toast('Data siswa diperbarui');
+    }
+  },
+  info(d) {
+    C.school = d.school.trim(); C.name = d.name.trim();
+    const newNom = Math.max(0, +d.nom || 0);
+    if (newNom !== +C.nominal) {
+      const w = curWk() + 1;
+      C.nomSnap = C.nomSnap || { 0: +C.nominal || 0 };
+      C.nomSnap[w] = newNom;
+      C.nominal = newNom;
+    }
+    save(); render(false); toast('Info kelas disimpan');
+  },
+  async pin(d) {
+    const ok = x => !x || /^\d{4,8}$/.test(x);
+    if (!ok(d.pb) || !ok(d.ps) || !ok(d.pw)) return toast('PIN baru harus 4–8 angka', 'er');
+    try {
+      const o = await hx(d.o);
+      const pb = d.pb ? await hx(d.pb) : null;
+      const ps = d.ps ? await hx(d.ps) : null;
+      const pw = d.pw ? await hx(d.pw) : null;
+      const res = await rpc('kk_pins', { p_token: S.tok, p_old: o, p_pb: pb, p_ps: ps, p_pw: pw });
+      if (res.error) throw new Error(res.error);
+      toast('PIN diperbarui'); render(false);
+    } catch (e) { toast(e.message, 'er'); }
+  },
+  async rst(d) {
+    try {
+      const p = await hx(d.p);
+      const res = await rpc('kk_delete', { p_token: S.tok, p_pin: p });
+      if (res.error) throw new Error(res.error);
+      localStorage.removeItem('kas:data:' + C.code);
+      A.logout();
+      toast('Kelas dihapus');
+    } catch (e) { toast(e.message, 'er'); }
+  }
+};
+
+/* ---------- Restore Logic ---------- */
+function restore(t) {
+  const f = t.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = () => {
+    try {
+      const d = JSON.parse(r.result);
+      if (!d.code || !d.school || !d.students) throw 0;
+      ask('Pulihkan data ini? Data kelas dengan kode ' + d.code + ' akan ditimpa.', async () => {
+        toast('Memulihkan...');
+        try {
+          d.nominal = +d.nominal || 0;
+          d.nomSnap = d.nomSnap || { 0: d.nominal };
+          C = d;
+          persistLocal();
+          toast('Data dipulihkan di perangkat ini');
+          S = { role: 'b', tab: 'home', tok: 'offline', ver: 1 };
+          enter();
+        } catch (e) { toast('Gagal memulihkan', 'er'); }
+      });
+    } catch (x) { toast('File tidak valid', 'er'); }
+  };
+  r.readAsText(f); t.value = '';
+}
+
+/* ---------- Event Listeners ---------- */
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-a]');
+  if (b) { A[b.dataset.a] && A[b.dataset.a](b.dataset); return; }
+  if (e.target.id == 'mod') closeM();
+});
+document.addEventListener('submit', e => {
+  const f = e.target.closest('[data-f]');
+  if (!f) return;
+  e.preventDefault();
+  F[f.dataset.f] && F[f.dataset.f](Object.fromEntries(new FormData(f)));
+});
+document.addEventListener('change', e => {
+  const t = e.target;
+  if (t.dataset && t.dataset.c == 'me') { S.me = t.value; render(false); }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && $('#mod').classList.contains('on')) closeM();
+});
+
+/* Back Button Handler */
+history.pushState({ trap: true }, '', location.href);
+
+window.addEventListener('popstate', function (e) {
+  history.pushState({ trap: true }, '', location.href);
+
+  if ($('#mod').classList.contains('on')) {
+    closeM();
+    return;
+  }
+
+  if (C) {
+    ask('Apakah Anda yakin ingin keluar dari akun ini?', () => {
+      C = null;
+      S = { v: 'land' };
+      closeM();
+      render();
+      setTimeout(() => { history.back(); }, 100);
+    }, () => {});
+    return;
+  }
+
+  if (S.v !== 'land') {
+    S.v = 'land';
+    render();
+    return;
+  }
+
+  history.back();
+});
+
+const cu = el => {
+  const n = +el.dataset.n, t0 = performance.now();
+  const f = t => {
+    const p = Math.min(1, (t - t0) / 900);
+    el.textContent = rp(n * (1 - Math.pow(1 - p, 3)));
+    if (p < 1) requestAnimationFrame(f);
+  };
+  requestAnimationFrame(f);
+};
+
+// Register Service Worker (PWA)
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(err => console.log('SW Gagal:', err));
+  });
+}
+
+// Boot
+const th = ld('kas:theme');
+if (th) document.documentElement.dataset.theme = th;
+render();
+
+// Autofill cerdas
+if (!C && S.v == 'login') {
+  setTimeout(async () => {
+    const el = document.getElementById('login-code');
+    if (!el) return;
+    el.value = '';
+    const savedCode = ld('kas:last_code');
+    if (savedCode) {
+      try {
+        const list = await rpc('kk_list_classes');
+        if (list && Array.isArray(list)) {
+          const exists = list.some(c => c.code === savedCode);
+          if (exists) el.value = savedCode;
+          else localStorage.removeItem('kas:last_code');
+        }
+      } catch (e) {}
+    }
+  }, 150);
+}
+
+setTimeout(() => {
+  const s = $('#splash');
+  s.classList.add('out');
+  setTimeout(() => s.remove(), 900);
+}, 2500);
+</script>
+</body>
+</html>
