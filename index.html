@@ -778,7 +778,7 @@ const vSetInfo = () => `
   <form data-f="info">
     <label class="f"><span>Nama Sekolah</span><input name="school" value="${h(C.school)}" required maxlength="50"></label>
     <label class="f"><span>Nama Kelas</span><input name="name" value="${h(C.name)}" required maxlength="30"></label>
-    ${S.role === 'b' ? `<label class="f"><span>Kode Kelas</span><input name="code" value="${h(C.code)}" required maxlength="20" style="text-transform:uppercase"></label><small style="display:block;margin-top:-12px;margin-bottom:16px;font-size:11px;color:var(--er)">Hati-hati: Mengubah kode kelas akan merubah kode login. Bagikan kode baru ke siswa.</small>` : ''}
+    ${S.role === 'b' ? `<label class="f"><span>Kode Kelas</span><input name="code" value="${h(C.code)}" required maxlength="20" style="text-transform:uppercase"></label><small style="display:block;margin-top:-12px;margin-bottom:16px;font-size:11px;color:var(--er)">Hati-hati: Mengubah kode kelas akan merubah kode login. Bagikan kode baru ke siswa.</small>` : `<label class="f"><span>Kode Kelas</span><input name="code" value="${h(C.code)}" readonly style="background:var(--sf);cursor:not-allowed;"></label><small style="display:block;margin-top:-12px;margin-bottom:16px;font-size:11px;color:var(--mu)">Hanya Bendahara yang dapat mengubah kode kelas.</small>`}
     <label class="f"><span>Iuran per minggu (Rp)</span><input name="nom" type="number" min="0" step="500" value="${C.nominal}" required></label>
     <small style="display:block;margin-bottom:20px;font-size:12px;color:var(--mu)">Perubahan nominal tidak berlaku retroaktif — minggu lalu tetap pakai nominal lama.</small>
     <button class="btn full pri">Simpan Perubahan</button>
@@ -1013,20 +1013,14 @@ const A = {
   },
   fill_code(c) { 
     closeM(); 
-    // Jangan timpa seluruh object S, cukup ubah view-nya saja
     S.v = 'login'; 
     render(); 
-    
-    // Beri jeda agar animasi render selesai
     setTimeout(() => { 
       const inp = document.getElementById('login-code'); 
       if (inp) {
         inp.value = c; 
-        // Beri trigger event agar validasi (jika ada) berjalan
         inp.dispatchEvent(new Event('input', { bubbles: true }));
         inp.dispatchEvent(new Event('change', { bubbles: true }));
-        
-        // Pindahkan fokus ke kolom PIN
         const pinInp = document.getElementById('login-pin');
         if (pinInp) pinInp.focus();
       }
@@ -1167,7 +1161,6 @@ function updateSyncUI(state) {
 
 function push() {
   if (S.role != 'b') return;
-  // Jika offline atau token tidak ada, simpan lokal saja
   if (!S.tok || S.tok === 'offline') { updateSyncUI('ok'); persistLocal(); return; }
   
   dirty = 1; updateSyncUI('saving');
@@ -1181,8 +1174,7 @@ function push() {
       if (res.error) throw new Error(res.error);
       S.ver = res.ver; updateSyncUI('ok'); persistLocal(); dirty = 0;
     } catch (e) { 
-      // PERBAIKAN: Jika error karena sesi habis, paksa logout
-      if (/sesi/i.test(e.message)) {
+      if (/sesi tidak valid/i.test(e.message)) {
         updateSyncUI('error');
         toast('Sesi Anda berakhir. Silakan login ulang.', 'er');
         setTimeout(() => A.logout(), 1500);
@@ -1202,7 +1194,14 @@ async function pull(f) {
     const r = await rpc('kk_get', { p_token: S.tok });
     if (f || r.ver != S.ver) {
       S.ver = r.ver;
-      C = { ...r.data, code: C.code, nominal: +r.data.nominal || 0, rec_code: C.rec_code, nomSnap: r.data.nomSnap || C.nomSnap || {} };
+      // Pastikan C.nominal mengambil dari data JSONB terbaru
+      C = { 
+        ...r.data, 
+        code: C.code, 
+        nominal: +r.data.nominal || 0, 
+        rec_code: C.rec_code, 
+        nomSnap: r.data.nomSnap || C.nomSnap || {} 
+      };
       persistLocal(); render(false);
     }
   } catch (e) { if (/sesi/i.test(e.message)) { A.logout(); toast('Sesi berakhir, silakan masuk lagi', 'er'); } }
@@ -1346,7 +1345,6 @@ const F = {
       const newNom = Math.max(0, +d.nom || 0);
       const newCode = d.code ? norm(d.code) : C.code;
       
-      // Update lokal terlebih dahulu
       C.school = d.school.trim();
       C.name = d.name.trim();
       
@@ -1357,35 +1355,35 @@ const F = {
         C.nominal = newNom;
       }
 
-      // Kirim ke server
+      // Kirim p_nominal dan p_nom_snap ke server
       const res = await rpc('kk_info', { 
         p_token: S.tok, 
         p_name: C.name, 
         p_school: C.school,
-        p_new_code: newCode // Kirim kode baru ke server
+        p_new_code: newCode,
+        p_nominal: C.nominal,
+        p_nom_snap: C.nomSnap
       });
-      if (res.error) throw new Error(res.error);
+      
+      if (res && res.error) throw new Error(res.error);
 
-      // Jika kode berubah, perbarui token dan data lokal
       if (newCode !== C.code) {
-        S.tok = res.new_token || S.tok; // Jika server mengembalikan token baru
+        S.tok = res.new_token || S.tok; 
         S.ver = res.new_ver || S.ver;
         
-        // Hapus data lokal lama, simpan dengan kode baru
         localStorage.removeItem('kas:data:' + C.code);
         C.code = newCode;
-        
-        // Perbarui auto-fill di browser
         sv('kas:last_code', newCode);
       }
 
-      save(); // Ini akan memicu push() untuk sinkronisasi
+      save(); 
       render(false); 
       toast('Info kelas & kode berhasil disimpan');
     } catch (e) {
       toast(e.message, 'er');
-      // Jika error sesi, paksa logout
-      if (/sesi/i.test(e.message)) setTimeout(() => A.logout(), 1500);
+      if (/sesi tidak valid/i.test(e.message)) {
+        setTimeout(() => A.logout(), 1500);
+      }
     }
   },
   async pin(d) {
@@ -1429,13 +1427,10 @@ function restore(t) {
           d.nominal = +d.nominal || 0; 
           d.nomSnap = d.nomSnap || { 0: d.nominal };
           
-          // 1. Set data ke memori lokal
           C = d; 
           persistLocal(); 
           
-          // 2. Cek apakah sedang login sebagai bendahara
           if (S.role === 'b' && S.tok && S.tok !== 'offline') {
-            // Jika punya token asli, paksa upload data restore ke server
             const payload = { ...C }; 
             delete payload.code; 
             delete payload.rec_code;
@@ -1446,7 +1441,6 @@ function restore(t) {
             S.ver = res.ver;
             toast('Data berhasil dipulihkan & disinkronkan ke server');
           } else {
-            // Jika offline (tidak punya token), paksa login manual untuk sinkronisasi
             toast('Data dipulihkan secara lokal. Harap login ulang untuk sinkronisasi.', 'info');
             setTimeout(() => {
               C = null; S = { v: 'land' }; render();
@@ -1483,22 +1477,34 @@ document.addEventListener('change', e => {
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('#mod').classList.contains('on')) closeM(); });
 
-/* Back Button Handler */
+/* Back Button Handler (DIPERBAIKI TOTAL) */
 history.pushState({ trap: true }, '', location.href);
 window.addEventListener('popstate', function (e) {
   history.pushState({ trap: true }, '', location.href);
 
+  // 1. Jika ada modal/pop-up terbuka, tutup modalnya saja
   if ($('#mod').classList.contains('on')) { 
     closeM(); 
     return; 
   }
 
+  // 2. Jika sedang di halaman "Tentang"
+  if (S.tab === 'about') {
+    // Jika Siswa, kembali ke Beranda. Jika Bendahara/Wali, kembali ke Setelan.
+    S.tab = (S.role === 's') ? 'home' : 'set';
+    render();
+    return;
+  }
+
+  // 3. Jika sedang di sub-menu Setelan (Profil, PIN, Backup, Danger, PIN Walkes)
   if (S.tab && S.tab.startsWith('set_')) {
     S.tab = 'set';
     render();
     return;
   }
 
+  // 4. Jika sedang di tab manapun (home, iuran, tx, sis, lap, tg, set) dan sudah login
+  // LANGSUNG munculkan pop-up konfirmasi keluar
   if (C) {
     ask('Apakah Anda yakin ingin keluar dari akun ini?', () => {
       C = null; 
@@ -1509,6 +1515,7 @@ window.addEventListener('popstate', function (e) {
     return;
   }
 
+  // 5. Jika di halaman awal (Landing Page)
   if (S.v !== 'land') { 
     S.v = 'land'; 
     render(); 
