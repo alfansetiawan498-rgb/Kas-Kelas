@@ -11,7 +11,6 @@
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<!-- Library untuk generate PDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
 /* === THEME === */
@@ -132,7 +131,43 @@ html[data-theme="dark"] .chip.p{background:rgba(255,204,0,.18);color:#ffcc00}
 .tabs button{border:0;background:var(--sf);padding:8px 16px;font-weight:500;font-size:13px;color:var(--mu);cursor:pointer;transition:.2s;border-radius:100px}
 .tabs button.on{background:var(--pri);color:#fff}
 
-/* === LAPORAN (ELEGAN) === */
+.seg { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 0; }
+.seg label { position: relative; cursor: pointer; display: block; }
+.seg input[type="radio"] { display: none !important; }
+.seg label span { display: block; text-align: center; padding: 14px 12px; border: 1.5px solid var(--bd); border-radius: 12px; background: var(--bg); font-weight: 600; font-size: 14px; color: var(--mu); transition: all 0.2s ease; }
+.seg input[type="radio"]:checked + span { border-color: var(--pri) !important; background: var(--sf) !important; color: var(--pri) !important; box-shadow: 0 0 0 2px var(--pri-l); }
+.seg input[type="radio"]:checked + span::before { content: "✓"; margin-right: 6px; font-weight: bold; }
+
+.set-menu { border-radius: 16px; overflow: hidden; background: var(--sf); }
+.set-item { display: flex; align-items: center; gap: 16px; padding: 16px 20px; border-bottom: 1px solid var(--bd); cursor: pointer; transition: background 0.2s; }
+.set-item:last-child { border-bottom: none; }
+.set-item:active { background: var(--bd); }
+.set-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.set-icon.blue { background: #e0f0ff; color: #007aff; }
+.set-icon.red { background: #ffebea; color: #ff3b30; }
+.set-icon.purple { background: #f5e6ff; color: #af52de; }
+.set-icon.orange { background: #fff3e0; color: #ff9500; }
+.set-icon.green { background: #e8f8ee; color: #34c759; }
+html[data-theme="dark"] .set-icon.blue { background: rgba(0,122,255,0.2); }
+html[data-theme="dark"] .set-icon.red { background: rgba(255,59,48,0.2); }
+html[data-theme="dark"] .set-icon.purple { background: rgba(175,82,222,0.2); }
+html[data-theme="dark"] .set-icon.orange { background: rgba(255,149,0,0.2); }
+html[data-theme="dark"] .set-icon.green { background: rgba(52,199,89,0.2); }
+@media(prefers-color-scheme:dark) {
+  :root:not([data-theme="light"]) .set-icon.blue { background: rgba(0,122,255,0.2); }
+  :root:not([data-theme="light"]) .set-icon.red { background: rgba(255,59,48,0.2); }
+  :root:not([data-theme="light"]) .set-icon.purple { background: rgba(175,82,222,0.2); }
+  :root:not([data-theme="light"]) .set-icon.orange { background: rgba(255,149,0,0.2); }
+  :root:not([data-theme="light"]) .set-icon.green { background: rgba(52,199,89,0.2); }
+}
+.set-text { flex: 1; min-width: 0; }
+.set-text b { display: block; font-size: 15px; font-weight: 500; color: var(--tx); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.set-text small { display: block; font-size: 12px; color: var(--mu); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.set-arrow { color: var(--mu); width: 18px; height: 18px; flex-shrink: 0; }
+.set-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+.set-header button { border: 0; background: transparent; color: var(--pri); font-weight: 600; font-size: 16px; cursor: pointer; padding: 0; display: flex; align-items: center; gap: 4px; }
+.set-header h2 { font-size: 20px; font-weight: 700; color: var(--tx); margin: 0; }
+
 .rep-wrap{position:relative;margin:0 -20px;padding:0 20px}
 .rep-scroll{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;padding-bottom:4px;scrollbar-width:thin;scrollbar-color:var(--bd) transparent}
 .rep-scroll::-webkit-scrollbar{height:6px}
@@ -182,8 +217,6 @@ html[data-theme="dark"] .chip.p{background:rgba(255,204,0,.18);color:#ffcc00}
 .spin{animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* === PRINT & PDF MODE === */
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
 body.print-mode .rep{background:#fff!important;color:#111!important;padding:20px!important;width:190mm!important;margin:0 auto!important}
 body.print-mode .rep .rh{border-bottom-color:#111!important}
 body.print-mode .rep .rh-school{color:#666!important}
@@ -218,48 +251,45 @@ body.print-mode .rep .rh-brand svg circle{stroke:#fff!important;fill:#fff!import
 
 @media print {
   @page { size: A4 portrait; margin: 15mm; }
-  html[data-paper="f4"] @page { size: 215mm 330mm portrait; margin: 15mm; }
-  html, body { background: #fff !important; }
-  body { font-family: 'Inter', -apple-system, sans-serif !important; color: #111 !important; font-size: 10px; }
   .top, .nav, #splash, #wel, #toast, #mod, .np, .tabs, .rowh, button, input, select, textarea, .scroll-hint { display: none !important; }
+  html, body { background: #fff !important; margin: 0 !important; padding: 0 !important; }
+  body { font-family: 'Inter', -apple-system, sans-serif !important; color: #111 !important; font-size: 11px !important; }
   #root { max-width: none !important; padding: 0 !important; margin: 0 !important; }
   .view { margin: 0 !important; }
   .card { background: #fff !important; box-shadow: none !important; border: 0 !important; padding: 0 !important; margin: 0 !important; border-radius: 0 !important; }
   .rep-wrap { margin: 0 !important; padding: 0 !important; }
   .rep-scroll { overflow: visible !important; padding: 0 !important; }
-  .rep-inner { min-width: 0 !important; padding: 0 !important; }
-  .rep { padding: 0 !important; }
-  .rep .rh { border-bottom-color: #111 !important; }
-  .rep .rh .rh-school { color: #666 !important; white-space: normal !important; }
-  .rep .rh .rh-title { color: #111 !important; font-size: 17px !important; white-space: normal !important; }
-  .rep .rh .rh-sub { color: #555 !important; white-space: normal !important; }
-  .rep .rh .rh-meta { color: #555 !important; white-space: normal !important; }
+  .rep-inner { min-width: 0 !important; width: 100% !important; padding: 0 !important; }
+  .rep { padding: 0 !important; width: 100% !important; }
+  .rep .rh { border-bottom: 2px solid #111 !important; padding-bottom: 15px !important; margin-bottom: 20px !important; }
+  .rep .rh .rh-school { color: #666 !important; font-size: 9px !important; }
+  .rep .rh .rh-title { color: #111 !important; font-size: 18px !important; }
+  .rep .rh .rh-sub { color: #555 !important; font-size: 11px !important; }
+  .rep .rh .rh-meta { color: #555 !important; font-size: 9px !important; }
   .rep .rh .rh-meta b { color: #111 !important; }
-  .rep .rhero { background: #f7f7f7 !important; border-color: #ccc !important; flex-wrap: wrap !important; }
-  .rep .rhero .rhero-l { color: #666 !important; }
-  .rep .rhero .rhero-v { color: #111 !important; font-size: 20px !important; white-space: normal !important; }
-  .rep .rhero .rhero-r { color: #555 !important; white-space: normal !important; }
+  .rep .rhero { background: #f9f9f9 !important; border: 1px solid #ddd !important; padding: 15px 20px !important; margin-bottom: 15px !important; border-radius: 8px !important; }
+  .rep .rhero .rhero-l { color: #666 !important; font-size: 9px !important; }
+  .rep .rhero .rhero-v { color: #111 !important; font-size: 22px !important; }
+  .rep .rhero .rhero-r { color: #555 !important; font-size: 10px !important; }
   .rep .rhero .rhero-r b { color: #111 !important; }
-  .rep .rgrid { border-color: #ccc !important; }
-  .rep .rgrid .rcell { border-right-color: #ccc !important; }
-  .rep .rgrid .rcell-l { color: #666 !important; white-space: normal !important; }
-  .rep .rgrid .rcell-v { color: #111 !important; white-space: normal !important; }
+  .rep .rgrid { border: 1px solid #ddd !important; border-radius: 8px !important; margin-bottom: 25px !important; }
+  .rep .rgrid .rcell { border-right: 1px solid #ddd !important; padding: 12px 15px !important; }
+  .rep .rgrid .rcell-l { color: #666 !important; font-size: 8px !important; }
+  .rep .rgrid .rcell-v { color: #111 !important; font-size: 14px !important; }
   .rep .rgrid .rcell-v.pos, .rep .rgrid .rcell-v.neg { color: #111 !important; }
-  .rep .rsec { color: #444 !important; }
-  .rep table thead th { color: #555 !important; border-bottom-color: #111 !important; white-space: normal !important; }
-  .rep table tbody td { color: #111 !important; border-bottom-color: #ddd !important; white-space: normal !important; word-break: break-word !important; }
-  .rep table .saldo-row td { border-top-color: #111 !important; color: #111 !important; }
-  .rep table .saldo-row td:first-child { color: #666 !important; }
-  .rep .rprog-track { background: #ddd !important; }
+  .rep .rsec { color: #444 !important; font-size: 10px !important; margin-bottom: 10px !important; letter-spacing: 1px !important; }
+  .rep table { width: 100% !important; table-layout: fixed !important; margin-bottom: 25px !important; }
+  .rep table thead th { color: #555 !important; border-bottom: 2px solid #111 !important; font-size: 9px !important; padding: 8px 0 !important; }
+  .rep table tbody td { color: #111 !important; border-bottom: 1px solid #eee !important; font-size: 11px !important; padding: 10px 0 !important; word-break: break-word !important; }
+  .rep table .saldo-row td { border-top: 2px solid #111 !important; color: #111 !important; font-size: 12px !important; padding-top: 12px !important; }
+  .rep table .saldo-row td:first-child { color: #666 !important; font-size: 9px !important; }
+  .rep .rprog-track { background: #eee !important; height: 6px !important; }
   .rep .rprog-fill { background: #111 !important; }
-  .rep .rprog-text { color: #555 !important; }
-  .rep .rstatus-lunas, .rep .rstatus-tunggak { color: #111 !important; }
-  .rep .rfoot { color: #777 !important; border-top-color: #ccc !important; }
-  .rep .rfoot .rfoot-l, .rep .rfoot .rfoot-r { white-space: normal !important; }
+  .rep .rprog-text { color: #555 !important; font-size: 10px !important; }
+  .rep .rstatus-lunas, .rep .rstatus-tunggak { color: #111 !important; font-size: 11px !important; }
+  .rep .rfoot { color: #777 !important; border-top: 1px solid #ccc !important; font-size: 9px !important; padding-top: 12px !important; margin-top: 30px !important; }
   * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
   .rep-scroll, .rep-scroll * { overflow: visible !important; max-width: none !important; }
-  .rep-inner, .rep { width: 100% !important; min-width: 0 !important; max-width: 100% !important; }
-  .rep table { width: 100% !important; table-layout: fixed !important; }
   .rep .rh, .rep .rhero { flex-wrap: wrap !important; }
 }
 </style>
@@ -275,7 +305,7 @@ body.print-mode .rep .rh-brand svg circle{stroke:#fff!important;fill:#fff!import
 </div>
 <div id="wel" aria-live="polite"><svg width="72" height="72" viewBox="0 0 84 84" fill="none" stroke="var(--ok)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><circle cx="42" cy="42" r="38"/><path d="M27 43l10 10 20-22"/></svg><h2 id="wt" style="color:var(--tx);font-size:24px;font-weight:600"></h2><p id="ws" style="font-weight:400;color:var(--mu)"></p></div>
 <div id="root"></div><div id="mod"></div><div id="toast" role="status" aria-live="polite"></div>
-<input type="file" id="fileRestore" style="display:none" accept=".json" onchange="restore(this)">
+<input type="file" id="fileRestore" style="display:none" accept=".json">
 
 <script>
 const $ = s => document.querySelector(s), mem = {};
@@ -372,7 +402,10 @@ const I = {
   whatsapp: 'M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z',
   download: 'M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4 M7 10l5 5 5-5 M12 15V3',
   fileText: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6 M16 13H8 M16 17H8 M10 9H8',
-  chevronRight: 'M9 18l6-6-6-6'
+  chevronRight: 'M9 18l6-6-6-6',
+  chevronLeft: 'M15 18l-6-6 6-6',
+  key: 'M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4',
+  database: 'M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4'
 };
 const ic = n => `<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="${I[n]}"/></svg>`;
 const icw = n => `<svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px"><path d="${I[n]}"/></svg>`;
@@ -637,7 +670,7 @@ function vLap() {
   return `<div class="card">
   <div class="rowh np" style="flex-wrap:wrap; justify-content:center; gap:8px; margin-bottom:20px;">
     <button class="btn sm ghost" data-a="dl_pdf" style="flex:1">${ic('fileText')} Unduh PDF</button>
-    <button class="btn sm pri" data-a="do_print" data-k="a4" style="flex:1">${ic('file')} Cetak</button>
+    <button class="btn sm pri" data-a="print_menu" style="flex:1">${ic('file')} Cetak</button>
   </div>
   <div class="scroll-hint" id="scroll-hint">Geser ke samping untuk melihat laporan lengkap ${ic('chevronRight')}</div>
   <div class="rep-wrap">
@@ -691,29 +724,164 @@ function vLap() {
 </div>`;
 }
 
-const vSet = () => `<div class="card"><h3>Info kelas</h3><p class="mu" style="margin:8px 0 0">Kode kelas: <b style="color:var(--tx)">${h(C.code)}</b></p><form data-f="info" style="margin-top:16px"><label class="f"><span>Sekolah</span><input name="school" value="${h(C.school)}" required maxlength="50"></label><label class="f"><span>Kelas</span><input name="name" value="${h(C.name)}" required maxlength="30"></label><label class="f"><span>Iuran per minggu (Rp)</span><input name="nom" type="number" min="0" step="500" value="${C.nominal}" required></label><small>Perubahan nominal tidak berlaku retroaktif — minggu lalu tetap pakai nominal lama.</small><button class="btn full pri" style="margin-top:16px">Simpan</button></form></div>
-<div class="card"><h3>Ganti PIN</h3><form data-f="pin" style="margin-top:16px">
-  <label class="f"><span>PIN bendahara saat ini</span><input name="o" type="password" inputmode="numeric" maxlength="8" required></label>
-  <div class="g2">
-    <label class="f"><span>PIN bendahara baru</span><input name="pb" type="password" inputmode="numeric" maxlength="8" placeholder="Kosong = tetap"></label>
-    <label class="f"><span>PIN siswa baru</span><input name="ps" type="password" inputmode="numeric" maxlength="8" placeholder="Kosong = tetap"></label>
+/* ---------- SETELAN (Menu & Sub-view) ---------- */
+const vSet = () => `
+<div style="margin-bottom:12px"><h2 style="font-size:28px;font-weight:700;letter-spacing:-1px;padding-left:4px">Setelan</h2></div>
+<div style="margin-bottom:24px">
+  <div style="display:flex;align-items:center;gap:16px;padding:0 4px">
+    ${mk(64)}
+    <div>
+      <b style="display:block;font-size:20px;font-weight:600">${h(C.name)}</b>
+      <small class="mu">${h(C.school)}</small>
+    </div>
   </div>
-  <button class="btn full pri" style="margin-top:8px">Perbarui PIN</button>
-</form></div>
-<div class="card"><h3>Kode Pemulihan</h3><p class="mu">Gunakan kode ini jika kamu lupa PIN Bendahara. Jangan bagikan ke siapa pun!</p><div style="display:flex;gap:10px;align-items:center;margin-top:12px"><input value="${h(C.rec_code || 'Memuat...')}" readonly style="font-family:monospace;font-weight:600;letter-spacing:1px;text-align:center;background:var(--bg);color:var(--tx)"><button class="btn sm" data-a="cp_rec">Copy</button></div></div>
-<div class="card"><h3>Cadangan data</h3><p class="mu">Data tersimpan aman di server. Unduh cadangan berkala sebagai arsip pribadi.</p><div style="display:flex;flex-direction:column;gap:8px;margin-top:12px"><button class="btn ghost full" data-a="bak">Unduh Cadangan (JSON)</button><button class="btn ghost full" data-a="rst_file">Pulihkan dari File</button></div></div>
-<div class="card"><h3>Tentang Aplikasi</h3><p class="mu">Kenali lebih dekat KasKelas.</p><button class="btn full pri" style="margin-top:12px" data-a="about">${ic('info')} Lihat Tentang KasKelas</button></div>
-<div class="card"><h3 style="color:var(--er)">Zona bahaya</h3><p class="mu">Tindakan ini permanen dan tidak bisa dibatalkan.</p><div style="display:flex;flex-direction:column;gap:8px;margin-top:16px"><button class="btn ghost" style="color:var(--er);border-color:var(--erb)" data-a="clear_data">Hapus Seluruh Data Kas</button><button class="btn red full" data-a="rst">Hapus Kelas Permanen</button></div></div>`;
+</div>
 
-const vSetW = () => `<div class="card"><h3>Ganti PIN Wali Kelas</h3>
-<form data-f="pin_walkes" style="margin-top:16px">
-  <label class="f"><span>PIN saat ini</span><input name="o" type="password" inputmode="numeric" maxlength="8" required placeholder="••••"></label>
-  <label class="f"><span>PIN baru</span><input name="pn" type="password" inputmode="numeric" maxlength="8" required placeholder="4-8 angka"></label>
-  <button class="btn full pri" style="margin-top:8px">Perbarui PIN Saya</button>
-</form></div>
-<div class="card"><h3>Tentang Aplikasi</h3><p class="mu">KasKelas — Uang Kas Digital.</p><button class="btn full pri" style="margin-top:12px" data-a="about">${ic('info')} Lihat Tentang</button></div>`;
+<div class="set-menu" style="margin-bottom:16px">
+  <div class="set-item" data-a="tab" data-k="set_info">
+    <div class="set-icon blue">${ic('users')}</div>
+    <div class="set-text"><b>Profil Kelas</b><small>Sekolah, kelas, iuran</small></div>
+    <div class="set-arrow">${ic('chevronRight')}</div>
+  </div>
+  <div class="set-item" data-a="tab" data-k="set_pin">
+    <div class="set-icon purple">${ic('shield')}</div>
+    <div class="set-text"><b>Keamanan PIN</b><small>Ganti PIN bendahara & siswa</small></div>
+    <div class="set-arrow">${ic('chevronRight')}</div>
+  </div>
+  <div class="set-item" data-a="tab" data-k="set_backup">
+    <div class="set-icon green">${ic('database')}</div>
+    <div class="set-text"><b>Cadangan Data</b><small>Unduh atau pulihkan</small></div>
+    <div class="set-arrow">${ic('chevronRight')}</div>
+  </div>
+</div>
 
-const V = { home: vHome, iuran: vIuran, tx: vTx, sis: vSis, lap: vLap, set: () => S.role === 'w' ? vSetW() : vSet() };
+<div class="set-menu" style="margin-bottom:16px">
+  <div class="set-item" data-a="tab" data-k="about">
+    <div class="set-icon orange">${ic('info')}</div>
+    <div class="set-text"><b>Tentang KasKelas</b><small>Info aplikasi & pengembang</small></div>
+    <div class="set-arrow">${ic('chevronRight')}</div>
+  </div>
+</div>
+
+<div class="set-menu" style="margin-bottom:16px">
+  <div class="set-item" data-a="tab" data-k="set_danger">
+    <div class="set-icon red">${ic('trash')}</div>
+    <div class="set-text"><b style="color:var(--er)">Zona Bahaya</b><small>Hapus kelas & data permanen</small></div>
+    <div class="set-arrow">${ic('chevronRight')}</div>
+  </div>
+</div>
+`;
+
+const vSetInfo = () => `
+<div class="set-header"><button data-a="tab" data-k="set">${ic('chevronLeft')} Setelan</button></div>
+<div class="card">
+  <form data-f="info">
+    <label class="f"><span>Nama Sekolah</span><input name="school" value="${h(C.school)}" required maxlength="50"></label>
+    <label class="f"><span>Nama Kelas</span><input name="name" value="${h(C.name)}" required maxlength="30"></label>
+    <label class="f"><span>Iuran per minggu (Rp)</span><input name="nom" type="number" min="0" step="500" value="${C.nominal}" required></label>
+    <small style="display:block;margin-bottom:20px;font-size:12px;color:var(--mu)">Perubahan nominal tidak berlaku retroaktif — minggu lalu tetap pakai nominal lama.</small>
+    <button class="btn full pri">Simpan Perubahan</button>
+  </form>
+</div>
+<div class="card" style="background:var(--bg);border:1px solid var(--bd);">
+  <small class="mu" style="display:block;text-align:center">Kode Kelas</small>
+  <h3 style="text-align:center;margin:8px 0;letter-spacing:1px">${h(C.code)}</h3>
+</div>`;
+
+const vSetPin = () => `
+<div class="set-header"><button data-a="tab" data-k="set">${ic('chevronLeft')} Setelan</button></div>
+<div class="card">
+  <form data-f="pin">
+    <label class="f"><span>PIN Bendahara Saat Ini</span><input name="o" type="password" inputmode="numeric" maxlength="8" required></label>
+    <div class="g2">
+      <label class="f"><span>PIN Bendahara Baru</span><input name="pb" type="password" inputmode="numeric" maxlength="8" placeholder="Kosong = tetap"></label>
+      <label class="f"><span>PIN Siswa Baru</span><input name="ps" type="password" inputmode="numeric" maxlength="8" placeholder="Kosong = tetap"></label>
+    </div>
+    <button class="btn full pri">Perbarui PIN</button>
+  </form>
+</div>
+<div class="card" style="background:var(--bg);border:1px solid var(--bd);">
+  <h3 style="font-size:15px;margin-bottom:12px">Kode Pemulihan Bendahara</h3>
+  <p class="mu" style="font-size:12px;margin-bottom:12px">Simpan kode ini di tempat aman. Digunakan jika Anda lupa PIN.</p>
+  <div style="display:flex;gap:10px">
+    <input value="${h(C.rec_code || 'Memuat...')}" readonly style="font-family:monospace;font-weight:600;letter-spacing:1px;text-align:center;background:var(--sf);color:var(--tx)">
+    <button class="btn sm" data-a="cp_rec">Copy</button>
+  </div>
+</div>`;
+
+const vSetBackup = () => `
+<div class="set-header"><button data-a="tab" data-k="set">${ic('chevronLeft')} Setelan</button></div>
+<div class="set-menu">
+  <div class="set-item" data-a="bak">
+    <div class="set-icon green">${ic('download')}</div>
+    <div class="set-text"><b>Unduh Cadangan</b><small>Simpan data ke file JSON</small></div>
+    <div class="set-arrow">${ic('chevronRight')}</div>
+  </div>
+  <div class="set-item" data-a="rst_file">
+    <div class="set-icon orange">${ic('file')}</div>
+    <div class="set-text"><b>Pulihkan Data</b><small>Impor dari file cadangan</small></div>
+    <div class="set-arrow">${ic('chevronRight')}</div>
+  </div>
+</div>
+<p class="mu" style="font-size:12px;margin-top:16px;padding:0 4px">Data kas Anda tersimpan secara aman di cloud. Fitur cadangan ini berguna jika Anda ingin menyimpan arsip mandiri atau pindah perangkat.</p>`;
+
+const vSetDanger = () => `
+<div class="set-header"><button data-a="tab" data-k="set">${ic('chevronLeft')} Setelan</button></div>
+<div class="card" style="border-color:var(--erb);background:var(--erb)">
+  <h3 style="color:var(--er);font-size:16px;margin-bottom:8px">Zona Bahaya</h3>
+  <p class="mu" style="color:var(--er);font-size:13px;margin-bottom:16px;line-height:1.6">Tindakan di bawah ini permanen dan tidak bisa dibatalkan. Pastikan Anda sudah mengunduh cadangan data.</p>
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <button class="btn ghost full" style="color:var(--er);border-color:rgba(255,59,48,0.3);background:var(--bg)" data-a="clear_data">Kosongkan Data Kas</button>
+    <button class="btn red full" data-a="rst">Hapus Kelas Permanen</button>
+  </div>
+</div>`;
+
+const vSetW = () => `
+<div style="margin-bottom:12px"><h2 style="font-size:28px;font-weight:700;letter-spacing:-1px;padding-left:4px">Setelan</h2></div>
+<div style="margin-bottom:24px">
+  <div style="display:flex;align-items:center;gap:16px;padding:0 4px">
+    ${mk(64)}
+    <div>
+      <b style="display:block;font-size:20px;font-weight:600">${h(C.name)}</b>
+      <small class="mu">${h(C.school)}</small>
+    </div>
+  </div>
+</div>
+<div class="set-menu" style="margin-bottom:16px">
+  <div class="set-item" data-a="tab" data-k="set_pin_walkes">
+    <div class="set-icon purple">${ic('shield')}</div>
+    <div class="set-text"><b>Ganti PIN Saya</b><small>Perbarui PIN akses Wali Kelas</small></div>
+    <div class="set-arrow">${ic('chevronRight')}</div>
+  </div>
+</div>
+<div class="set-menu">
+  <div class="set-item" data-a="tab" data-k="about">
+    <div class="set-icon orange">${ic('info')}</div>
+    <div class="set-text"><b>Tentang KasKelas</b><small>Info aplikasi & pengembang</small></div>
+    <div class="set-arrow">${ic('chevronRight')}</div>
+  </div>
+</div>`;
+
+const vSetPinW = () => `
+<div class="set-header"><button data-a="tab" data-k="set">${ic('chevronLeft')} Setelan</button></div>
+<div class="card">
+  <form data-f="pin_walkes">
+    <label class="f"><span>PIN Saat Ini</span><input name="o" type="password" inputmode="numeric" maxlength="8" required placeholder="••••"></label>
+    <label class="f"><span>PIN Baru</span><input name="pn" type="password" inputmode="numeric" maxlength="8" required placeholder="4-8 angka"></label>
+    <button class="btn full pri">Perbarui PIN</button>
+  </form>
+</div>`;
+
+// Daftar View
+const V = { 
+  home: vHome, iuran: vIuran, tx: vTx, sis: vSis, lap: vLap, 
+  set: () => S.role === 'w' ? vSetW() : vSet(),
+  set_info: vSetInfo,
+  set_pin: vSetPin,
+  set_backup: vSetBackup,
+  set_danger: vSetDanger,
+  set_pin_walkes: vSetPinW
+};
 
 V.tg = () => {
   const l = C.students.map(s => ({ s, z: ss(s.id) })).filter(x => x.z.debt > 0).sort((a, b) => b.z.debt - a.z.debt);
@@ -721,7 +889,9 @@ V.tg = () => {
   return `<div class="card"><div class="rowh"><div><h3>Belum melunasi</h3><small>${l.length} dari ${C.students.length} siswa · total ${rp(st().debt)}</small></div>${waBlastBtn}</div>${l.map(x => `<div class="row"><div class="m"><b>${h(x.s.n)}</b><small>${x.z.unpaidWeeks} minggu belum lunas · ${rp(x.z.debt)}</small></div>${(S.role == 'b' || S.role == 'w') && x.s.hp ? `<button class="btn sm" style="background:var(--okb);color:var(--ok)" data-a="was" data-id="${x.s.id}">${icw('whatsapp')} Tagih</button>` : '<span class="chip g">Tanpa WA</span>'}</div>`).join('') || '<p class="pos">Semua siswa sudah lunas</p>'}</div>`;
 };
 
-V.about = () => `<div class="card">
+V.about = () => `
+<div class="set-header"><button data-a="tab" data-k="${S.role === 's' ? 'home' : 'set'}">${ic('chevronLeft')} Kembali</button></div>
+<div class="card">
   <div style="text-align:center;margin-bottom:24px">
     ${mk(72)}
     <h2 style="margin:16px 0 4px;font-size:24px;font-weight:600;letter-spacing:-0.5px">KasKelas</h2>
@@ -793,8 +963,15 @@ const A = {
   forgot() { S.v = 'forgot'; render(); },
   forgot_admin() { S.v = 'forgot_admin'; render(); },
   reg() { S.v = 'reg'; render(); },
-  tab(d) { S.tab = d.k; S.fq = ''; S.ft = ''; render(); },
-  about() { S.tab = 'about'; render(); },
+  tab(d) { 
+    if (d.k !== 'set' && d.k !== 'home' && d.k !== 'about') {
+      history.replaceState({ trap: true, tab: d.k }, '', location.href);
+    }
+    S.tab = d.k; 
+    S.fq = ''; 
+    S.ft = ''; 
+    render(); 
+  },
   logout() { ask('Apakah Anda yakin ingin keluar dari akun ini?', () => { C = null; S = { v: 'land' }; closeM(); render(); }); },
   listcls() {
     modal(`<h3>Daftar Kelas Terdaftar</h3><p class="mu">Pilih kelas di bawah ini untuk mengisi kode kelas secara otomatis, atau klik ikon untuk mengedit/menghapus.</p><div id="cls-list" style="max-height:50vh;overflow:auto;"><p class="mu" style="text-align:center;padding:20px 0">Memuat data...</p></div><button class="btn ghost full" style="margin-top:16px" data-a="no">Tutup</button>`);
@@ -842,13 +1019,14 @@ const A = {
     modal(`<h3>Bayar Iuran</h3><p class="mu">Masukkan nominal yang dibayarkan. Tagihan standar minggu ini: ${rp(nom)}</p><form data-f="pay_custom"><input type="hidden" name="s" value="${sid}"><input type="hidden" name="w" value="${w}"><label class="f"><span>Nominal (Rp)</span><input name="a" type="number" min="1" value="${nom}" required autofocus></label><button class="btn full pri" style="margin-top:8px">Simpan Pembayaran</button></form>`);
   },
   all() { ask('Tandai semua siswa lunas untuk minggu ini?', () => { const w = curWk(), nom = nominalForWeek(w); C.students.forEach(s => { const p = C.pay[s.id] = C.pay[s.id] || {}; if ((+p[w]||0) < nom) p[w] = nom; }); save(); render(false); toast('Semua siswa ditandai lunas'); }); },
-  atx() { modal(`<h3>Catat transaksi</h3><form data-f="tx"><div class="seg" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0"><label><input type="radio" name="t" value="out" checked class="sr-only"><span style="display:block;text-align:center;padding:12px;border:1px solid var(--bd);border-radius:12px;cursor:pointer;background:var(--bg);font-weight:500">Pengeluaran</span></label><label><input type="radio" name="t" value="in" class="sr-only"><span style="display:block;text-align:center;padding:12px;border:1px solid var(--bd);border-radius:12px;cursor:pointer;background:var(--bg);font-weight:500">Pemasukan</span></label></div><label class="f"><span>Jumlah (Rp)</span><input name="a" type="number" min="1" required></label><label class="f"><span>Kategori</span><select name="c">${CATS.map(c => `<option>${c}</option>`).join('')}</select></label><label class="f"><span>Keterangan</span><input name="note" required maxlength="60" placeholder="mis. Beli spidol"></label><label class="f"><span>Tanggal</span><input name="d" type="date" value="${today()}" required></label><button class="btn full pri" style="margin-top:8px">Simpan</button></form>`); },
+  atx() { modal(`<h3>Catat transaksi</h3><form data-f="tx"><div class="seg"><label><input type="radio" name="t" value="out" checked><span>Pengeluaran</span></label><label><input type="radio" name="t" value="in"><span>Pemasukan</span></label></div><label class="f"><span>Jumlah (Rp)</span><input name="a" type="number" min="1" required></label><label class="f"><span>Kategori</span><select name="c">${CATS.map(c => `<option>${c}</option>`).join('')}</select></label><label class="f"><span>Keterangan</span><input name="note" required maxlength="60" placeholder="mis. Beli spidol"></label><label class="f"><span>Tanggal</span><input name="d" type="date" value="${today()}" required></label><button class="btn full pri" style="margin-top:8px">Simpan</button></form>`); },
   btx() { modal(`<h3>Catat Banyak Transaksi</h3><p class="mu">Format: Tanggal | jenis(in/out) | Nominal | Keterangan. Satu baris satu transaksi.</p><form data-f="btx"><label class="f"><textarea name="n" rows="6" required placeholder="2023-10-25 | out | 15000 | Beli sapu&#10;in | 50000 | Donasi orang tua"></textarea></label><button class="btn full pri" style="margin-top:8px">Simpan Semua</button></form>`); },
-  etx(d) { const t = C.tx.find(x => x.id == d.id) || { t: 'out', d: today(), note: '', a: '', c: '' }; modal(`<h3>Ubah transaksi</h3><form data-f="tx"><input type="hidden" name="id" value="${h(d.id)}"><div class="seg" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0"><label><input type="radio" name="t" value="out" ${t.t == 'out' ? 'checked' : ''} class="sr-only"><span style="display:block;text-align:center;padding:12px;border:1px solid var(--bd);border-radius:12px;cursor:pointer;background:var(--bg);font-weight:500">Pengeluaran</span></label><label><input type="radio" name="t" value="in" ${t.t == 'in' ? 'checked' : ''} class="sr-only"><span style="display:block;text-align:center;padding:12px;border:1px solid var(--bd);border-radius:12px;cursor:pointer;background:var(--bg);font-weight:500">Pemasukan</span></label></div><label class="f"><span>Jumlah (Rp)</span><input name="a" type="number" min="1" required value="${t.a}"></label><label class="f"><span>Kategori</span><select name="c">${CATS.map(c => `<option ${c == t.c ? 'selected' : ''}>${c}</option>`).join('')}</select></label><label class="f"><span>Keterangan</span><input name="note" required maxlength="60" value="${h(t.note)}"></label><label class="f"><span>Tanggal</span><input name="d" type="date" value="${t.d}" required></label><button class="btn full pri" style="margin-top:8px">Simpan Perubahan</button></form>`); },
+  etx(d) { const t = C.tx.find(x => x.id == d.id) || { t: 'out', d: today(), note: '', a: '', c: '' }; modal(`<h3>Ubah transaksi</h3><form data-f="tx"><input type="hidden" name="id" value="${h(d.id)}"><div class="seg"><label><input type="radio" name="t" value="out" ${t.t == 'out' ? 'checked' : ''}><span>Pengeluaran</span></label><label><input type="radio" name="t" value="in" ${t.t == 'in' ? 'checked' : ''}><span>Pemasukan</span></label></div><label class="f"><span>Jumlah (Rp)</span><input name="a" type="number" min="1" required value="${t.a}"></label><label class="f"><span>Kategori</span><select name="c">${CATS.map(c => `<option ${c == t.c ? 'selected' : ''}>${c}</option>`).join('')}</select></label><label class="f"><span>Keterangan</span><input name="note" required maxlength="60" value="${h(t.note)}"></label><label class="f"><span>Tanggal</span><input name="d" type="date" value="${t.d}" required></label><button class="btn full pri" style="margin-top:8px">Simpan Perubahan</button></form>`); },
   dtx(d) { ask('Hapus transaksi ini?', () => { C.tx = C.tx.filter(t => t.id != d.id); save(); render(false); }); },
   dsis(d) { ask('Hapus siswa ini beserta catatan iurannya?', () => { C.students = C.students.filter(s => s.id != d.id); delete C.pay[d.id]; save(); render(false); }); },
   esis(d) { const s = C.students.find(x => x.id == d.id); if (!s) return; modal(`<h3>Edit Siswa</h3><form data-f="esis"><input type="hidden" name="id" value="${s.id}"><label class="f"><span>Nama</span><input name="n" required value="${h(s.n)}" maxlength="40"></label><label class="f"><span>Nomor WA</span><input name="hp" value="${h(s.hp || '')}" maxlength="16"></label><button class="btn full pri" style="margin-top:8px">Simpan</button></form>`); },
-  do_print(d) { document.documentElement.dataset.paper = d.k; closeM(); setTimeout(() => { window.print(); }, 100); },
+  print_menu() { modal(`<h3>Pilih Kertas Cetak</h3><p class="mu" style="margin-bottom:12px">Pilih ukuran kertas. Jika ingin menyimpan sebagai file PDF, pada menu cetak HP Anda, ubah tujuan printer menjadi <b>"Simpan sebagai PDF"</b>.</p><div style="display:flex;flex-direction:column;gap:10px;margin-top:20px"><button class="btn ghost full" data-a="do_print" data-k="a4" style="justify-content:flex-start"><div style="text-align:left"><b>Kertas A4 (Standar)</b><br><small class="mu">Ukuran 210 x 297 mm</small></div></button><button class="btn ghost full" data-a="do_print" data-k="f4" style="justify-content:flex-start"><div style="text-align:left"><b>Kertas F4 / Folio</b><br><small class="mu">Ukuran 215 x 330 mm (Lebih panjang)</small></div></button></div>`); },
+  do_print(d) { document.documentElement.dataset.paper = d.k; closeM(); setTimeout(() => { window.print(); }, 300); },
   async dl_pdf() {
     const el = $('#rep-area');
     if (!el) return toast('Laporan belum siap', 'er');
@@ -877,7 +1055,13 @@ const A = {
   },
   clear_data() { ask('Hapus seluruh data (termasuk siswa, iuran, dan transaksi)? Aplikasi akan kembali seperti baru.', () => { C.students = []; C.pay = {}; C.tx = []; save(); render(false); toast('Seluruh data berhasil dihapus'); }); },
   rst() { modal(`<h3>Hapus kelas</h3><p class="mu">Seluruh data kelas ini dihapus dari perangkat dan tidak bisa dikembalikan kecuali ada file cadangan. Masukkan PIN bendahara.</p><form data-f="rst"><label class="f"><input name="p" type="password" inputmode="numeric" maxlength="8" required placeholder="PIN bendahara"></label><button class="btn red full" style="margin-top:8px">Hapus permanen</button></form>`); },
-  rst_file() { $('#fileRestore').click(); },
+  rst_file() { 
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.onchange = (e) => { restore(e.target); };
+    input.click();
+  },
   yes() { const f = A._y; A._y = null; A._n = null; closeM(); if (typeof f === 'function') setTimeout(f, 50); },
   no() { const c = A._n; A._y = null; A._n = null; closeM(); if (typeof c === 'function') setTimeout(c, 50); },
   cp_rec() { navigator.clipboard.writeText(C.rec_code).then(() => toast('Kode disalin!')).catch(() => toast('Gagal menyalin', 'er')); },
@@ -1121,11 +1305,32 @@ const F = {
     save(); render(false); toast(n.length + ' siswa ditambahkan');
   },
   esis(d) { const s = C.students.find(x => x.id == d.id); if (s) { s.n = d.n.trim(); s.hp = d.hp.replace(/[^\d+]/g, '').slice(0, 16); save(); closeM(); render(false); toast('Data siswa diperbarui'); } },
-  info(d) {
-    C.school = d.school.trim(); C.name = d.name.trim();
-    const newNom = Math.max(0, +d.nom || 0);
-    if (newNom !== +C.nominal) { const w = curWk() + 1; C.nomSnap = C.nomSnap || { 0: +C.nominal || 0 }; C.nomSnap[w] = newNom; C.nominal = newNom; }
-    save(); render(false); toast('Info kelas disimpan');
+  async info(d) {
+    try {
+      toast('Menyimpan...');
+      const res = await rpc('kk_info', { 
+        p_token: S.tok, 
+        p_name: d.name.trim(), 
+        p_school: d.school.trim() 
+      });
+      if (res.error) throw new Error(res.error);
+
+      C.school = d.school.trim();
+      C.name = d.name.trim();
+      const newNom = Math.max(0, +d.nom || 0);
+      if (newNom !== +C.nominal) {
+        const w = curWk() + 1;
+        C.nomSnap = C.nomSnap || { 0: +C.nominal || 0 };
+        C.nomSnap[w] = newNom;
+        C.nominal = newNom;
+      }
+      
+      save(); 
+      render(false); 
+      toast('Info kelas berhasil disimpan & disinkronkan');
+    } catch (e) {
+      toast(e.message, 'er');
+    }
   },
   async pin(d) {
     const ok = x => !x || /^\d{4,8}$/.test(x);
@@ -1196,9 +1401,34 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('#mod').
 history.pushState({ trap: true }, '', location.href);
 window.addEventListener('popstate', function (e) {
   history.pushState({ trap: true }, '', location.href);
-  if ($('#mod').classList.contains('on')) { closeM(); return; }
-  if (C) { ask('Apakah Anda yakin ingin keluar dari akun ini?', () => { C = null; S = { v: 'land' }; closeM(); render(); }, () => {}); return; }
-  if (S.v !== 'land') { S.v = 'land'; render(); return; }
+
+  if ($('#mod').classList.contains('on')) { 
+    closeM(); 
+    return; 
+  }
+
+  if (S.tab && S.tab.startsWith('set_')) {
+    S.tab = 'set';
+    render();
+    return;
+  }
+
+  if (C) {
+    ask('Apakah Anda yakin ingin keluar dari akun ini?', () => {
+      C = null; 
+      S = { v: 'land' }; 
+      closeM(); 
+      render();
+    }, () => {});
+    return;
+  }
+
+  if (S.v !== 'land') { 
+    S.v = 'land'; 
+    render(); 
+    return; 
+  }
+
   history.back();
 });
 
