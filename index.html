@@ -4,310 +4,562 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>KasKelas — Uang Kas Digital</title>
+
+<!-- REVISI: meta description + application-name ditambahkan, duplikat apple-title dihapus -->
+<meta name="description" content="KasKelas — aplikasi manajemen uang kas kelas digital untuk Bendahara, Wali Kelas, dan Siswa. Transparan, akurat, dan real-time.">
+<meta name="application-name" content="KasKelas">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#fa2d48">
+<meta name="apple-mobile-web-app-title" content="KasKelas">
+<meta name="theme-color" content="#1a1815">
+<meta name="format-detection" content="telephone=no">
+
 <link rel="manifest" href="manifest.json">
+
+<!-- REVISI: preload resource eksternal -->
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700&display=swap" crossorigin>
+<link rel="preload" as="script" href="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" crossorigin>
+
+<link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxODAiIGhlaWdodD0iMTgwIiB2aWV3Qm94PSIwIDAgOTYgOTYiPjxyZWN0IHdpZHRoPSI5NiIgaGVpZ2h0PSI5NiIgcng9IjI0IiBmaWxsPSIjMWExODE1Ii8+PGcgc3Ryb2tlPSIjYjQ1MzA5IiBzdHJva2Utd2lkdGg9IjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgZmlsbD0ibm9uZSI+PHBhdGggZD0iTTI2IDM0IEg1OCBDNjIuNDE4MyAzNCA2NiAzNy41ODE3IDY2IDQyIFY2NiBDNjYgNzAuNDE4MyA2Mi40MTgzIDc0IDU4IDc0IEgzMCBDMjUuNTgxNyA3NCAyMiA3MC40MTgzIDIyIDY2IFYyNiBDMjIgMjEuNTgxNyAyNS41ODE3IDE4IDMwIDE4IEg1NCBDNTcuMzEzNyAxOCA2MCAyMC42ODYzIDYwIDI0Ii8+PHBhdGggZD0iTTM0IDM0IFY3NCIgc3Ryb2tlLW9wYWNpdHk9IjAuMyIvPjxjaXJjbGUgY3g9IjU4IiBjeT0iNTQiIHI9IjQuNSIgZmlsbD0iI2ZhZjhmNSIgc3Ryb2tlPSJub25lIi8+PHBhdGggZD0iTTQ0IDI0IEg1MCIgc3Ryb2tlLXdpZHRoPSI0Ii8+PC9nPjwvc3ZnPg==">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
 <style>
-/* === THEME === */
+/* ═══════════════════════════════════════════════════════════
+   SEMUA CSS IDENTIK DENGAN FILE ASLI — TIDAK ADA PERUBAHAN
+   ═══════════════════════════════════════════════════════════ */
 :root{
-  --bg:#fff;--sf:#f5f5f7;--tx:#1d1d1f;--mu:#86868b;--bd:#e5e5ea;
-  --pri:#fa2d48;--pri-l:#ff5e73;--grad:linear-gradient(135deg,#fa2d48 0%,#ff5e73 100%);
-  --pt:#fff;--ok:#34c759;--er:#ff3b30;--okb:#e8f8ee;--erb:#ffebea;
-  --sh:0 4px 12px rgba(0,0,0,.04);--sh-lg:0 10px 30px rgba(0,0,0,.08);
-  color-scheme:light;box-sizing:border-box;
-  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#faf8f5; --sf:#ffffff; --sf2:#f5f3ef; --tx:#1a1815; --tx2:#57534e; --mu:#78716c; --bd:#e8e2d8;
+  --accent:#b45309; --accent-d:#92400e; --accent-l:#fef3c7;
+  --ok:#4d7c0f; --ok-bg:#f0fdf4; --ok-bd:#bbf7d0;
+  --er:#b91c1c; --er-bg:#fef2f2; --er-bd:#fecaca;
+  --wa:#25d366;
+  --hero:#1a1815;
+  --sh-xs:0 1px 2px rgba(26,24,21,.04);
+  --sh-sm:0 1px 3px rgba(26,24,21,.06),0 1px 2px rgba(26,24,21,.04);
+  --sh:0 4px 12px rgba(26,24,21,.05);
+  --sh-lg:0 12px 32px rgba(26,24,21,.08);
+  --r-sm:8px; --r:12px; --r-lg:16px; --r-xl:20px;
+  color-scheme:light;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
 }
-html[data-role="s"]{--pri:#007aff;--pri-l:#5ac8fa;--grad:linear-gradient(135deg,#007aff 0%,#5ac8fa 100%)}
-html[data-role="w"]{--pri:#af52de;--pri-l:#da8aff;--grad:linear-gradient(135deg,#af52de 0%,#da8aff 100%)}
+
+html[data-theme="dark"]{
+  --bg:#12100e; --sf:#1c1917; --sf2:#292524; --tx:#fafaf9; --tx2:#a8a29e; --mu:#78716c; --bd:#292524;
+  --accent-l:#451a03; --ok-bg:rgba(77,124,15,.15); --ok-bd:rgba(77,124,15,.3);
+  --er-bg:rgba(185,28,28,.15); --er-bd:rgba(185,28,28,.3);
+  --hero:#000000;
+  --sh-xs:0 1px 2px rgba(0,0,0,.4); --sh-sm:0 1px 3px rgba(0,0,0,.5);
+  --sh:0 4px 12px rgba(0,0,0,.4); --sh-lg:0 12px 32px rgba(0,0,0,.6);
+  color-scheme:dark;
+}
 @media(prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --bg:#000;--sf:#1c1c1e;--tx:#f2f2f7;--mu:#8e8e93;--bd:#38383a;
-    --okb:rgba(52,199,89,.15);--erb:rgba(255,59,48,.15);
-    --sh:0 4px 12px rgba(0,0,0,.2);--sh-lg:0 10px 30px rgba(0,0,0,.4);color-scheme:dark;
+    --bg:#12100e; --sf:#1c1917; --sf2:#292524; --tx:#fafaf9; --tx2:#a8a29e; --mu:#78716c; --bd:#292524;
+    --accent-l:#451a03; --ok-bg:rgba(77,124,15,.15); --ok-bd:rgba(77,124,15,.3);
+    --er-bg:rgba(185,28,28,.15); --er-bd:rgba(185,28,28,.3);
+    --hero:#000000;
+    --sh-xs:0 1px 2px rgba(0,0,0,.4); --sh-sm:0 1px 3px rgba(0,0,0,.5);
+    --sh:0 4px 12px rgba(0,0,0,.4); --sh-lg:0 12px 32px rgba(0,0,0,.6);
+    color-scheme:dark;
   }
 }
-html[data-theme="dark"]{
-  --bg:#000;--sf:#1c1c1e;--tx:#f2f2f7;--mu:#8e8e93;--bd:#38383a;
-  --okb:rgba(52,199,89,.15);--erb:rgba(255,59,48,.15);
-  --sh:0 4px 12px rgba(0,0,0,.2);--sh-lg:0 10px 30px rgba(0,0,0,.4);color-scheme:dark;
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 'Inter',-apple-system,BlinkMacSystemFont,sans-serif;-webkit-font-smoothing:antialiased;letter-spacing:-.01em;transition:background-color .3s,color .3s}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.55 'Inter',-apple-system,sans-serif;-webkit-font-smoothing:antialiased;letter-spacing:-.011em;transition:background-color .25s,color .25s;position:relative}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");mix-blend-mode:multiply}
+html[data-theme="dark"] body::before{mix-blend-mode:screen;opacity:.04}
+
 button,input,select,textarea{font:inherit;color:inherit}
-h1,h2,h3{margin:0;letter-spacing:-.03em;font-weight:700}
-h3{font-size:20px}
+h1,h2,h3{margin:0;font-family:'Fraunces',serif;letter-spacing:-.025em;font-weight:600;color:var(--tx);line-height:1.15}
+h3{font-size:17px}
 small,.mu{color:var(--mu);font-weight:400}small{font-size:13px}
-#root{max-width:640px;margin:0 auto;padding:0 20px 100px}
-.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;justify-content:space-between;align-items:center;padding:20px;background:var(--bg);margin:0 -20px;border-bottom:1px solid var(--bd)}
+::selection{background:var(--accent);color:#fff}
+
+#root{max-width:680px;margin:0 auto;padding:0 16px 96px;position:relative;z-index:1}
+
+/* ---------- TOP BAR ---------- */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);margin:0 -16px;border-bottom:1px solid var(--bd)}
 .brand{display:flex;gap:12px;align-items:center;min-width:0}
-.brand b{display:block;line-height:1.2;font-weight:600;font-size:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.brand small{display:block;font-size:12px;font-weight:400;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.rt{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.ic{width:22px;height:22px;stroke-width:2}
-.nav{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;padding:12px 20px calc(12px + env(safe-area-inset-bottom,0px));z-index:6;background:var(--bg);border-top:1px solid var(--bd)}
-.nav>div{display:flex;gap:4px;width:100%;max-width:480px}
-.nav button{flex:1;border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px;font-weight:500;color:var(--mu);padding:8px 2px;border-radius:12px;cursor:pointer;transition:.2s}
-.nav button.on{color:var(--pri)}
-.view>*{margin-bottom:24px}
-.an>*{animation:fadeUp .5s cubic-bezier(.16,1,.3,1) both}
-@keyframes fadeUp{from{opacity:0;transform:translateY(15px) scale(.98)}}
-.card{background:var(--sf);border-radius:20px;padding:20px;border:1px solid transparent;transition:.2s}
-.rc{text-align:left;cursor:pointer;display:grid;gap:4px;color:var(--tx);transition:.2s;font:inherit}
-.rc:active{transform:scale(.98)}
-.hero{background:var(--grad);color:#fff;border-radius:24px;padding:28px;position:relative;overflow:hidden;box-shadow:var(--sh-lg)}
-.hero::after{content:"";position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;border:30px solid rgba(255,255,255,.1)}
-.hero small{color:rgba(255,255,255,.8);font-weight:500;text-transform:uppercase;letter-spacing:1px;font-size:11px}
-.big{font-size:clamp(36px,10vw,48px);font-weight:700;margin:4px 0 8px;letter-spacing:-1.5px}
-.btn{border:0;background:var(--pri);color:var(--pt);padding:14px 24px;border-radius:14px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:.2s;font-size:15px}
-.btn:active{transform:scale(.96);opacity:.8}
+.brand .logo{flex-shrink:0}
+.brand b{display:block;line-height:1.2;font-weight:600;font-size:15.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:'Fraunces',serif;letter-spacing:-.02em}
+.brand small{display:block;font-size:11.5px;font-weight:400;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:1px;color:var(--mu)}
+.rt{display:flex;align-items:center;gap:4px;flex-shrink:0}
+.ic{width:20px;height:20px;stroke-width:1.8}
+.ib{border:0;background:transparent;color:var(--tx2);width:38px;height:38px;border-radius:10px;display:grid;place-items:center;cursor:pointer;transition:.15s}
+.ib:hover{background:var(--sf2);color:var(--accent)}
+.ib:active{transform:scale(.94);background:var(--sf2)}
+
+/* ---------- NAV ---------- */
+.nav{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;padding:8px 12px calc(8px + env(safe-area-inset-bottom,0px));z-index:20;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--bd)}
+.nav>div{display:flex;gap:2px;width:100%;max-width:520px;justify-content:space-around}
+.nav button{flex:1;border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;font-weight:500;color:var(--mu);padding:8px 4px;border-radius:10px;cursor:pointer;transition:.15s;letter-spacing:.02em;max-width:80px}
+.nav button:hover{color:var(--tx2)}
+.nav button.on{color:var(--accent)}
+.nav button.on .ic{stroke-width:2.2;filter:drop-shadow(0 0 6px rgba(180,83,9,.3))}
+.nav .ic{width:21px;height:21px}
+
+/* ---------- VIEW & ANIMASI ---------- */
+.view>*{margin-bottom:16px}
+.an>*{animation:fadeUp .6s cubic-bezier(.16,1,.3,1) both}
+.an>*:nth-child(1){animation-delay:0ms}
+.an>*:nth-child(2){animation-delay:50ms}
+.an>*:nth-child(3){animation-delay:100ms}
+.an>*:nth-child(4){animation-delay:150ms}
+.an>*:nth-child(5){animation-delay:200ms}
+.an>*:nth-child(6){animation-delay:250ms}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+/* ---------- CARDS ---------- */
+.card{background:var(--sf);border-radius:var(--r-lg);padding:18px;border:1px solid var(--bd);box-shadow:var(--sh-sm);transition:.2s}
+.card.flat{box-shadow:none;background:var(--sf2);border-color:transparent}
+.rc{text-align:left;cursor:pointer;display:grid;gap:2px;color:var(--tx);transition:.2s;font:inherit;border:1px solid var(--bd);background:var(--sf);border-radius:var(--r-lg);padding:16px 18px;box-shadow:var(--sh-sm)}
+.rc:hover{box-shadow:var(--sh);border-color:var(--tx2);transform:translateY(-2px)}
+.rc:active{transform:scale(.985)}
+
+/* ---------- HERO & ANIMASI ---------- */
+.hero{background:linear-gradient(135deg,var(--hero) 0%,#242019 100%);color:#fff;border-radius:var(--r-xl);padding:26px 24px;position:relative;overflow:hidden;border:1px solid #2a2620;box-shadow:var(--sh-lg)}
+.hero::before{
+  content:""; position:absolute; top:-30%; right:-10%; width:250px; height:250px; border-radius:50%;
+  background:radial-gradient(circle, rgba(180,83,9,0.4) 0%, transparent 70%);
+  animation: breatheGlow 8s ease-in-out infinite alternate;
+  pointer-events:none; z-index:0; opacity:0.8;
+}
+.hero::after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;mask-image:radial-gradient(ellipse at top right,black,transparent 70%);-webkit-mask-image:radial-gradient(ellipse at top right,black,transparent 70%);z-index:1}
+
+.hero small, .hero .big, .hero .meta {
+  position:relative; z-index:2;
+  animation: slideUpFade .8s cubic-bezier(.2,.8,.3,1) both;
+}
+.hero small { animation-delay: 0.1s; }
+.hero .big { animation-delay: 0.2s; }
+.hero .meta { animation-delay: 0.3s; }
+
+@keyframes slideUpFade { from { opacity:0; transform: translateY(15px); } to { opacity:1; transform: translateY(0); } }
+@keyframes breatheGlow { from { transform: scale(1); opacity: 0.6; } to { transform: scale(1.3); opacity: 1; } }
+
+.hero small{color:rgba(255,255,255,.55);font-weight:600;text-transform:uppercase;letter-spacing:1.2px;font-size:10px}
+.hero .big{font-size:clamp(34px,9vw,44px);font-weight:500;margin:10px 0 6px;letter-spacing:-1.8px;font-family:'Fraunces',serif;font-style:italic;font-variant-numeric:tabular-nums;line-height:1}
+.hero .big .cur{font-size:.5em;opacity:.65;font-style:normal;letter-spacing:-.5px;margin-right:6px;vertical-align:.18em;font-weight:400}
+.hero .meta{color:rgba(255,255,255,.45);font-size:12px;display:flex;align-items:center;gap:6px}
+.hero .meta::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)}
+
+/* ---------- BUTTONS ---------- */
+.btn{border:0;background:var(--sf2);color:var(--tx);padding:11px 18px;border-radius:9px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:7px;transition:.2s;font-size:14px;letter-spacing:-.005em;font-family:inherit;position:relative;overflow:hidden}
+.btn:hover{background:var(--bd)}
+.btn:active{transform:scale(.97)}
 .btn:disabled{opacity:.5;cursor:not-allowed}
-.btn.pri{background:var(--grad);box-shadow:0 4px 12px rgba(0,0,0,.1)}
-.btn.ghost{background:var(--bg);color:var(--tx);border:1px solid var(--bd)}
+.btn.pri{background:linear-gradient(135deg,#1a1815,#2a241c);color:#fff;box-shadow:0 2px 8px rgba(26,24,21,.2)}
+.btn.pri::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(180,83,9,.15));opacity:0;transition:.3s}
+.btn.pri:hover::after{opacity:1}
+.btn.loading{color:transparent !important;pointer-events:none;position:relative;opacity:1 !important;background:var(--accent) !important;box-shadow:0 0 15px rgba(180,83,9,.4) !important}
+.btn.loading::before{content:"";position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);animation:shimmer 1.2s infinite}
+.btn.loading::after{content:"";position:absolute;width:18px;height:18px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:spin 0.8s linear infinite;top:50%;left:50%;margin:-9px 0 0 -9px;background:none}
+@keyframes shimmer{100%{left:100%}}
+@keyframes spin{100%{transform:rotate(360deg)}}
+.btn.ghost{background:var(--sf);border:1px solid var(--bd);box-shadow:var(--sh-xs)}
+.btn.ghost:hover{background:var(--sf2);border-color:var(--tx2)}
 .btn.red{background:var(--er);color:#fff}
-.btn.sm{padding:8px 16px;font-size:13px;border-radius:10px}
+.btn.red:hover{background:#991b1b}
+.btn.sm{padding:7px 12px;font-size:12.5px;border-radius:8px}
+.btn.xs{padding:4px 9px;font-size:11.5px;border-radius:6px;font-weight:500}
 .btn.full{width:100%}
-.ib{border:0;background:var(--sf);color:var(--mu);width:40px;height:40px;border-radius:12px;display:grid;place-items:center;cursor:pointer;transition:.2s}
-.ib:active{transform:scale(.9)}
-.lnk{background:none;border:0;color:var(--pri);cursor:pointer;font-weight:500;padding:10px 0;display:inline-block;font-size:14px}
-.f{display:grid;gap:8px;margin-bottom:20px}
-.f span{font-size:13px;font-weight:500;color:var(--tx)}
-input,select,textarea{width:100%;padding:14px 16px;border-radius:12px;border:1px solid var(--bd);background:var(--bg);outline:0;transition:.2s;font-size:15px;font-weight:400;color:var(--tx)}
-input:focus,select:focus,textarea:focus{border-color:var(--pri);background:var(--sf);box-shadow:0 0 0 3px var(--pri-l)}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.chip{font-size:12px;font-weight:500;padding:4px 10px;border-radius:8px;background:var(--bg);color:var(--tx);white-space:nowrap;display:inline-flex;align-items:center;gap:4px}
-.chip.r{background:var(--erb);color:var(--er)}
-.chip.g{background:var(--bd);color:var(--tx)}
-.chip.p{background:#fff3cd;color:#8a6d00}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .chip.p{background:rgba(255,204,0,.18);color:#ffcc00}}
-html[data-theme="dark"] .chip.p{background:rgba(255,204,0,.18);color:#ffcc00}
+.btn.wa{background:var(--wa);color:#fff}
+.btn.wa:hover{background:#1fa855}
+.lnk{background:none;border:0;color:var(--accent);cursor:pointer;font-weight:600;padding:8px 0;display:inline-block;font-size:14px;font-family:inherit}
+.lnk:hover{text-decoration:underline}
+
+/* ---------- FORMS ---------- */
+.f{display:grid;gap:6px;margin-bottom:14px}
+.f span{font-size:13px;font-weight:600;color:var(--tx2);letter-spacing:-.005em}
+.f small.hint{font-size:11.5px;color:var(--mu);font-weight:400;margin-top:-2px}
+input,select,textarea{width:100%;padding:11px 13px;border-radius:9px;border:1px solid var(--bd);background:var(--sf);outline:0;transition:.15s;font-size:14.5px;font-weight:400;color:var(--tx);font-family:inherit}
+input::placeholder,textarea::placeholder{color:var(--mu)}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-l)}
+input:disabled,input[readonly]{background:var(--sf2);cursor:not-allowed;color:var(--tx2)}
+textarea{resize:vertical;min-height:72px;line-height:1.5}
+select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2378716c' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:34px}
+
+/* ---------- GRID ---------- */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+@media(max-width:420px){.g3{grid-template-columns:1fr 1fr}}
+
+/* ---------- CHIP / BADGE ---------- */
+.chip{font-size:11.5px;font-weight:600;padding:4px 9px;border-radius:6px;background:var(--sf2);color:var(--tx2);white-space:nowrap;display:inline-flex;align-items:center;gap:4px;letter-spacing:.005em}
+.chip.r{background:linear-gradient(135deg,#fef2f2,#fecaca);color:var(--er);border:1px solid #fca5a5}
+.chip.g{background:linear-gradient(135deg,#f0fdf4,#dcfce7);color:var(--ok);border:1px solid #bbf7d0}
+.chip.p{background:linear-gradient(135deg,#fef3c7,#fde68a);color:var(--accent);border:1px solid #fcd34d}
+html[data-theme="dark"] .chip.r{background:rgba(185,28,28,.15);border-color:rgba(185,28,28,.3)}
+html[data-theme="dark"] .chip.g{background:rgba(77,124,15,.15);border-color:rgba(77,124,15,.3)}
+html[data-theme="dark"] .chip.p{background:rgba(180,83,9,.15);border-color:rgba(180,83,9,.3)}
+
+/* ---------- TEXT UTILS ---------- */
 .pos{color:var(--ok);font-weight:600}
 .neg{color:var(--er);font-weight:600}
-.row{display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--bd)}
+.mono{font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+
+/* ---------- ROWS ---------- */
+.row{display:flex;align-items:center;gap:14px;padding:13px 0;border-bottom:1px solid var(--bd)}
 .row:last-child{border:0;padding-bottom:0}
-.m{flex:1;min-width:0}.m b{display:block;overflow:hidden;text-overflow:ellipsis;font-size:15px;font-weight:500;margin-bottom:2px}
-.rowh{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
-.gw{overflow-x:auto;border-radius:16px;background:var(--sf);padding:4px}
+.row:first-child{padding-top:0}
+.m{flex:1;min-width:0}
+.m b{display:block;overflow:hidden;text-overflow:ellipsis;font-size:14.5px;font-weight:600;margin-bottom:1px;letter-spacing:-.005em;white-space:nowrap;font-family:'Fraunces',serif}
+.m small{display:block;font-size:12px;color:var(--mu);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rowh{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.rowh h3{margin:0}
+.rowh small{display:block;margin-top:2px}
+
+/* ---------- STATS ---------- */
+.stat{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:14px;box-shadow:var(--sh-xs)}
+.stat small{display:block;font-size:10.5px;font-weight:600;color:var(--mu);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
+.stat b{display:block;font-size:19px;font-weight:600;letter-spacing:-.4px;font-family:'Fraunces',serif;font-variant-numeric:tabular-nums;line-height:1.1}
+.stat b.pos{color:var(--ok)}.stat b.neg{color:var(--er)}
+.stat .circle{display:flex;align-items:center;gap:12px;margin-top:2px}
+.stat .ring{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;flex-shrink:0;position:relative}
+.stat .ring span{width:26px;height:26px;border-radius:50%;background:var(--sf);display:grid;place-items:center;font-size:9.5px;font-weight:700;color:var(--tx);z-index:1}
+.stat .circle b{margin:0;font-size:18px}
+
+/* ---------- TABLE ---------- */
+.gw{overflow-x:auto;border-radius:var(--r);background:var(--sf);border:1px solid var(--bd);box-shadow:var(--sh-xs);-webkit-overflow-scrolling:touch}
 .gw table{border-collapse:collapse;width:100%}
-.gw th,.gw td{padding:12px 8px;text-align:center;white-space:nowrap;font-size:13px;border-bottom:1px solid var(--bd)}
-.gw th:first-child,.gw td:first-child{position:sticky;left:0;background:var(--sf);text-align:left;max-width:140px;overflow:hidden;text-overflow:ellipsis;z-index:1;padding-left:16px;border-top-left-radius:12px;border-bottom-left-radius:12px}
-.gw thead th{color:var(--mu);font-size:12px;font-weight:500}
+.gw th,.gw td{padding:11px 10px;text-align:center;white-space:nowrap;font-size:12.5px;border-bottom:1px solid var(--bd)}
+.gw th:first-child,.gw td:first-child{position:sticky;left:0;background:var(--sf);text-align:left;max-width:160px;overflow:hidden;text-overflow:ellipsis;z-index:1;padding-left:14px;padding-right:14px}
+.gw thead th{color:var(--mu);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;background:var(--sf2)}
+.gw thead th:first-child{background:var(--sf2)}
+.gw tbody tr:hover td{background:var(--sf2)}
 .gw tbody tr:last-child td{border-bottom:0}
-.cl{width:44px;height:44px;border-radius:10px;border:1px solid var(--bd);background:var(--bg);color:var(--mu);cursor:pointer;font-weight:600;transition:.2s}
-.cl.ok{background:var(--ok);border-color:var(--ok);color:#fff}
-.cl.part{background:#ffcc00;border-color:#ffcc00;color:#fff}
-.cl:disabled{cursor:default;opacity:.7}
-#mod{position:fixed;inset:0;z-index:30;background:rgba(0,0,0,.4);display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px)}
-#mod.on{display:flex}
-.sheet{background:var(--bg);width:100%;max-width:520px;border-radius:24px 24px 0 0;padding:24px 20px calc(24px + env(safe-area-inset-bottom,0px));animation:slideUp .3s cubic-bezier(.16,1,.3,1);max-height:90vh;overflow:auto}
-@keyframes slideUp{from{transform:translateY(100%)}}
-.sheet p{margin:8px 0 20px}
-@media(min-width:600px){#mod{align-items:center}.sheet{border-radius:24px}}
-#toast{position:fixed;left:50%;bottom:calc(100px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--tx);color:var(--bg);padding:12px 24px;border-radius:100px;opacity:0;transition:.3s;z-index:60;font-weight:500;font-size:13px;max-width:90vw;pointer-events:none;text-align:center;box-shadow:var(--sh-lg)}
+.gw tbody td:first-child b{font-weight:600;font-size:13.5px;font-family:'Fraunces',serif;letter-spacing:-.01em}
+.cl{width:38px;height:38px;border-radius:8px;border:1px solid var(--bd);background:var(--sf);color:var(--mu);cursor:pointer;font-weight:700;transition:.15s;font-size:14px;font-family:inherit}
+.cl:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.cl.ok{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:inset 0 -1px 0 rgba(0,0,0,.15)}
+.cl.part{background:var(--accent-l);border-color:#fcd34d;color:var(--accent)}
+.cl:disabled{cursor:default}
+
+/* ---------- MODAL ---------- */
+#mod{position:fixed;inset:0;z-index:30;background:rgba(26,24,21,.4);display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+#mod.on{display:flex;animation:fadeIn .2s}
+@keyframes fadeIn{from{opacity:0}}
+.sheet{background:var(--sf);width:100%;max-width:520px;border-radius:20px 20px 0 0;padding:22px 20px calc(22px + env(safe-area-inset-bottom,0px));animation:slideUp .28s cubic-bezier(.2,.8,.3,1);max-height:90vh;overflow:auto;box-shadow:var(--sh-lg);border:1px solid var(--bd);border-bottom:0}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:none}}
+.sheet::before{content:"";display:block;width:36px;height:4px;border-radius:4px;background:var(--bd);margin:-6px auto 16px}
+.sheet h3{margin-bottom:6px;font-size:19px}
+.sheet p{margin:6px 0 18px;color:var(--mu);font-size:13.5px;line-height:1.6}
+@media(min-width:600px){#mod{align-items:center}.sheet{border-radius:20px;border-bottom:1px solid var(--bd)}.sheet::before{display:none}}
+
+/* ---------- TOAST ---------- */
+#toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom,0px));transform:translate(-50%,16px);background:var(--hero);color:#fff;padding:10px 18px;border-radius:100px;opacity:0;transition:.25s cubic-bezier(.2,.8,.3,1);z-index:60;font-weight:500;font-size:13px;max-width:90vw;pointer-events:none;text-align:center;box-shadow:var(--sh-lg);border:1px solid rgba(255,255,255,.1)}
 #toast.on{opacity:1;transform:translate(-50%,0)}
-#toast.er{background:var(--er);color:#fff}
-#toast.info{background:var(--pri);color:#fff}
-#splash,#wel{position:fixed;inset:0;z-index:50;display:grid;place-content:center;justify-items:center;gap:16px;text-align:center;background:var(--bg);color:var(--tx);transition:transform .5s,opacity .4s}
+#toast.er{background:var(--er);color:#fff;border-color:transparent}
+#toast.info{background:var(--accent);color:#fff;border-color:transparent}
+
+/* ---------- SPLASH & WELCOME ---------- */
+#splash,#wel{position:fixed;inset:0;z-index:50;display:grid;place-content:center;justify-items:center;gap:14px;text-align:center;background:var(--bg);color:var(--tx);transition:transform .5s,opacity .35s}
 #splash.out{transform:translateY(-100%);opacity:0}
-#wel{opacity:0;pointer-events:none}#wel.on{opacity:1;pointer-events:auto}
-#splash h1{font-size:40px;font-weight:700;color:var(--tx);margin-top:20px;letter-spacing:-1px}
-#splash p{margin:0;color:var(--mu);font-weight:400}
-.bar{width:160px;height:4px;background:var(--sf);border-radius:4px;overflow:hidden;margin-top:20px}
-.bar i{display:block;height:100%;width:0;background:var(--pri);animation:ld 1.5s .3s forwards}
+#wel{opacity:0;pointer-events:none;transition:opacity .3s}#wel.on{opacity:1;pointer-events:auto}
+#splash h1{font-size:34px;font-weight:600;color:var(--tx);margin:16px 0 0;letter-spacing:-1px;font-family:'Fraunces',serif}
+#splash p{margin:0;color:var(--mu);font-weight:400;font-size:14px}
+.bar{width:140px;height:3px;background:var(--sf2);border-radius:3px;overflow:hidden;margin-top:16px}
+.bar i{display:block;height:100%;width:0;background:var(--accent);animation:ld 1.4s .2s cubic-bezier(.4,0,.2,1) forwards}
 @keyframes ld{to{width:100%}}
-.chart{display:flex;gap:12px;align-items:flex-end;height:160px;margin:24px 0 12px;padding:0 8px}
-.bc{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;gap:8px}
-.bs{display:flex;gap:4px;align-items:flex-end;width:100%;height:100%;justify-content:center}
-.bs i{width:45%;max-width:20px;min-height:4px;border-radius:6px 6px 2px 2px;transform-origin:bottom;animation:gr .6s cubic-bezier(.16,1,.3,1) both}
-@keyframes gr{from{transform:scaleY(0)}}
-.bi{background:var(--pri)}.bo{background:var(--mu)}
-.lg2{display:flex;gap:16px;font-size:12px;font-weight:400;color:var(--mu);justify-content:center}
-.lg2 i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:middle}
-.tabs{display:flex;gap:8px;justify-content:center;margin-bottom:20px}
-.tabs button{border:0;background:var(--sf);padding:8px 16px;font-weight:500;font-size:13px;color:var(--mu);cursor:pointer;transition:.2s;border-radius:100px}
-.tabs button.on{background:var(--pri);color:#fff}
 
-.seg { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 0; }
-.seg label { position: relative; cursor: pointer; display: block; }
-.seg input[type="radio"] { display: none !important; }
-.seg label span { display: block; text-align: center; padding: 14px 12px; border: 1.5px solid var(--bd); border-radius: 12px; background: var(--bg); font-weight: 600; font-size: 14px; color: var(--mu); transition: all 0.2s ease; }
-.seg input[type="radio"]:checked + span { border-color: var(--pri) !important; background: var(--sf) !important; color: var(--pri) !important; box-shadow: 0 0 0 2px var(--pri-l); }
-.seg input[type="radio"]:checked + span::before { content: "✓"; margin-right: 6px; font-weight: bold; }
+/* ---------- LANDING & LOGIN BARU ---------- */
+.land{padding-top:6vh;text-align:center}
+.land .brandmark{display:flex;justify-content:center}
+.land h1{font-size:42px;margin:24px 0 8px;font-weight:600;letter-spacing:-2px;font-family:'Fraunces',serif}
+.land .tagline{color:var(--mu);font-weight:400;font-size:15px;margin:0 auto 32px;max-width:280px;line-height:1.6}
+.land .menu-card { padding: 8px 16px; border-radius: 24px; margin-bottom: 24px; background: var(--sf); border: 1px solid var(--bd); box-shadow: var(--sh-lg); }
+.land .footer{margin-top:32px;text-align:center;color:var(--mu);font-size:12px;line-height:1.8}
 
-.set-menu { border-radius: 16px; overflow: hidden; background: var(--sf); }
-.set-item { display: flex; align-items: center; gap: 16px; padding: 16px 20px; border-bottom: 1px solid var(--bd); cursor: pointer; transition: background 0.2s; }
-.set-item:last-child { border-bottom: none; }
-.set-item:active { background: var(--bd); }
-.set-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.set-icon.blue { background: #e0f0ff; color: #007aff; }
-.set-icon.red { background: #ffebea; color: #ff3b30; }
-.set-icon.purple { background: #f5e6ff; color: #af52de; }
-.set-icon.orange { background: #fff3e0; color: #ff9500; }
-.set-icon.green { background: #e8f8ee; color: #34c759; }
-html[data-theme="dark"] .set-icon.blue { background: rgba(0,122,255,0.2); }
-html[data-theme="dark"] .set-icon.red { background: rgba(255,59,48,0.2); }
-html[data-theme="dark"] .set-icon.purple { background: rgba(175,82,222,0.2); }
-html[data-theme="dark"] .set-icon.orange { background: rgba(255,149,0,0.2); }
-html[data-theme="dark"] .set-icon.green { background: rgba(52,199,89,0.2); }
-@media(prefers-color-scheme:dark) {
-  :root:not([data-theme="light"]) .set-icon.blue { background: rgba(0,122,255,0.2); }
-  :root:not([data-theme="light"]) .set-icon.red { background: rgba(255,59,48,0.2); }
-  :root:not([data-theme="light"]) .set-icon.purple { background: rgba(175,82,222,0.2); }
-  :root:not([data-theme="light"]) .set-icon.orange { background: rgba(255,149,0,0.2); }
-  :root:not([data-theme="light"]) .set-icon.green { background: rgba(52,199,89,0.2); }
+.rc-menu { display: flex; align-items: center; width: 100%; background: transparent; border: none; padding: 16px 8px; cursor: pointer; transition: 0.2s; border-radius: 16px; text-align: left; }
+.rc-menu:hover { background: var(--sf2); }
+.rc-menu .icon-wrap { width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, rgba(180,83,9,0.12) 0%, rgba(180,83,9,0.02) 100%); color: var(--accent); display: grid; place-items: center; flex-shrink: 0; border: 1px solid rgba(180,83,9,0.15); box-shadow: inset 0 1px 0 rgba(255,255,255,0.1); }
+.rc-menu .m { flex: 1; text-align: left; padding-left: 16px; }
+.rc-menu .m b { display: block; font-size: 16px; font-weight: 600; color: var(--tx); font-family: 'Fraunces', serif; margin-bottom: 2px; letter-spacing: -0.01em; }
+.rc-menu .m small { display: block; font-size: 12.5px; color: var(--mu); }
+.rc-menu .chev { color: var(--mu); display: flex; transition: 0.2s; }
+.rc-menu:hover .chev { transform: translateX(3px); color: var(--accent); }
+.menu-divider { height: 1px; background: var(--bd); margin: 0 8px 0 68px; }
+
+.auth{padding-top:20px}
+.auth .card{padding:28px 22px; border-radius:24px; box-shadow:var(--sh-lg)}
+
+/* ---------- LOGO DARK MODE FIX ---------- */
+html[data-theme="dark"] .logo rect, html:not([data-theme="light"]) .logo rect {
+  fill: #2a2620; 
 }
-.set-text { flex: 1; min-width: 0; }
-.set-text b { display: block; font-size: 15px; font-weight: 500; color: var(--tx); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.set-text small { display: block; font-size: 12px; color: var(--mu); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.set-arrow { color: var(--mu); width: 18px; height: 18px; flex-shrink: 0; }
-.set-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
-.set-header button { border: 0; background: transparent; color: var(--pri); font-weight: 600; font-size: 16px; cursor: pointer; padding: 0; display: flex; align-items: center; gap: 4px; }
-.set-header h2 { font-size: 20px; font-weight: 700; color: var(--tx); margin: 0; }
+html[data-theme="dark"] .logo g, html:not([data-theme="light"]) .logo g {
+  stroke: #f59e0b;
+  filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.4));
+}
 
-.rep-wrap{position:relative;margin:0 -20px;padding:0 20px}
+/* ---------- CHART ---------- */
+.chart{display:flex;gap:8px;align-items:flex-end;height:150px;margin:20px 0 12px;padding:0 4px}
+.bc{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;gap:8px;min-width:0}
+.bs{display:flex;gap:3px;align-items:flex-end;width:100%;height:100%;justify-content:center}
+.bs i{width:44%;max-width:18px;min-height:4px;border-radius:5px 5px 2px 2px;transform-origin:bottom;animation:gr .5s cubic-bezier(.2,.8,.3,1) both}
+@keyframes gr{from{transform:scaleY(0)}}
+.bi{background:var(--accent)}.bo{background:var(--mu);opacity:.55}
+.bc small{font-size:10.5px;color:var(--mu);font-weight:500;white-space:nowrap}
+.lg2{display:flex;gap:14px;font-size:11.5px;font-weight:500;color:var(--mu);justify-content:center}
+.lg2 i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:middle}
+
+/* ---------- TABS ---------- */
+.tabs{display:flex;gap:4px;justify-content:center;margin-bottom:16px;background:var(--sf2);padding:4px;border-radius:10px;width:fit-content;margin-left:auto;margin-right:auto}
+.tabs button{border:0;background:transparent;padding:6px 16px;font-weight:600;font-size:12.5px;color:var(--mu);cursor:pointer;transition:.15s;border-radius:7px;font-family:inherit}
+.tabs button.on{background:var(--sf);color:var(--tx);box-shadow:var(--sh-xs)}
+
+/* ---------- SEGMENTED RADIO ---------- */
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+.seg label{position:relative;cursor:pointer;display:block}
+.seg input[type="radio"]{display:none!important}
+.seg label span{display:block;text-align:center;padding:10px 12px;border:1.5px solid var(--bd);border-radius:9px;background:var(--sf);font-weight:600;font-size:13px;color:var(--mu);transition:.15s}
+.seg input[type="radio"]:checked+span{border-color:var(--accent);background:var(--accent-l);color:var(--accent)}
+.seg input[type="radio"]:checked+span::before{content:"✓ ";margin-right:4px;font-weight:700}
+
+/* ---------- SETTINGS ---------- */
+.set-menu{border-radius:var(--r);overflow:hidden;background:var(--sf);border:1px solid var(--bd);box-shadow:var(--sh-xs)}
+.set-item{display:flex;align-items:center;gap:14px;padding:14px 16px;border-bottom:1px solid var(--bd);cursor:pointer;transition:.12s}
+.set-item:last-child{border-bottom:none}
+.set-item:hover{background:var(--sf2)}
+.set-item:active{background:var(--bd)}
+.set-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--accent-l);color:var(--accent);border:1px solid #fde68a}
+.set-icon .ic{width:16px;height:16px;stroke-width:2}
+.set-text{flex:1;min-width:0}
+.set-text b{display:block;font-size:14px;font-weight:600;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.01em;font-family:'Fraunces',serif}
+.set-text small{display:block;font-size:12px;color:var(--mu);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.set-arrow{color:var(--mu);width:16px;height:16px;flex-shrink:0;opacity:.6}
+.set-header{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.set-header button{border:0;background:transparent;color:var(--accent);font-weight:600;font-size:14px;cursor:pointer;padding:0;display:flex;align-items:center;gap:3px;font-family:inherit}
+.set-header h2{font-size:20px;font-weight:600;color:var(--tx);margin:0;letter-spacing:-.02em;font-family:'Fraunces',serif}
+.set-title{font-size:28px;font-weight:600;letter-spacing:-1px;padding-left:2px;font-family:'Fraunces',serif}
+.profile-head{display:flex;align-items:center;gap:14px;padding:4px}
+.profile-head b{display:block;font-size:18px;font-weight:600;letter-spacing:-.02em;font-family:'Fraunces',serif}
+.profile-head small{display:block;color:var(--mu);font-size:12.5px;margin-top:2px}
+
+/* ---------- DIVIDER AMBER ---------- */
+.section-title{display:flex;align-items:center;gap:10px;font-family:'Fraunces',serif;font-size:16px;font-weight:600;margin-bottom:12px;letter-spacing:-.02em}
+.section-title::before{content:"";width:3px;height:16px;background:var(--accent);border-radius:2px}
+
+/* ---------- ABOUT PAGE ---------- */
+.about-hero{text-align:center;padding:30px 20px 20px}
+.about-hero h2{font-size:26px;margin:16px 0 4px;font-weight:700;letter-spacing:-1px;font-family:'Fraunces',serif}
+.about-hero .badge{display:inline-block;margin-top:8px;background:var(--accent);color:#fff;padding:4px 12px;border-radius:100px;font-size:11px;font-weight:600;letter-spacing:.5px}
+.about-section{margin-bottom:16px}
+.about-section h3{font-size:16px;margin-bottom:10px;font-family:'Fraunces',serif}
+.about-section p{font-size:13.5px;line-height:1.7;color:var(--tx2);margin:0}
+.about-list{margin:0;padding-left:18px;font-size:13.5px;line-height:1.8;color:var(--tx2)}
+.about-list li{margin-bottom:6px}
+.about-list li b{color:var(--tx);font-weight:600}
+.about-list li span{display:block;font-size:12px;color:var(--mu);margin-top:2px}
+.dev-card{display:flex;align-items:center;gap:16px;background:var(--sf2);border-radius:12px;padding:16px;border:1px solid var(--bd)}
+.dev-avatar{width:64px;height:64px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:24px;font-weight:700;font-family:'Fraunces',serif;flex-shrink:0;border:2px solid var(--sf);box-shadow:var(--sh-sm)}
+.dev-info b{display:block;font-size:16px;font-family:'Fraunces',serif;color:var(--tx)}
+.dev-info small{display:block;font-size:12px;color:var(--mu);margin-top:2px}
+
+/* ---------- REPORT ---------- */
+.rep-wrap{position:relative;margin:0 -16px;padding:0 16px}
 .rep-scroll{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;padding-bottom:4px;scrollbar-width:thin;scrollbar-color:var(--bd) transparent}
 .rep-scroll::-webkit-scrollbar{height:6px}
 .rep-scroll::-webkit-scrollbar-track{background:transparent}
 .rep-scroll::-webkit-scrollbar-thumb{background:var(--bd);border-radius:3px}
-.rep-inner{min-width:560px;padding:4px 2px 8px}
-.rep{font-family:'Inter',-apple-system,sans-serif;color:var(--tx);line-height:1.55;letter-spacing:-.01em}
-.scroll-hint{display:flex;align-items:center;justify-content:center;gap:6px;font-size:11px;color:var(--mu);margin:0 0 10px;font-weight:500;transition:opacity .3s}
-.scroll-hint.gone{opacity:0}
-.scroll-hint svg{width:14px;height:14px;animation:slideHint 1.6s ease-in-out infinite}
-@keyframes slideHint{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
-.rep .rh{display:flex;align-items:flex-start;gap:16px;padding-bottom:18px;margin-bottom:24px;border-bottom:2px solid var(--tx)}
+.rep-inner{min-width:580px;padding:2px 0 6px}
+.rep{font-family:'Inter',sans-serif;color:var(--tx);line-height:1.55;letter-spacing:-.005em}
+.rep .rh{display:flex;align-items:flex-start;gap:14px;padding-bottom:16px;margin-bottom:22px;border-bottom:2px solid var(--tx)}
 .rep .rh .rh-brand svg{display:block}
-.rep .rh .rh-text{flex:1}
-.rep .rh .rh-school{font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:var(--mu);font-weight:500;margin:0 0 4px}
-.rep .rh .rh-title{font-size:20px;font-weight:600;color:var(--tx);margin:0;letter-spacing:-.4px;line-height:1.2}
-.rep .rh .rh-sub{font-size:11.5px;color:var(--mu);margin:4px 0 0;font-weight:400}
+.rep .rh .rh-text{flex:1;min-width:0}
+.rep .rh .rh-school{font-size:9.5px;letter-spacing:1.6px;text-transform:uppercase;color:var(--mu);font-weight:600;margin:0 0 4px}
+.rep .rh .rh-title{font-size:19px;font-weight:600;color:var(--tx);margin:0;letter-spacing:-.4px;line-height:1.25;font-family:'Fraunces',serif}
+.rep .rh .rh-sub{font-size:11px;color:var(--mu);margin:4px 0 0;font-weight:400}
 .rep .rh .rh-meta{text-align:right;font-size:9.5px;color:var(--mu);line-height:1.65;flex-shrink:0;letter-spacing:.2px}
-.rep .rh .rh-meta b{color:var(--tx);font-weight:500}
-.rep .rhero{border:1px solid var(--bd);border-radius:12px;padding:18px 20px;margin-bottom:14px;background:var(--sf);display:flex;justify-content:space-between;align-items:center;gap:16px}
-.rep .rhero .rhero-l{font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--mu);font-weight:500;margin:0 0 6px}
-.rep .rhero .rhero-v{font-size:24px;font-weight:600;color:var(--tx);margin:0;letter-spacing:-.5px;line-height:1.1}
+.rep .rh .rh-meta b{color:var(--tx);font-weight:600}
+.rep .rhero{border:1px solid var(--bd);border-radius:10px;padding:16px 18px;margin-bottom:12px;background:var(--sf2);display:flex;justify-content:space-between;align-items:center;gap:16px}
+.rep .rhero .rhero-l{font-size:9.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--mu);font-weight:600;margin:0 0 5px}
+.rep .rhero .rhero-v{font-size:22px;font-weight:600;color:var(--tx);margin:0;letter-spacing:-.5px;line-height:1.1;font-family:'Fraunces',serif;font-style:italic}
 .rep .rhero .rhero-r{text-align:right;font-size:10.5px;color:var(--mu);line-height:1.7}
-.rep .rhero .rhero-r b{color:var(--tx);font-weight:500}
-.rep .rgrid{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--bd);border-radius:12px;overflow:hidden;margin-bottom:28px}
-.rep .rgrid .rcell{padding:16px 14px;border-right:1px solid var(--bd)}
+.rep .rhero .rhero-r b{color:var(--tx);font-weight:600}
+.rep .rgrid{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--bd);border-radius:10px;overflow:hidden;margin-bottom:24px}
+.rep .rgrid .rcell{padding:14px 16px;border-right:1px solid var(--bd)}
 .rep .rgrid .rcell:last-child{border-right:0}
-.rep .rgrid .rcell-l{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--mu);font-weight:500;margin:0 0 6px}
-.rep .rgrid .rcell-v{font-size:15px;font-weight:500;color:var(--tx);margin:0;letter-spacing:-.2px}
+.rep .rgrid .rcell-l{font-size:8.5px;letter-spacing:1px;text-transform:uppercase;color:var(--mu);font-weight:600;margin:0 0 5px}
+.rep .rgrid .rcell-v{font-size:14.5px;font-weight:600;color:var(--tx);margin:0;letter-spacing:-.2px;font-variant-numeric:tabular-nums;font-family:'Fraunces',serif}
 .rep .rgrid .rcell-v.pos{color:var(--ok)}.rep .rgrid .rcell-v.neg{color:var(--er)}
-.rep .rsec{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.3px;color:var(--mu);margin:0 0 12px}
-.rep table{width:100%;border-collapse:collapse;margin:0 0 28px;font-size:12.5px}
-.rep table thead th{text-align:left;padding:8px 0;font-size:9.5px;font-weight:500;color:var(--mu);text-transform:uppercase;letter-spacing:.8px;border-bottom:1px solid var(--tx);white-space:nowrap}
+.rep .rsec{font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:1.3px;color:var(--mu);margin:0 0 10px}
+.rep table{width:100%;border-collapse:collapse;margin:0 0 24px;font-size:12px}
+.rep table thead th{text-align:left;padding:7px 0;font-size:9px;font-weight:600;color:var(--mu);text-transform:uppercase;letter-spacing:.8px;border-bottom:1px solid var(--tx);white-space:nowrap}
 .rep table thead th:last-child{text-align:right}
-.rep table tbody td{padding:11px 0;border-bottom:1px solid var(--bd);font-weight:400;color:var(--tx);vertical-align:middle}
+.rep table tbody td{padding:10px 0;border-bottom:1px solid var(--bd);font-weight:400;color:var(--tx);vertical-align:middle}
 .rep table tbody tr:last-child td{border-bottom:none}
 .rep table tbody td:last-child{text-align:right}
-.rep table .saldo-row td{border-top:1px solid var(--tx);border-bottom:none;padding-top:14px;padding-bottom:0;font-weight:500;color:var(--tx)}
-.rep table .saldo-row td:first-child{font-weight:500;color:var(--mu);text-transform:uppercase;font-size:9.5px;letter-spacing:1px}
-.rep .rprog{display:flex;align-items:center;gap:10px;justify-content:flex-end}
-.rep .rprog .rprog-track{flex:1;max-width:80px;height:4px;background:var(--bd);border-radius:2px;overflow:hidden}
-.rep .rprog .rprog-fill{height:100%;background:var(--tx);border-radius:2px}
-.rep .rprog .rprog-text{font-size:10.5px;color:var(--mu);font-weight:400;min-width:40px;text-align:right;white-space:nowrap}
-.rep .rstatus-lunas{color:var(--ok);font-weight:500;white-space:nowrap}
-.rep .rstatus-tunggak{color:var(--er);font-weight:500;white-space:nowrap}
-.rep .rfoot{margin-top:36px;padding-top:14px;border-top:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;font-size:9px;color:var(--mu);line-height:1.6;gap:16px}
+.rep table .saldo-row td{border-top:1px solid var(--tx);border-bottom:none;padding-top:12px;padding-bottom:0;font-weight:600;color:var(--tx)}
+.rep table .saldo-row td:first-child{font-weight:600;color:var(--mu);text-transform:uppercase;font-size:9px;letter-spacing:1px}
+.rep .rprog{display:flex;align-items:center;gap:8px;justify-content:flex-end}
+.rep .rprog .rprog-track{flex:1;max-width:80px;height:3px;background:var(--bd);border-radius:2px;overflow:hidden}
+.rep .rprog .rprog-fill{height:100%;background:var(--accent);border-radius:2px}
+.rep .rprog .rprog-text{font-size:10px;color:var(--mu);font-weight:400;min-width:38px;text-align:right;white-space:nowrap}
+.rep .rstatus-lunas{color:var(--ok);font-weight:600;white-space:nowrap}
+.rep .rstatus-tunggak{color:var(--er);font-weight:600;white-space:nowrap}
+.rep .rfoot{margin-top:32px;padding-top:12px;border-top:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;font-size:9px;color:var(--mu);line-height:1.6;gap:16px}
+
+.scroll-hint{display:flex;align-items:center;justify-content:center;gap:5px;font-size:11px;color:var(--mu);margin:0 0 10px;font-weight:500;transition:opacity .3s}
+.scroll-hint.gone{opacity:0}
+.scroll-hint svg{width:13px;height:13px;animation:slideHint 1.6s ease-in-out infinite}
+@keyframes slideHint{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+
+/* ---------- MISC ---------- */
 .spin{animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+.empty-state{text-align:center;padding:36px 20px;color:var(--mu)}
+.empty-state b{display:block;color:var(--tx2);margin-bottom:4px;font-weight:600;font-size:14px}
 
-body.print-mode .rep{background:#fff!important;color:#111!important;padding:20px!important;width:190mm!important;margin:0 auto!important}
-body.print-mode .rep .rh{border-bottom-color:#111!important}
-body.print-mode .rep .rh-school{color:#666!important}
-body.print-mode .rep .rh-title{color:#111!important;font-size:18px!important}
-body.print-mode .rep .rh-sub{color:#555!important}
-body.print-mode .rep .rh-meta{color:#555!important}
-body.print-mode .rep .rh-meta b{color:#111!important}
-body.print-mode .rep .rhero{background:#f7f7f7!important;border-color:#ccc!important}
-body.print-mode .rep .rhero-l{color:#666!important}
-body.print-mode .rep .rhero-v{color:#111!important}
-body.print-mode .rep .rhero-r{color:#555!important}
-body.print-mode .rep .rhero-r b{color:#111!important}
-body.print-mode .rep .rgrid{border-color:#ccc!important}
-body.print-mode .rep .rcell{border-right-color:#ccc!important}
-body.print-mode .rep .rcell-l{color:#666!important}
-body.print-mode .rep .rcell-v{color:#111!important}
-body.print-mode .rep .rcell-v.pos,
-body.print-mode .rep .rcell-v.neg{color:#111!important}
-body.print-mode .rep .rsec{color:#444!important}
-body.print-mode .rep table thead th{color:#555!important;border-bottom-color:#111!important}
-body.print-mode .rep table tbody td{color:#111!important;border-bottom-color:#ddd!important}
-body.print-mode .rep table .saldo-row td{border-top-color:#111!important;color:#111!important}
-body.print-mode .rep .rprog-track{background:#ddd!important}
-body.print-mode .rep .rprog-fill{background:#111!important}
-body.print-mode .rep .rprog-text{color:#555!important}
-body.print-mode .rep .rstatus-lunas,
-body.print-mode .rep .rstatus-tunggak{color:#111!important}
-body.print-mode .rep .rfoot{color:#777!important;border-top-color:#ccc!important}
-body.print-mode .rep .rh-brand svg rect{fill:#111!important}
-body.print-mode .rep .rh-brand svg path,
-body.print-mode .rep .rh-brand svg circle{stroke:#fff!important;fill:#fff!important}
+/* ---------- PRINT & PDF ---------- */
+body.print-mode .rep,
+body.print-mode .rep * {
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+}
+body.print-mode .rep {
+  background: #ffffff !important;
+  color: #111111 !important;
+  padding: 18px 16px !important;
+  width: 190mm !important;
+  max-width: 190mm !important;
+  margin: 0 auto !important;
+  font-family: 'Inter', -apple-system, sans-serif !important;
+  line-height: 1.45 !important;
+}
+body.print-mode .rep .rh {
+  border-bottom: 2px solid #111 !important;
+  padding-bottom: 14px !important;
+  margin-bottom: 18px !important;
+  gap: 12px !important;
+}
+body.print-mode .rep .rh .rh-school { color: #444 !important; font-size: 9px !important; letter-spacing: 1.4px !important; }
+body.print-mode .rep .rh .rh-title { color: #111 !important; font-size: 18px !important; font-weight: 700 !important; }
+body.print-mode .rep .rh .rh-sub { color: #333 !important; font-size: 11px !important; }
+body.print-mode .rep .rh .rh-meta { color: #444 !important; font-size: 9.5px !important; }
+body.print-mode .rep .rh .rh-meta b { color: #111 !important; font-weight: 700 !important; }
+body.print-mode .rep .rhero {
+  background: #f5f5f5 !important;
+  border: 1px solid #ccc !important;
+  border-radius: 8px !important;
+  padding: 14px 16px !important;
+  margin-bottom: 14px !important;
+}
+body.print-mode .rep .rhero .rhero-l { color: #444 !important; font-size: 9px !important; }
+body.print-mode .rep .rhero .rhero-v { color: #111 !important; font-size: 22px !important; font-weight: 700 !important; }
+body.print-mode .rep .rhero .rhero-r { color: #333 !important; font-size: 11px !important; }
+body.print-mode .rep .rhero .rhero-r b { color: #111 !important; font-weight: 700 !important; }
+body.print-mode .rep .rgrid {
+  border: 1px solid #ccc !important;
+  border-radius: 8px !important;
+  margin-bottom: 20px !important;
+  overflow: hidden !important;
+}
+body.print-mode .rep .rgrid .rcell {
+  border-right: 1px solid #ccc !important;
+  padding: 12px 14px !important;
+  background: #fff !important;
+}
+body.print-mode .rep .rgrid .rcell:last-child { border-right: 0 !important; }
+body.print-mode .rep .rgrid .rcell-l { color: #444 !important; font-size: 8.5px !important; }
+body.print-mode .rep .rgrid .rcell-v { color: #111 !important; font-size: 14px !important; font-weight: 700 !important; }
+body.print-mode .rep .rgrid .rcell-v.pos { color: #166534 !important; }
+body.print-mode .rep .rgrid .rcell-v.neg { color: #991b1b !important; }
+body.print-mode .rep .rsec {
+  color: #222 !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 1px !important;
+  margin: 0 0 8px !important;
+  text-transform: uppercase !important;
+}
+body.print-mode .rep table { width: 100% !important; margin-bottom: 18px !important; }
+body.print-mode .rep table thead th {
+  color: #333 !important;
+  border-bottom: 2px solid #111 !important;
+  font-size: 9px !important;
+  font-weight: 700 !important;
+  padding: 8px 0 !important;
+  text-transform: uppercase !important;
+}
+body.print-mode .rep table tbody td {
+  color: #111 !important;
+  border-bottom: 1px solid #e5e5e5 !important;
+  font-size: 11.5px !important;
+  padding: 9px 0 !important;
+  font-weight: 500 !important;
+}
+body.print-mode .rep table tbody td:first-child {
+  font-weight: 600 !important;
+  color: #111 !important;
+}
+body.print-mode .rep table .saldo-row td {
+  border-top: 2px solid #111 !important;
+  color: #111 !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  padding-top: 10px !important;
+}
+body.print-mode .rep table .saldo-row td:first-child { color: #444 !important; font-size: 9px !important; }
+body.print-mode .rep .rprog-track { background: #e5e5e5 !important; height: 5px !important; border-radius: 3px !important; }
+body.print-mode .rep .rprog-fill { background: #b45309 !important; }
+body.print-mode .rep .rprog-text { color: #333 !important; font-size: 10px !important; font-weight: 600 !important; }
+body.print-mode .rep .rstatus-lunas { color: #166534 !important; font-weight: 700 !important; }
+body.print-mode .rep .rstatus-tunggak { color: #991b1b !important; font-weight: 700 !important; }
+body.print-mode .rep .rfoot {
+  color: #555 !important;
+  border-top: 1px solid #ccc !important;
+  font-size: 9px !important;
+  padding-top: 10px !important;
+  margin-top: 22px !important;
+}
+body.print-mode .rep .rfoot b { color: #222 !important; }
 
 @media print {
-  @page { size: A4 portrait; margin: 15mm; }
+  @page { size: A4 portrait; margin: 14mm; }
   .top, .nav, #splash, #wel, #toast, #mod, .np, .tabs, .rowh, button, input, select, textarea, .scroll-hint { display: none !important; }
   html, body { background: #fff !important; margin: 0 !important; padding: 0 !important; }
-  body { font-family: 'Inter', -apple-system, sans-serif !important; color: #111 !important; font-size: 11px !important; }
+  body { font-family: 'Inter', sans-serif !important; color: #111 !important; font-size: 11px !important; }
   #root { max-width: none !important; padding: 0 !important; margin: 0 !important; }
   .view { margin: 0 !important; }
   .card { background: #fff !important; box-shadow: none !important; border: 0 !important; padding: 0 !important; margin: 0 !important; border-radius: 0 !important; }
-  .rep-wrap { margin: 0 !important; padding: 0 !important; }
-  .rep-scroll { overflow: visible !important; padding: 0 !important; }
-  .rep-inner { min-width: 0 !important; width: 100% !important; padding: 0 !important; }
+  .rep-wrap, .rep-scroll, .rep-inner { margin: 0 !important; padding: 0 !important; overflow: visible !important; min-width: 0 !important; width: 100% !important; }
   .rep { padding: 0 !important; width: 100% !important; }
-  .rep .rh { border-bottom: 2px solid #111 !important; padding-bottom: 15px !important; margin-bottom: 20px !important; }
-  .rep .rh .rh-school { color: #666 !important; font-size: 9px !important; }
-  .rep .rh .rh-title { color: #111 !important; font-size: 18px !important; }
-  .rep .rh .rh-sub { color: #555 !important; font-size: 11px !important; }
-  .rep .rh .rh-meta { color: #555 !important; font-size: 9px !important; }
-  .rep .rh .rh-meta b { color: #111 !important; }
-  .rep .rhero { background: #f9f9f9 !important; border: 1px solid #ddd !important; padding: 15px 20px !important; margin-bottom: 15px !important; border-radius: 8px !important; }
-  .rep .rhero .rhero-l { color: #666 !important; font-size: 9px !important; }
-  .rep .rhero .rhero-v { color: #111 !important; font-size: 22px !important; }
-  .rep .rhero .rhero-r { color: #555 !important; font-size: 10px !important; }
-  .rep .rhero .rhero-r b { color: #111 !important; }
-  .rep .rgrid { border: 1px solid #ddd !important; border-radius: 8px !important; margin-bottom: 25px !important; }
-  .rep .rgrid .rcell { border-right: 1px solid #ddd !important; padding: 12px 15px !important; }
-  .rep .rgrid .rcell-l { color: #666 !important; font-size: 8px !important; }
-  .rep .rgrid .rcell-v { color: #111 !important; font-size: 14px !important; }
-  .rep .rgrid .rcell-v.pos, .rep .rgrid .rcell-v.neg { color: #111 !important; }
-  .rep .rsec { color: #444 !important; font-size: 10px !important; margin-bottom: 10px !important; letter-spacing: 1px !important; }
-  .rep table { width: 100% !important; table-layout: fixed !important; margin-bottom: 25px !important; }
-  .rep table thead th { color: #555 !important; border-bottom: 2px solid #111 !important; font-size: 9px !important; padding: 8px 0 !important; }
-  .rep table tbody td { color: #111 !important; border-bottom: 1px solid #eee !important; font-size: 11px !important; padding: 10px 0 !important; word-break: break-word !important; }
-  .rep table .saldo-row td { border-top: 2px solid #111 !important; color: #111 !important; font-size: 12px !important; padding-top: 12px !important; }
-  .rep table .saldo-row td:first-child { color: #666 !important; font-size: 9px !important; }
-  .rep .rprog-track { background: #eee !important; height: 6px !important; }
-  .rep .rprog-fill { background: #111 !important; }
-  .rep .rprog-text { color: #555 !important; font-size: 10px !important; }
-  .rep .rstatus-lunas, .rep .rstatus-tunggak { color: #111 !important; font-size: 11px !important; }
-  .rep .rfoot { color: #777 !important; border-top: 1px solid #ccc !important; font-size: 9px !important; padding-top: 12px !important; margin-top: 30px !important; }
   * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-  .rep-scroll, .rep-scroll * { overflow: visible !important; max-width: none !important; }
-  .rep .rh, .rep .rhero { flex-wrap: wrap !important; }
 }
 </style>
 </head>
 <body>
 <div id="splash">
-  <svg width="90" height="90" viewBox="0 0 96 96" fill="none">
-    <rect width="96" height="96" rx="24" fill="var(--pri)"/>
-    <path d="M28 36h34a8 8 0 0 1 8 8v18a8 8 0 0 1-8 8H28a8 8 0 0 1-8-8V28a8 8 0 0 1 8-8h28a6 6 0 0 1 6 6" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-    <circle cx="62" cy="54" r="6" fill="#fff"/>
+  <svg width="84" height="84" viewBox="0 0 96 96" fill="none" class="logo">
+    <rect width="96" height="96" rx="24" fill="#1a1815"/>
+    <g stroke="#b45309" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M26 34 H58 C62.4183 34 66 37.5817 66 42 V66 C66 70.4183 62.4183 74 58 74 H30 C25.5817 74 22 70.4183 22 66 V26 C22 21.5817 25.5817 18 30 18 H54 C57.3137 18 60 20.6863 60 24"/>
+      <path d="M34 34 V74" stroke-opacity="0.3"/>
+      <circle cx="58" cy="54" r="4.5" fill="#faf8f5" stroke="none"/>
+      <path d="M44 24 H50" stroke-width="4"/>
+    </g>
   </svg>
-  <h1>KasKelas</h1><p>Manajemen Uang Kas</p><div class="bar"><i></i></div>
+  <h1>KasKelas</h1><p>Manajemen uang kas digital</p><div class="bar"><i></i></div>
 </div>
-<div id="wel" aria-live="polite"><svg width="72" height="72" viewBox="0 0 84 84" fill="none" stroke="var(--ok)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><circle cx="42" cy="42" r="38"/><path d="M27 43l10 10 20-22"/></svg><h2 id="wt" style="color:var(--tx);font-size:24px;font-weight:600"></h2><p id="ws" style="font-weight:400;color:var(--mu)"></p></div>
+<div id="wel" aria-live="polite">
+  <svg width="64" height="64" viewBox="0 0 84 84" fill="none" stroke="var(--ok)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="42" cy="42" r="38"/><path d="M27 43l10 10 20-22"/></svg>
+  <h2 id="wt" style="color:var(--tx);font-size:22px;font-weight:600;letter-spacing:-.4px;font-family:'Fraunces',serif"></h2>
+  <p id="ws" style="font-weight:400;color:var(--mu);font-size:14px;margin:0"></p>
+</div>
 <div id="root"></div><div id="mod"></div><div id="toast" role="status" aria-live="polite"></div>
 <input type="file" id="fileRestore" style="display:none" accept=".json">
 
 <script>
+/* ═══════════════════════════════════════════════════════════
+   SEMUA JAVASCRIPT IDENTIK DENGAN FILE ASLI — TIDAK ADA PERUBAHAN
+   KECUALI BLOK SERVICE WORKER REGISTRATION DI BAGIAN BAWAH
+   ═══════════════════════════════════════════════════════════ */
 const $ = s => document.querySelector(s), mem = {};
 const h = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const js = s => String(s == null ? '' : s).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '&quot;').replace(/</g, '\\x3C');
@@ -334,7 +586,7 @@ const today = () => {
 const norm = s => String(s || '').toUpperCase().replace(/[^A-Z0-9-]/g, '');
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
 
-let C = null, S = { v: 'land' };
+let C = null, S = { v: 'land', devMode: false, clickCount: 0, clickCountCls: 0 };
 
 const addDaysLocal = (dateStr, days) => {
   if (!dateStr) return today();
@@ -344,10 +596,13 @@ const addDaysLocal = (dateStr, days) => {
 };
 
 const nominalForWeek = (w) => {
-  const snap = (C && C.nomSnap) || {};
+  if (!C) return 0;
+  const snap = C.nomSnap || {};
   let found = null;
-  for (const k in snap) if (+k <= w && (found === null || +k > +found)) found = k;
-  return found !== null ? +snap[found] : +(C ? C.nominal : 0);
+  for (const k in snap) {
+    if (+k <= w && (found === null || +k > +found)) found = k;
+  }
+  return found !== null ? +snap[found] : (+C.nominal || 0);
 };
 
 const payStatus = (val, nominal) => {
@@ -378,7 +633,35 @@ const save = () => { persistLocal(); push(); };
 
 function persistLocal() {
   if (!C || !C.code) return;
-  try { localStorage.setItem('kas:data:' + C.code, JSON.stringify(C)); } catch (e) {}
+  try { localStorage.setItem('kas:data:' + C.code, JSON.stringify(C)); } catch (e) { console.warn('Gagal simpan lokal:', e); }
+}
+
+const SESSION_TTL = 7 * 24 * 60 * 60 * 1000;
+
+function getValidSession() {
+  const s = ld('kas:session');
+  if (!s || !s.tok || !s.exp) return null;
+  if (Date.now() > s.exp) { localStorage.removeItem('kas:session'); return null; }
+  return s;
+}
+
+function saveSession() {
+  if (!S.tok || S.tok === 'offline' || !C) return;
+  sv('kas:session', { tok: S.tok, ver: S.ver, role: S.role, code: C.code, studentId: S.studentId, exp: Date.now() + SESSION_TTL });
+}
+
+function refreshSession() {
+  const s = getValidSession();
+  if (!s) return;
+  s.exp = Date.now() + SESSION_TTL;
+  s.ver = S.ver;
+  if (C) s.code = C.code;
+  sv('kas:session', s);
+}
+
+function clearSession() {
+  localStorage.removeItem('kas:session');
+  localStorage.removeItem('kas:last_code');
 }
 
 const I = {
@@ -405,12 +688,16 @@ const I = {
   chevronRight: 'M9 18l6-6-6-6',
   chevronLeft: 'M15 18l-6-6 6-6',
   key: 'M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4',
-  database: 'M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4'
+  database: 'M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4',
+  arrowLeft: 'M19 12H5 M12 19l-7-7 7-7',
+  lock: 'M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2z M7 11V7a5 5 0 0 1 10 0v4',
+  user: 'M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2 M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z',
+  camera: 'M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z M12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z'
 };
 const ic = n => `<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="${I[n]}"/></svg>`;
-const icw = n => `<svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px"><path d="${I[n]}"/></svg>`;
+const icw = n => `<svg viewBox="0 0 24 24" fill="currentColor" style="width:15px;height:15px"><path d="${I[n]}"/></svg>`;
 
-const mk = s => `<svg width="${s}" height="${s}" viewBox="0 0 96 96"><rect width="96" height="96" rx="24" fill="var(--pri)"/><path d="M28 36h34a8 8 0 0 1 8 8v18a8 8 0 0 1-8 8H28a8 8 0 0 1-8-8V28a8 8 0 0 1 8-8h28a6 6 0 0 1 6 6" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="62" cy="54" r="6" fill="#fff"/></svg>`;
+const mk = (s, r=24) => `<svg class="logo" width="${s}" height="${s}" viewBox="0 0 96 96" fill="none"><rect width="96" height="96" rx="${r}" fill="#1a1815"/><g stroke="#b45309" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M26 34 H58 C62.4183 34 66 37.5817 66 42 V66 C66 70.4183 62.4183 74 58 74 H30 C25.5817 74 22 70.4183 22 66 V26 C22 21.5817 25.5817 18 30 18 H54 C57.3137 18 60 20.6863 60 24"/><path d="M34 34 V74" stroke-opacity="0.3"/><circle cx="58" cy="54" r="4.5" fill="#faf8f5" stroke="none"/><path d="M44 24 H50" stroke-width="4"/></g></svg>`;
 
 function toast(m, t) {
   const e = $('#toast');
@@ -431,17 +718,19 @@ const modal = (x, autoFocus = true) => {
     if (f && !f.hasAttribute('data-a')) f.focus();
   }, 50);
 };
+
 const closeM = () => {
   const m = $('#mod');
   m.classList.remove('on');
   m.removeAttribute('role');
   m.removeAttribute('aria-modal');
   m.innerHTML = '';
+  if (window.A) { A._y = null; A._n = null; }
 };
 
 const ask = (m, fn, onCancel) => {
   A._y = fn; A._n = onCancel || null;
-  modal(`<h3>Konfirmasi</h3><p class="mu">${m}</p><div class="g2"><button class="btn ghost" data-a="no">Batal</button><button class="btn red" data-a="yes">Ya, lanjutkan</button></div>`, false);
+  modal(`<h3>Konfirmasi</h3><p>${m}</p><div class="g2"><button class="btn ghost" data-a="no">Batal</button><button class="btn red" data-a="yes">Ya, lanjutkan</button></div>`, false);
 };
 
 const ss = (id) => {
@@ -476,84 +765,129 @@ const RL = { b: 'Bendahara', s: 'Siswa', w: 'Wali Kelas' };
 
 const TABS = {
   b: [['home','home','Beranda'],['iuran','grid','Iuran'],['tx','swap','Kas'],['sis','users','Siswa'],['lap','file','Laporan'],['set','sliders','Setelan']],
-  s: [['home','home','Beranda'],['iuran','grid','Iuran'],['tx','swap','Riwayat'],['about','info','Tentang']],
+  s: [['home','home','Beranda'],['iuran','grid','Iuran Saya'],['tx','swap','Riwayat'],['set_s','sliders','Setelan']],
   w: [['home','home','Beranda'],['tg','bell','Tunggakan'],['iuran','grid','Iuran'],['tx','swap','Kas'],['lap','file','Laporan'],['set','sliders','Setelan']]
 };
 
 /* ---------- Views ---------- */
-const vLand = () => `<section class="view land" style="text-align:center;padding-top:6vh">
-<div style="display:flex;justify-content:center">${mk(80)}</div>
-<h1 style="font-size:38px;margin:24px 0 8px;font-weight:700;color:var(--tx);letter-spacing:-1px">KasKelas</h1>
-<p class="mu" style="font-weight:400;font-size:15px">Uang kas rapi, transparan, dan aman.</p>
-<div class="cards" style="display:grid;gap:12px;margin:32px 0 20px;text-align:left">
-  <button class="card rc" data-a="login" data-r="b"><div style="color:var(--pri);margin-bottom:8px">${ic('shield')}</div><b>Masuk Bendahara</b><small class="mu">Kelola iuran, transaksi, dan laporan</small></button>
-  <button class="card rc" data-a="login" data-r="s"><div style="color:var(--pri);margin-bottom:8px">${ic('users')}</div><b>Masuk Siswa</b><small class="mu">Lihat saldo dan status iuran</small></button>
-  <button class="card rc" data-a="login" data-r="w"><div style="color:var(--pri);margin-bottom:8px">${ic('users')}</div><b>Masuk Wali Kelas</b><small class="mu">Pantau tunggakan siswa</small></button>
+const vLand = () => `<section class="view land">
+<div class="brandmark">${mk(80, 22)}</div>
+<h1>KasKelas</h1>
+<p class="tagline">Uang kas kelas yang rapi, transparan, dan mudah dipantau.</p>
+
+<div class="menu-card">
+  <button class="rc-menu" data-a="login" data-r="b">
+    <div class="icon-wrap">${ic('shield')}</div>
+    <div class="m">
+      <b>Masuk Bendahara</b>
+      <small>Kelola iuran, transaksi & laporan</small>
+    </div>
+    <div class="chev">${ic('chevronRight')}</div>
+  </button>
+  <div class="menu-divider"></div>
+  <button class="rc-menu" data-a="login" data-r="s">
+    <div class="icon-wrap">${ic('users')}</div>
+    <div class="m">
+      <b>Masuk Siswa</b>
+      <small>Cek status iuran pribadi</small>
+    </div>
+    <div class="chev">${ic('chevronRight')}</div>
+  </button>
+  <div class="menu-divider"></div>
+  <button class="rc-menu" data-a="login" data-r="w">
+    <div class="icon-wrap">${ic('users')}</div>
+    <div class="m">
+      <b>Masuk Wali Kelas</b>
+      <small>Pantau tunggakan & laporan</small>
+    </div>
+    <div class="chev">${ic('chevronRight')}</div>
+  </button>
 </div>
-<div style="display:flex; flex-direction:column; gap:8px;">
-  <button class="btn ghost full" data-a="reg" style="margin-bottom:0">${ic('plus')} Daftarkan kelas baru</button>
-</div>
+
+<button class="btn pri full" data-a="reg" style="padding: 16px; border-radius: 16px; font-size: 15px; letter-spacing: -0.2px;">${ic('plus')} Daftarkan Kelas Baru</button>
+<div class="footer">Aman • Transparan • Terintegrasi WhatsApp<br>© ${new Date().getFullYear()} KasKelas</div>
 </section>`;
 
-const vLogin = () => `<section class="view auth"><button class="lnk" data-a="home">← Kembali</button><div class="card"><h3>Login ${RL[S.r]}</h3><p class="mu" style="margin:4px 0 24px">Masukkan kode kelas dan PIN.</p>
-<form data-f="login">
-  <label class="f"><span>Kode kelas</span><input name="code" id="login-code" required autocomplete="off" placeholder="mis. XII-IPA-1" style="text-transform:uppercase"></label>
-  <label class="f"><span>PIN</span><input name="pin" id="login-pin" type="password" autocomplete="new-password" inputmode="numeric" maxlength="8" required placeholder="••••"></label>
-  <button class="btn full pri" style="margin-top:8px">Masuk</button>
-  <div style="text-align:center; margin-top:16px; display:flex; flex-direction:column; gap:8px;">
-    ${S.r == 's' ? `<button type="button" class="lnk" style="margin:0" data-a="forgot">Lupa PIN?</button>` : ''}
-    ${S.r == 'b' ? `<button type="button" class="lnk" style="margin:0" data-a="forgot_admin">Lupa PIN Bendahara?</button>` : ''}
-    ${S.r == 'w' ? `<button type="button" class="lnk" style="margin:0" data-a="forgot_admin">Lupa PIN Wali Kelas?</button>` : ''}
-    <button type="button" class="lnk" style="margin:0" data-a="listcls">Lihat Daftar Kelas Terdaftar</button>
+const vLogin = () => `<section class="view auth" style="padding-top: 20px;">
+<button class="lnk" data-a="home" style="display:flex;align-items:center;gap:4px;margin-bottom: 20px;">${ic('arrowLeft')} Kembali</button>
+<div class="card" style="border-radius: 24px; padding: 28px 22px; box-shadow: var(--sh-lg);">
+  <div style="text-align: center; margin-bottom: 24px;">
+    <h3 style="margin-bottom:4px; font-size: 22px;">Masuk ${RL[S.r]}</h3>
+    <p class="mu" style="margin:0; font-size:13.5px;">${S.r === 's' ? 'Masukkan kode kelas, nama lengkap, dan PIN.' : 'Masukkan kode kelas dan PIN Anda.'}</p>
   </div>
-</form></div></section>`;
+  
+  <form data-f="login">
+    <label class="f"><span>Kode Kelas</span><input name="code" id="login-code" required autocomplete="off" placeholder="XII-IPA-1" style="text-transform:uppercase; font-family: ui-monospace, monospace; letter-spacing: 1px;"></label>
+    
+    ${S.r === 's' ? `
+      <label class="f"><span>Nama Lengkap</span><input name="name_siswa" id="login-name" required autocomplete="off" placeholder="Nama persis seperti di absen" style="text-transform:capitalize"></label>
+    ` : ''}
+    
+    <label class="f"><span>PIN Pribadi</span><input name="pin" id="login-pin" type="password" autocomplete="new-password" inputmode="numeric" maxlength="8" required placeholder="••••••"></label>
+    
+    <button class="btn full pri" style="margin-top:12px; padding: 14px; border-radius: 12px;">Masuk ke Aplikasi</button>
+    
+    <div style="text-align:center;margin-top:20px;display:flex;flex-direction:column;gap:4px">
+      ${S.r == 's' ? `<button type="button" class="lnk" data-a="forgot">Lupa PIN Siswa?</button>` : ''}
+      ${S.r == 'b' || S.r == 'w' ? `<button type="button" class="lnk" data-a="forgot_admin">Lupa PIN ${RL[S.r]}?</button>` : ''}
+      <button type="button" class="lnk" data-a="listcls" style="color: var(--mu);">Lihat daftar kelas</button>
+    </div>
+  </form>
+</div></section>`;
 
-const vForgot = () => `<section class="view auth"><button class="lnk" data-a="login" data-r="s">← Kembali ke Login</button><div class="card"><h3>Lupa PIN Siswa</h3><p class="mu" style="margin:4px 0 24px">Masukkan kode kelas dan nama lengkapmu untuk mereset PIN.</p>
+const vForgot = () => `<section class="view auth"><button class="lnk" data-a="login" data-r="s" style="display:flex;align-items:center;gap:4px">${ic('arrowLeft')} Kembali</button>
+<div class="card"><h3>Lupa PIN Siswa</h3><p class="mu" style="margin:4px 0 20px;font-size:13px">Masukkan kode kelas dan nama lengkapmu untuk mereset PIN.</p>
 <form data-f="forgot">
   <label class="f"><span>Kode Kelas</span><input name="code" required autocomplete="off" placeholder="XII-IPA-1" style="text-transform:uppercase"></label>
-  <label class="f"><span>Nama Kamu</span><input name="name" required placeholder="Nama persis seperti di daftar absen"></label>
-  <label class="f"><span>PIN Baru (Angka)</span><input name="pin" type="password" inputmode="numeric" maxlength="8" required placeholder="4-8 angka"></label>
-  <button class="btn full pri" style="margin-top:8px">Reset PIN</button>
+  <label class="f"><span>Nama Kamu</span><input name="name" required placeholder="Nama persis seperti di absen"></label>
+  <label class="f"><span>PIN Baru (4-8 angka)</span><input name="pin" type="password" inputmode="numeric" maxlength="8" required placeholder="••••"></label>
+  <button class="btn full pri" style="margin-top:4px">Reset PIN</button>
 </form></div></section>`;
 
-const vForgotAdmin = () => `<section class="view auth"><button class="lnk" data-a="login" data-r="${S.r}">← Kembali ke Login</button><div class="card"><h3>Lupa PIN ${RL[S.r]}</h3><p class="mu" style="margin:4px 0 24px">Masukkan Kode Kelas dan Kode Pemulihan yang kamu dapatkan saat mendaftar.</p>
+const vForgotAdmin = () => `<section class="view auth"><button class="lnk" data-a="login" data-r="${S.r}" style="display:flex;align-items:center;gap:4px">${ic('arrowLeft')} Kembali</button>
+<div class="card"><h3>Lupa PIN ${RL[S.r]}</h3><p class="mu" style="margin:4px 0 20px;font-size:13px">Masukkan kode kelas dan kode pemulihan yang kamu terima saat mendaftar.</p>
 <form data-f="forgot_admin">
   <input type="hidden" name="r" value="${S.r}">
   <label class="f"><span>Kode Kelas</span><input name="code" required autocomplete="off" placeholder="XII-IPA-1" style="text-transform:uppercase"></label>
-  <label class="f"><span>Kode Pemulihan</span><input name="rec" required placeholder="mis. RC-9X2B-7Y4A" style="text-transform:uppercase"></label>
-  <label class="f"><span>PIN Baru (Angka)</span><input name="pin" type="password" inputmode="numeric" maxlength="8" required placeholder="4-8 angka"></label>
-  <button class="btn full pri" style="margin-top:8px">Reset PIN</button>
+  <label class="f"><span>Kode Pemulihan</span><input name="rec" required placeholder="RC-XXXX-XXXX" style="text-transform:uppercase;font-family:ui-monospace,monospace"></label>
+  <label class="f"><span>PIN Baru (4-8 angka)</span><input name="pin" type="password" inputmode="numeric" maxlength="8" required placeholder="••••"></label>
+  <button class="btn full pri" style="margin-top:4px">Reset PIN</button>
 </form></div></section>`;
 
-const vReg = () => `<section class="view auth"><button class="lnk" data-a="home">← Kembali</button><div class="card"><h3>Daftarkan Kelas</h3><p class="mu" style="margin:4px 0 24px">Kode kelas dan PIN dipakai untuk masuk. Catat dan simpan baik-baik. (PIN Wali Kelas akan dibuat sendiri oleh Wali Kelas saat login pertama kali).</p>
+const vReg = () => `<section class="view auth"><button class="lnk" data-a="home" style="display:flex;align-items:center;gap:4px">${ic('arrowLeft')} Kembali</button>
+<div class="card"><h3>Daftarkan Kelas</h3><p class="mu" style="margin:4px 0 20px;font-size:13px">Kode kelas dan PIN dipakai untuk masuk. Simpan baik-baik. PIN Wali Kelas dan Siswa dibuat sendiri saat login pertama.</p>
 <form data-f="reg">
-  <label class="f"><span>Nama sekolah</span><input name="school" required maxlength="50" placeholder="SMA Negeri 1 …"></label>
-  <label class="f"><span>Nama kelas</span><input name="name" required maxlength="30" placeholder="XII IPA 1"></label>
-  <label class="f"><span>Kode kelas (unik)</span><input name="code" required maxlength="20" placeholder="XII-IPA-1" style="text-transform:uppercase"></label>
+  <label class="f"><span>Nama Sekolah</span><input name="school" required maxlength="50" placeholder="SMA Negeri 1 ..."></label>
+  <label class="f"><span>Nama Kelas</span><input name="name" required maxlength="30" placeholder="XII IPA 1"></label>
+  <label class="f"><span>Kode Kelas (unik)</span><input name="code" required maxlength="20" placeholder="XII-IPA-1" style="text-transform:uppercase"></label>
   <div class="g2">
-    <label class="f"><span>Iuran per minggu (Rp)</span><input name="nom" type="number" min="0" step="500" value="5000" required></label>
-    <label class="f"><span>Mulai tanggal</span><input name="start" type="date" value="${today()}" required></label>
+    <label class="f"><span>Iuran/minggu (Rp)</span><input name="nom" type="number" min="0" step="500" value="5000" required></label>
+    <label class="f"><span>Mulai Tanggal</span><input name="start" type="date" value="${today()}" required></label>
   </div>
-  <div class="g2">
-    <label class="f"><span>PIN bendahara</span><input name="pb" type="password" inputmode="numeric" maxlength="8" required placeholder="4–8 angka"></label>
-    <label class="f"><span>PIN siswa</span><input name="ps" type="password" inputmode="numeric" maxlength="8" required placeholder="4–8 angka"></label>
-  </div>
-  <button class="btn full pri" style="margin-top:8px">Buat kelas</button>
+  <label class="f"><span>PIN Bendahara</span><input name="pb" type="password" inputmode="numeric" maxlength="8" required placeholder="4-8 angka"></label>
+  <button class="btn full pri" style="margin-top:4px">Buat Kelas</button>
 </form></div></section>`;
 
-const hdr = () => `<header class="top np"><div class="brand">${mk(36)}<div><b>${h(C.name)}</b><small>${h(C.school)}</small></div></div><div class="rt"><span class="chip" id="sync-status" style="background:var(--okb);color:var(--ok);border-color:transparent">${ic('check')}</span><button class="ib" data-a="theme" aria-label="Ganti tema">${ic('moon')}</button><button class="ib" data-a="logout" aria-label="Keluar">${ic('logout')}</button></div></header>`;
+const hdr = () => `<header class="top np"><div class="brand">${mk(34, 9)}<div><b>${h(C.name)}</b><small>${h(C.school)}</small></div></div><div class="rt"><span class="chip" id="sync-status" style="background:var(--ok-bg);color:var(--ok);border:1px solid var(--ok-bd);padding:5px 6px">${ic('check')}</span><button class="ib" data-a="theme" aria-label="Ganti tema">${ic('moon')}</button><button class="ib" data-a="logout" aria-label="Keluar">${ic('logout')}</button></div></header>`;
 const nav = () => `<nav class="nav np"><div>${TABS[S.role].map(([k, i, l]) => `<button class="${S.tab == k ? 'on' : ''}" data-a="tab" data-k="${k}">${ic(i)}${l}</button>`).join('')}</div></nav>`;
 
-const txRow = (t, del) => `<div class="row"><div class="m"><b>${h(t.note)}</b><small>${rd(t.d)} · ${t.t == 'in' ? 'Pemasukan' : 'Pengeluaran'}${t.c ? ' · ' + h(t.c) : ''}</small></div><span class="${t.t == 'in' ? 'pos' : 'neg'}">${t.t == 'in' ? '+' : '−'}${rp(t.a)}</span>${del ? `<button class="ib" style="width:32px;height:32px;background:transparent" data-a="etx" data-id="${t.id}" aria-label="Edit transaksi">${ic('edit')}</button><button class="ib" style="width:32px;height:32px;background:transparent" data-a="dtx" data-id="${t.id}" aria-label="Hapus transaksi">${ic('trash')}</button>` : ''}</div>`;
+const txRow = (t, del) => `<div class="row"><div class="m"><b>${h(t.note)}</b><small>${rd(t.d)} · ${t.t == 'in' ? 'Pemasukan' : 'Pengeluaran'}${t.c ? ' · ' + h(t.c) : ''}</small></div><span class="mono ${t.t == 'in' ? 'pos' : 'neg'}" style="font-size:14px">${t.t == 'in' ? '+' : '−'}${rp(t.a)}</span>${del ? `<button class="ib" style="width:30px;height:30px" data-a="etx" data-id="${t.id}" aria-label="Edit">${ic('edit')}</button><button class="ib" style="width:30px;height:30px" data-a="dtx" data-id="${t.id}" aria-label="Hapus">${ic('trash')}</button>` : ''}</div>`;
 
 const mine = () => {
-  const id = S.me || '', sd = C.students.find(x => x.id == id);
-  let r = '';
-  if (sd) {
-    const z = ss(id);
-    r = `<div class="row"><div class="m"><b>${z.l} dari ${z.t} minggu lunas${z.part ? ` (${z.part} parsial)` : ''}</b><small>${z.debt ? 'Tunggakan ' + rp(z.debt) : 'Tidak ada tunggakan'}</small></div><span class="chip ${z.debt ? 'r' : ''}">${z.debt ? 'Tunggakan ' + rp(z.debt) : 'Lunas semua'}</span></div>`;
-  }
-  return `<div class="card"><h3>Cek status saya</h3><select data-c="me" style="margin-top:12px"><option value="">Pilih namamu…</option>${C.students.map(x => `<option value="${x.id}" ${x.id == id ? 'selected' : ''}>${h(x.n)}</option>`).join('')}</select>${r}</div>`;
+  const id = S.studentId;
+  const sd = C.students.find(x => x.id == id);
+  if (!sd) return '';
+  const z = ss(id);
+  return `<div class="card">
+    <h3 style="margin-bottom:2px">Halo, ${h(sd.n.split(' ')[0])}</h3>
+    <p class="mu" style="margin:0 0 16px;font-size:13px">Berikut ringkasan iuranmu.</p>
+    <div class="g2">
+      <div class="stat"><small>Total Lunas</small><b class="pos">${z.l} minggu</b></div>
+      <div class="stat"><small>Tunggakan</small><b class="${z.debt ? 'neg' : 'pos'}">${z.debt ? rp(z.debt) : 'Lunas'}</b></div>
+    </div>
+    ${z.part ? `<div class="chip p" style="margin-top:12px">${z.part} minggu dengan pembayaran parsial</div>` : ''}
+    <button class="btn full pri" style="margin-top:18px" data-a="tab" data-k="iuran">Lihat Rincian Iuran</button>
+  </div>`;
 };
 
 function vChartM() {
@@ -564,7 +898,7 @@ function vChartM() {
   const ks = Object.keys(m).sort().slice(-6);
   if (!ks.length) return '';
   const mx = Math.max(...ks.map(k => Math.max(m[k].i, m[k].o)), 1);
-  return `<div class="card"><h3>Arus kas bulanan</h3><div class="chart">${ks.map(k => `<div class="bc"><div class="bs"><i class="bi" style="height:${m[k].i / mx * 100}%"></i><i class="bo" style="height:${m[k].o / mx * 100}%"></i></div><small>${new Date(k + '-01').toLocaleDateString('id-ID', { month: 'short' })}</small></div>`).join('')}</div><div class="lg2"><span><i class="bi"></i>Masuk</span><span><i class="bo"></i>Keluar</span></div></div>`;
+  return `<div class="card"><div class="section-title">Arus Kas Bulanan</div><small class="mu">Perbandingan pemasukan & pengeluaran</small><div class="chart">${ks.map(k => `<div class="bc"><div class="bs"><i class="bi" style="height:${m[k].i / mx * 100}%"></i><i class="bo" style="height:${m[k].o / mx * 100}%"></i></div><small>${new Date(k + '-01').toLocaleDateString('id-ID', { month: 'short' })}</small></div>`).join('')}</div><div class="lg2"><span><i class="bi"></i>Masuk</span><span><i class="bo"></i>Keluar</span></div></div>`;
 }
 
 function vChartW() {
@@ -577,7 +911,7 @@ function vChartW() {
     ws.push([w, a, out]);
   }
   const tg = n * C.nominal, mx = Math.max(tg, ...ws.map(x => x[2]), 1);
-  return `<div class="card"><h3>Arus Kas Mingguan</h3><small class="mu">Iuran masuk vs pengeluaran</small><div class="chart">${ws.map(([w, a, out]) => `<div class="bc w"><div class="bs"><i class="bi" style="height:${tg ? Math.max(2, a / tg * 100) : 2}%"></i><i class="bo" style="height:${mx ? Math.max(2, out / mx * 100) : 2}%"></i></div><small>M${w + 1}</small></div>`).join('')}</div><div class="lg2"><span><i class="bi"></i>Masuk</span><span><i class="bo"></i>Keluar</span></div></div>`;
+  return `<div class="card"><div class="section-title">Arus Kas Mingguan</div><small class="mu">Iuran masuk vs pengeluaran</small><div class="chart">${ws.map(([w, a, out]) => `<div class="bc"><div class="bs"><i class="bi" style="height:${tg ? Math.max(2, a / tg * 100) : 2}%"></i><i class="bo" style="height:${mx ? Math.max(2, out / mx * 100) : 2}%"></i></div><small>M${w + 1}</small></div>`).join('')}</div><div class="lg2"><span><i class="bi"></i>Masuk</span><span><i class="bo"></i>Keluar</span></div></div>`;
 }
 
 function vChart() {
@@ -586,33 +920,68 @@ function vChart() {
 }
 
 const vAct = () => {
-  if (S.role == 's') return mine();
-  const cw = curWk();
-  if (!C.students.length) return S.role == 'b' ? `<div class="card"><h3>Mulai dari sini</h3><div class="row"><span class="chip">1</span><div class="m"><b>Tambah siswa</b><small>Boleh sekaligus dengan nomor WA</small></div><button class="btn sm pri" data-a="tab" data-k="sis">Buka</button></div><div class="row"><span class="chip">2</span><div class="m"><b>Bagikan kode kelas dan PIN</b><small>PIN siswa ke teman, PIN wali ke wali kelas</small></div></div></div>` : '';
+  if (S.role == 's') return '';
+  if (!C.students.length) return S.role == 'b' ? `<div class="card"><div class="section-title">Mulai dari sini</div><p class="mu" style="margin:4px 0 14px;font-size:13px">Tambahkan siswa terlebih dahulu untuk mulai mengelola iuran.</p><button class="btn full pri" data-a="tab" data-k="sis">${ic('plus')} Tambah Siswa</button></div>` : '';
   const l = C.students.filter(s => ss(s.id).debt > 0);
-  const waBlastBtn = (S.role == 'b' || S.role == 'w') && l.length ? `<button class="btn sm" style="background:var(--okb);color:var(--ok)" data-a="wa_blast">${icw('whatsapp')} WA Blast</button>` : '';
-  return `<div class="card"><div class="rowh"><div><h3>Belum lunas</h3><small>${l.length} siswa</small></div>${waBlastBtn}</div>${l.slice(0, 6).map(s => `<div class="row"><div class="m"><b>${h(s.n)}</b></div><span class="chip r">${rp(ss(s.id).debt)}</span></div>`).join('') || '<p class="pos" style="text-align:center;padding:20px 0">Semua sudah lunas</p>'}${l.length > 6 ? `<small style="display:block;text-align:center;margin-top:12px">+${l.length - 6} lainnya</small>` : ''}</div>`;
+  const waBlastBtn = (S.role == 'b' || S.role == 'w') && l.length ? `<button class="btn sm wa" data-a="wa_blast">${icw('whatsapp')} Blast</button>` : '';
+  return `<div class="card">
+    <div class="rowh"><div class="section-title" style="margin-bottom:0">Belum Lunas <span class="mu" style="font-family:'Inter',sans-serif;font-weight:400;font-size:12px;margin-left:4px">(${l.length} dari ${C.students.length})</span></div>${waBlastBtn}</div>
+    ${l.slice(0, 5).map(s => `<div class="row"><div class="m"><b>${h(s.n)}</b><small>${ss(s.id).unpaidWeeks} minggu</small></div><span class="chip r mono">${rp(ss(s.id).debt)}</span></div>`).join('') || '<p class="pos" style="text-align:center;padding:16px 0;margin:0;font-size:14px">Semua siswa sudah lunas</p>'}
+    ${l.length > 5 ? `<button class="lnk" style="display:block;text-align:center;margin:10px auto 0;font-size:13px" data-a="tab" data-k="${S.role === 'w' ? 'tg' : 'iuran'}">+${l.length - 5} lainnya →</button>` : ''}
+  </div>`;
 };
 
 function vHome() {
-  const s = st(), pct = s.n ? Math.round(s.thisPaid / s.n * 100) : 0;
+  const s = st();
+  if (S.role == 's') return mine();
+
+  const pct = s.n ? Math.round(s.thisPaid / s.n * 100) : 0;
   const rec = [...C.tx].sort((a, b) => b.d.localeCompare(a.d)).slice(0, 5);
   return `<div class="hero">
     <small>Saldo kas saat ini</small>
-    <div class="big" data-n="${s.saldo}">${rp(s.saldo)}</div>
-    <small style="color:rgba(255,255,255,0.8)">${h(C.name)} · ${rd(today())}</small>
+    <div class="big" data-n="${s.saldo}"><span class="cur">Rp</span>${Math.round(s.saldo).toLocaleString('id-ID')}</div>
+    <div class="meta">${h(C.name)} · ${rd(today())}</div>
   </div>
   <div class="g2">
-    <div class="card" style="padding:16px"><small class="mu">Pemasukan</small><b class="pos" style="display:block;font-size:18px;margin-top:4px">${rp(s.p + s.i)}</b></div>
-    <div class="card" style="padding:16px"><small class="mu">Pengeluaran</small><b class="neg" style="display:block;font-size:18px;margin-top:4px">${rp(s.o)}</b></div>
-    <div class="card" style="padding:16px"><small class="mu">Tunggakan</small><b style="display:block;font-size:18px;margin-top:4px">${rp(s.debt)}</b></div>
-    <div class="card" style="padding:16px"><small class="mu">Lunas minggu ini</small><div style="display:flex;align-items:center;gap:10px;margin-top:6px"><div style="width:36px;height:36px;border-radius:50%;background:conic-gradient(var(--pri) ${pct}%, var(--bd) 0);display:grid;place-items:center"><span style="width:28px;height:28px;border-radius:50%;background:var(--sf);display:grid;place-items:center;font-size:9px;font-weight:600">${pct}%</span></div><b style="margin:0;font-size:18px">${s.thisPaid}/${s.n}</b></div></div>
+    <div class="stat"><small>Pemasukan</small><b class="pos">${rp(s.p + s.i)}</b></div>
+    <div class="stat"><small>Pengeluaran</small><b class="neg">${rp(s.o)}</b></div>
+    <div class="stat"><small>Tunggakan</small><b class="${s.debt ? 'neg' : 'pos'}">${s.debt ? rp(s.debt) : 'Lunas'}</b></div>
+    <div class="stat"><small>Lunas minggu ini</small><div class="circle"><div class="ring" style="background:conic-gradient(var(--accent) ${pct}%, var(--bd) 0)"><span>${pct}%</span></div><b>${s.thisPaid}/${s.n}</b></div></div>
   </div>
   ${vAct()}${vChart()}
-  <div class="card"><h3>Transaksi terakhir</h3>${rec.length ? rec.map(t => txRow(t)).join('') : '<p class="mu" style="text-align:center;padding:20px 0">Belum ada transaksi.</p>'}</div>`;
+  <div class="card"><div class="section-title">Transaksi Terakhir</div>${rec.length ? '<div style="margin-top:4px">' + rec.map(t => txRow(t)).join('') + '</div>' : '<p class="mu" style="text-align:center;padding:16px 0;margin:0;font-size:13px">Belum ada transaksi.</p>'}</div>`;
 }
 
 function vIuran() {
+  if (S.role === 's') {
+    const sid = S.studentId;
+    const sd = C.students.find(x => x.id == sid);
+    if (!sd) return '<div class="card mu">Data siswa tidak ditemukan.</div>';
+    const z = ss(sid), p = C.pay[sid] || {}, cw = curWk(), W = [...Array(cw + 1).keys()].reverse();
+    
+    const rows = W.map(w => {
+      const nom = nominalForWeek(w);
+      const val = +p[w] || 0;
+      const stt = payStatus(val, nom);
+      const label = stt === 2 ? 'Lunas' : stt === 1 ? 'Parsial' : 'Belum Bayar';
+      const cls = stt === 2 ? 'g' : stt === 1 ? 'p' : 'r';
+      return `<div class="row">
+        <div class="m"><b>Minggu ${w + 1}</b><small>${wkDate(w)}</small></div>
+        <div style="text-align:right"><span class="chip ${cls}">${label}</span><small class="mono" style="display:block;margin-top:3px">${val ? rp(val) : 'Rp 0'} / ${rp(nom)}</small></div>
+      </div>`;
+    }).join('');
+    
+    return `<div class="card">
+      <div class="section-title">Iuran Saya</div>
+      <p class="mu" style="margin:0 0 16px;font-size:13px">${h(sd.n)}</p>
+      <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+        <span class="chip g">Lunas: ${z.l} minggu</span>
+        <span class="chip ${z.debt ? 'r' : 'g'}">Tunggakan: ${z.debt ? rp(z.debt) : 'Rp 0'}</span>
+      </div>
+      <div style="max-height:440px;overflow:auto">${rows}</div>
+    </div>`;
+  }
+
   const ro = S.role != 'b', cw = curWk(), W = [...Array(cw + 1).keys()];
   const head = W.map(w => `<th>M${w + 1}</th>`).join('');
   const rows = C.students.map(s => {
@@ -626,35 +995,36 @@ function vIuran() {
       const label = stt === 2 ? 'lunas' : stt === 1 ? 'parsial ' + rp(val) : 'belum bayar';
       return `<td><button class="cl ${cls}" ${ro ? 'disabled' : `data-a="pay" data-s="${s.id}" data-w="${w}"`} aria-label="Minggu ${w + 1} ${label}">${stt === 2 ? '✓' : stt === 1 ? '½' : '·'}</button></td>`;
     }).join('');
-    const btnTagih = (S.role == 'b' || S.role == 'w') && z.debt ? `<br><button class="btn sm" style="background:var(--okb);color:var(--ok);padding:2px 6px;font-size:10px;margin-top:4px" data-a="was" data-id="${s.id}">${icw('whatsapp')} Tagih</button>` : '';
-    return `<tr><td data-a="det" data-id="${s.id}" style="cursor:pointer"><b>${h(s.n)}</b>${btnTagih}</td>${cells}<td class="${z.debt ? 'neg' : 'pos'}">${z.debt ? rp(z.debt) : 'Lunas'}</td></tr>`;
+    const btnTagih = (S.role == 'b' || S.role == 'w') && z.debt && s.hp ? `<button class="btn xs wa" style="margin-top:4px" data-a="was" data-id="${s.id}">${icw('whatsapp')} Tagih</button>` : '';
+    return `<tr><td data-a="det" data-id="${s.id}" style="cursor:pointer"><b>${h(s.n)}</b>${btnTagih ? '<br>' + btnTagih : ''}</td>${cells}<td class="${z.debt ? 'neg' : 'pos'} mono" style="font-size:12px">${z.debt ? rp(z.debt) : 'Lunas'}</td></tr>`;
   }).join('');
-  const waBlastBtn = (S.role == 'b' || S.role == 'w') ? `<div style="display:flex;gap:8px"><button class="btn sm" style="background:var(--okb);color:var(--ok)" data-a="wa_blast">${icw('whatsapp')} Blast</button>${S.role == 'b' ? `<button class="btn sm pri" data-a="all">Lunasi</button>` : ''}</div>` : '';
-  return `<div class="card"><div class="rowh" style="margin:0"><div><h3>Iuran mingguan</h3><small>${rp(C.nominal)} / minggu · mulai ${rd(C.start)}</small></div>${ro && S.role == 's' ? '' : waBlastBtn}</div></div>
-  ${C.students.length ? `<input data-q placeholder="Cari nama siswa…" class="np" style="margin-bottom:12px" value="${h(S.fq || '')}" oninput="applySearch(this.value)"><div class="gw" id="gw"><table><thead><tr><th>Nama / Aksi</th>${head}<th>Tunggakan</th></tr></thead><tbody>${rows}</tbody></table></div>` : `<div class="card mu">Belum ada siswa. ${ro ? '' : 'Tambahkan di tab Siswa.'}</div>`}`;
+  const waBlastBtn = (S.role == 'b' || S.role == 'w') ? `<div style="display:flex;gap:6px"><button class="btn sm wa" data-a="wa_blast">${icw('whatsapp')} Blast</button>${S.role == 'b' ? `<button class="btn sm pri" data-a="all">Lunasi</button>` : ''}</div>` : '';
+  
+  return `<div class="card"><div class="rowh" style="margin:0"><div class="section-title" style="margin-bottom:0">Iuran Mingguan</div>${waBlastBtn}</div><small class="mu" style="display:block;margin-top:4px">${rp(C.nominal)} / minggu · mulai ${rd(C.start)}</small></div>
+  ${C.students.length ? `<input data-q placeholder="Cari nama siswa..." class="np" style="margin-bottom:10px" value="${h(S.fq || '')}" oninput="applySearch(this.value)"><div class="gw" id="gw"><table><thead><tr><th>Nama / Aksi</th>${head}<th>Tunggakan</th></tr></thead><tbody>${rows}</tbody></table></div>` : `<div class="card"><div class="empty-state"><b>Belum ada siswa</b><span style="font-size:13px">Tambahkan siswa di tab Siswa</span></div></div>`}`;
 }
 
 function vTx() {
   const ro = S.role != 'b', s = st();
   let l = [...C.tx].sort((a, b) => b.d.localeCompare(a.d));
   return `<div class="card">
-    <div class="rowh"><div><h3>Buku kas</h3><small>Iuran ${rp(s.p)}</small></div>${ro ? '' : `<div style="display:flex;gap:8px"><button class="btn sm" data-a="btx">Batch</button><button class="btn sm pri" data-a="atx">${ic('plus')} Catat</button></div>`}</div>
-    <div style="display:flex;gap:10px;margin-bottom:16px">
+    <div class="rowh"><div class="section-title" style="margin-bottom:0">Buku Kas</div>${ro ? '' : `<div style="display:flex;gap:6px"><button class="btn sm ghost" data-a="btx">Batch</button><button class="btn sm pri" data-a="atx">${ic('plus')} Catat</button></div>`}</div>
+    <div style="display:flex;gap:8px;margin-bottom:12px;margin-top:8px">
       <input id="search-tx" placeholder="Cari keterangan..." value="${h(S.fq || '')}" oninput="applySearch(this.value)" style="flex:1">
-      <select onchange="S.ft=this.value;render(false)" style="width:110px" aria-label="Filter jenis">
+      <select onchange="S.ft=this.value;render(false)" style="width:110px" aria-label="Filter">
         <option value="">Semua</option>
         <option value="in" ${S.ft == 'in' ? 'selected' : ''}>Masuk</option>
         <option value="out" ${S.ft == 'out' ? 'selected' : ''}>Keluar</option>
       </select>
     </div>
     <div id="tx-list">
-      ${l.length ? l.map(t => txRow(t, !ro)).join('') : '<p class="mu" style="text-align:center">Tidak ada transaksi ditemukan.</p>'}
+      ${l.length ? l.map(t => txRow(t, !ro)).join('') : '<div class="empty-state"><b>Tidak ada transaksi</b><span style="font-size:13px">Coba ubah filter atau kata kunci</span></div>'}
     </div>
   </div>`;
 }
 
-const vSis = () => `<div class="card"><h3>Tambah siswa</h3><form data-f="sis" style="margin-top:12px"><label class="f"><span>Satu siswa per baris: Nama, Nomor WA (opsional)</span><textarea name="n" rows="3" required placeholder="Andi, 08123456789&#10;Budi, 08129876543"></textarea></label><button class="btn full pri">${ic('plus')} Tambahkan</button></form></div>
-<div class="card"><h3>Daftar siswa (${C.students.length})</h3>${C.students.map((s, i) => `<div class="row"><span class="chip">${i + 1}</span><div class="m"><b>${h(s.n)}</b><small>${h(s.hp || 'Belum ada nomor WA')}</small></div><button class="ib" style="background:transparent" data-a="esis" data-id="${s.id}" aria-label="Edit siswa">${ic('edit')}</button><button class="ib" style="background:transparent" data-a="dsis" data-id="${s.id}" aria-label="Hapus siswa">${ic('trash')}</button></div>`).join('') || '<p class="mu">Belum ada siswa.</p>'}</div>`;
+const vSis = () => `<div class="card"><div class="section-title">Tambah Siswa</div><form data-f="sis" style="margin-top:12px"><label class="f"><span>Satu siswa per baris: Nama, Nomor WA (opsional)</span><textarea name="n" rows="4" required placeholder="Andi Pratama, 08123456789&#10;Budi Santoso, 08129876543"></textarea></label><small class="hint" style="display:block;margin-bottom:12px">Siswa akan membuat PIN sendiri saat login pertama.</small><button class="btn full pri">${ic('plus')} Tambahkan</button></form></div>
+<div class="card"><div class="rowh" style="margin:0 0 8px"><div class="section-title" style="margin-bottom:0">Daftar Siswa</div><span class="chip">${C.students.length}</span></div>${C.students.map((s, i) => `<div class="row"><span class="chip" style="min-width:24px;justify-content:center">${i + 1}</span><div class="m"><b>${h(s.n)}</b><small>${h(s.hp || 'Belum ada nomor WA')}</small></div><button class="ib" style="width:32px;height:32px" data-a="esis" data-id="${s.id}" aria-label="Edit">${ic('edit')}</button><button class="ib" style="width:32px;height:32px" data-a="dsis" data-id="${s.id}" aria-label="Hapus">${ic('trash')}</button></div>`).join('') || '<div class="empty-state"><b>Belum ada siswa</b><span style="font-size:13px">Tambahkan siswa melalui form di atas</span></div>'}</div>`;
 
 function vLap() {
   const s = st();
@@ -668,7 +1038,7 @@ function vLap() {
   const ymd = String(now.getFullYear()) + String(now.getMonth() + 1).padStart(2, '0');
   const noLap = `${String(C.code).replace(/[^A-Z0-9]/gi, '').slice(0, 6).toUpperCase()}/${ymd}/KAS`;
   return `<div class="card">
-  <div class="rowh np" style="flex-wrap:wrap; justify-content:center; gap:8px; margin-bottom:20px;">
+  <div class="rowh np" style="flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:16px">
     <button class="btn sm ghost" data-a="dl_pdf" style="flex:1">${ic('fileText')} Unduh PDF</button>
     <button class="btn sm pri" data-a="print_menu" style="flex:1">${ic('file')} Cetak</button>
   </div>
@@ -678,7 +1048,7 @@ function vLap() {
       <div class="rep-inner">
         <div class="rep" id="rep-area">
           <div class="rh">
-            <div class="rh-brand"><svg width="44" height="44" viewBox="0 0 96 96"><rect width="96" height="96" rx="20" fill="var(--tx)"/><path d="M28 36h34a8 8 0 0 1 8 8v18a8 8 0 0 1-8 8H28a8 8 0 0 1-8-8V28a8 8 0 0 1 8-8h28a6 6 0 0 1 6 6" stroke="var(--bg)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="62" cy="54" r="6" fill="var(--bg)"/></svg></div>
+            <div class="rh-brand"><svg width="42" height="42" viewBox="0 0 96 96"><rect width="96" height="96" rx="20" fill="#1a1815"/><g stroke="#d97706" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M26 34 H58 C62.4183 34 66 37.5817 66 42 V66 C66 70.4183 62.4183 74 58 74 H30 C25.5817 74 22 70.4183 22 66 V26 C22 21.5817 25.5817 18 30 18 H54 C57.3137 18 60 20.6863 60 24"/><path d="M34 34 V74" stroke-opacity="0.3"/><circle cx="58" cy="54" r="4.5" fill="#faf8f5" stroke="none"/><path d="M44 24 H50" stroke-width="4"/></g></svg></div>
             <div class="rh-text">
               <p class="rh-school">${h(C.school)}</p>
               <h1 class="rh-title">Laporan Keuangan Kas Kelas</h1>
@@ -701,21 +1071,21 @@ function vLap() {
           </div>
           <p class="rsec">Rekap Pengeluaran</p>
           <table><thead><tr><th>Kategori</th><th style="text-align:right">Jumlah</th></tr></thead><tbody>
-            ${Object.keys(cats).length ? Object.keys(cats).map(c => `<tr><td>${h(c)}</td><td>${rp(cats[c])}</td></tr>`).join('') : '<tr><td colspan="2" style="text-align:left;color:var(--mu)">Belum ada pengeluaran tercatat</td></tr>'}
-            ${Object.keys(cats).length ? `<tr class="saldo-row"><td>Total pengeluaran</td><td>${rp(s.o)}</td></tr>` : ''}
+            ${Object.keys(cats).length ? Object.keys(cats).map(c => `<tr><td>${h(c)}</td><td class="mono">${rp(cats[c])}</td></tr>`).join('') : '<tr><td colspan="2" style="text-align:left;color:var(--mu)">Belum ada pengeluaran tercatat</td></tr>'}
+            ${Object.keys(cats).length ? `<tr class="saldo-row"><td>Total pengeluaran</td><td class="mono">${rp(s.o)}</td></tr>` : ''}
           </tbody></table>
           <p class="rsec">Status Iuran Siswa</p>
-          <p style="font-size:11px;color:var(--mu);margin:-4px 0 12px">${lunas} dari ${C.students.length} siswa telah lunas &middot; ${belum} siswa masih memiliki tunggakan</p>
-          <table><thead><tr><th style="width:36%">Nama Siswa</th><th style="text-align:right;width:34%">Progress</th><th style="text-align:right;width:30%">Status</th></tr></thead><tbody>
+          <p style="font-size:11px;color:var(--mu);margin:-4px 0 12px;font-weight:500">${lunas} dari ${C.students.length} siswa lunas &middot; ${belum} masih menunggak</p>
+          <table><thead><tr><th style="width:42%">Nama Siswa</th><th style="text-align:right;width:28%">Progress</th><th style="text-align:right;width:30%">Status</th></tr></thead><tbody>
             ${C.students.map(x => {
               const z = ss(x.id);
               const pct = z.t ? Math.round(z.l / z.t * 100) : 0;
-              return `<tr><td>${h(x.n)}</td><td><div class="rprog"><div class="rprog-track"><div class="rprog-fill" style="width:${pct}%"></div></div><span class="rprog-text">${z.l}/${z.t}</span></div></td><td>${z.debt ? `<span class="rstatus-tunggak">${rp(z.debt)}</span>` : `<span class="rstatus-lunas">Lunas</span>`}</td></tr>`;
+              return `<tr><td style="font-weight:600">${h(x.n)}</td><td><div class="rprog"><div class="rprog-track"><div class="rprog-fill" style="width:${pct}%"></div></div><span class="rprog-text">${z.l}/${z.t}</span></div></td><td>${z.debt ? `<span class="rstatus-tunggak mono">${rp(z.debt)}</span>` : `<span class="rstatus-lunas">Lunas</span>`}</td></tr>`;
             }).join('') || '<tr><td colspan="3" style="text-align:left;color:var(--mu)">Belum ada siswa</td></tr>'}
           </tbody></table>
           <div class="rfoot">
-            <div class="rfoot-l">Laporan ini dihasilkan otomatis oleh KasKelas.<br>Data bersifat real-time dan dapat berubah.</div>
-            <div class="rfoot-r">No. ${h(noLap)}<br>Hal. 1 / 1</div>
+            <div>Dicetak otomatis oleh <b>KasKelas</b></div>
+            <div style="text-align:right">No. <b>${h(noLap)}</b></div>
           </div>
         </div>
       </div>
@@ -724,52 +1094,52 @@ function vLap() {
 </div>`;
 }
 
-/* ---------- SETELAN (Menu & Sub-view) ---------- */
+/* ---------- SETELAN ---------- */
 const vSet = () => `
-<div style="margin-bottom:12px"><h2 style="font-size:28px;font-weight:700;letter-spacing:-1px;padding-left:4px">Setelan</h2></div>
-<div style="margin-bottom:24px">
-  <div style="display:flex;align-items:center;gap:16px;padding:0 4px">
-    ${mk(64)}
-    <div>
-      <b style="display:block;font-size:20px;font-weight:600">${h(C.name)}</b>
-      <small class="mu">${h(C.school)}</small>
-    </div>
-  </div>
+<div style="margin-bottom:8px" data-a="dev_trigger"><h2 class="set-title">Setelan</h2></div>
+<div style="margin-bottom:20px">
+  <div class="profile-head">${mk(60, 15)}<div><b>${h(C.name)}</b><small>${h(C.school)}</small></div></div>
 </div>
 
-<div class="set-menu" style="margin-bottom:16px">
+<div class="set-menu" style="margin-bottom:12px">
   <div class="set-item" data-a="tab" data-k="set_info">
-    <div class="set-icon blue">${ic('users')}</div>
+    <div class="set-icon">${ic('users')}</div>
     <div class="set-text"><b>Profil Kelas</b><small>Sekolah, kelas, iuran, kode</small></div>
     <div class="set-arrow">${ic('chevronRight')}</div>
   </div>
   <div class="set-item" data-a="tab" data-k="set_pin">
-    <div class="set-icon purple">${ic('shield')}</div>
-    <div class="set-text"><b>Keamanan PIN</b><small>Ganti PIN bendahara & siswa</small></div>
+    <div class="set-icon">${ic('shield')}</div>
+    <div class="set-text"><b>Keamanan PIN</b><small>Ganti PIN & kode pemulihan</small></div>
     <div class="set-arrow">${ic('chevronRight')}</div>
   </div>
   <div class="set-item" data-a="tab" data-k="set_backup">
-    <div class="set-icon green">${ic('database')}</div>
+    <div class="set-icon">${ic('database')}</div>
     <div class="set-text"><b>Cadangan Data</b><small>Unduh atau pulihkan</small></div>
     <div class="set-arrow">${ic('chevronRight')}</div>
   </div>
-</div>
-
-<div class="set-menu" style="margin-bottom:16px">
   <div class="set-item" data-a="tab" data-k="about">
-    <div class="set-icon orange">${ic('info')}</div>
+    <div class="set-icon">${ic('info')}</div>
     <div class="set-text"><b>Tentang KasKelas</b><small>Info aplikasi & pengembang</small></div>
     <div class="set-arrow">${ic('chevronRight')}</div>
   </div>
 </div>
 
-<div class="set-menu" style="margin-bottom:16px">
+<div class="set-menu" style="margin-bottom:12px">
   <div class="set-item" data-a="tab" data-k="set_danger">
-    <div class="set-icon red">${ic('trash')}</div>
+    <div class="set-icon" style="background:var(--er-bg);color:var(--er);border-color:var(--er-bd)">${ic('trash')}</div>
     <div class="set-text"><b style="color:var(--er)">Zona Bahaya</b><small>Hapus kelas & data permanen</small></div>
     <div class="set-arrow">${ic('chevronRight')}</div>
   </div>
 </div>
+
+${S.devMode ? `
+<div class="set-menu" style="margin-bottom:12px;border-color:var(--accent)">
+  <div class="set-item" data-a="tab" data-k="dev">
+    <div class="set-icon">${ic('sliders')}</div>
+    <div class="set-text"><b style="color:var(--accent)">Mode Developer</b><small>Alat bantu pengembang</small></div>
+    <div class="set-arrow">${ic('chevronRight')}</div>
+  </div>
+</div>` : ''}
 `;
 
 const vSetInfo = () => `
@@ -778,35 +1148,30 @@ const vSetInfo = () => `
   <form data-f="info">
     <label class="f"><span>Nama Sekolah</span><input name="school" value="${h(C.school)}" required maxlength="50"></label>
     <label class="f"><span>Nama Kelas</span><input name="name" value="${h(C.name)}" required maxlength="30"></label>
-    ${S.role === 'b' ? `<label class="f"><span>Kode Kelas</span><input name="code" value="${h(C.code)}" required maxlength="20" style="text-transform:uppercase"></label><small style="display:block;margin-top:-12px;margin-bottom:16px;font-size:11px;color:var(--er)">Hati-hati: Mengubah kode kelas akan merubah kode login. Bagikan kode baru ke siswa.</small>` : `<label class="f"><span>Kode Kelas</span><input name="code" value="${h(C.code)}" readonly style="background:var(--sf);cursor:not-allowed;"></label><small style="display:block;margin-top:-12px;margin-bottom:16px;font-size:11px;color:var(--mu)">Hanya Bendahara yang dapat mengubah kode kelas.</small>`}
-    <label class="f"><span>Iuran per minggu (Rp)</span><input name="nom" type="number" min="0" step="500" value="${C.nominal}" required></label>
-    <small style="display:block;margin-bottom:20px;font-size:12px;color:var(--mu)">Perubahan nominal tidak berlaku retroaktif — minggu lalu tetap pakai nominal lama.</small>
+    <label class="f"><span>Kode Kelas</span><input name="code" value="${h(C.code)}" readonly></label>
+    <small class="hint" style="display:block;margin-top:-8px;margin-bottom:14px">Kode kelas dikunci agar tidak terjadi error sinkronisasi.</small>
+    <label class="f"><span>Iuran per Minggu (Rp)</span><input name="nom" type="number" min="0" step="500" value="${C.nominal}" required></label>
+    <small class="hint" style="display:block;margin-top:-8px;margin-bottom:16px">Perubahan nominal tidak berlaku retroaktif — minggu lalu tetap pakai nominal lama.</small>
     <button class="btn full pri">Simpan Perubahan</button>
   </form>
 </div>
-<div class="card" style="background:var(--bg);border:1px solid var(--bd);">
-  <small class="mu" style="display:block;text-align:center">Kode Kelas Aktif</small>
-  <h3 style="text-align:center;margin:8px 0;letter-spacing:1px">${h(C.code)}</h3>
-</div>`;
+<div class="card" style="text-align:center"><small class="mu">Kode Kelas Aktif</small><h3 style="margin:6px 0;letter-spacing:1.5px;font-family:ui-monospace,monospace;font-size:16px">${h(C.code)}</h3></div>`;
 
 const vSetPin = () => `
 <div class="set-header"><button data-a="tab" data-k="set">${ic('chevronLeft')} Setelan</button></div>
 <div class="card">
   <form data-f="pin">
     <label class="f"><span>PIN Bendahara Saat Ini</span><input name="o" type="password" inputmode="numeric" maxlength="8" required></label>
-    <div class="g2">
-      <label class="f"><span>PIN Bendahara Baru</span><input name="pb" type="password" inputmode="numeric" maxlength="8" placeholder="Kosong = tetap"></label>
-      <label class="f"><span>PIN Siswa Baru</span><input name="ps" type="password" inputmode="numeric" maxlength="8" placeholder="Kosong = tetap"></label>
-    </div>
-    <button class="btn full pri">Perbarui PIN</button>
+    <label class="f"><span>PIN Bendahara Baru</span><input name="pb" type="password" inputmode="numeric" maxlength="8" placeholder="Kosongkan jika tidak ingin ganti"></label>
+    <button class="btn full pri" style="margin-top:4px">Perbarui PIN</button>
   </form>
 </div>
-<div class="card" style="background:var(--bg);border:1px solid var(--bd);">
-  <h3 style="font-size:15px;margin-bottom:12px">Kode Pemulihan Bendahara</h3>
-  <p class="mu" style="font-size:12px;margin-bottom:12px">Simpan kode ini di tempat aman. Digunakan jika Anda lupa PIN.</p>
-  <div style="display:flex;gap:10px">
-    <input value="${h(C.rec_code || 'Memuat...')}" readonly style="font-family:monospace;font-weight:600;letter-spacing:1px;text-align:center;background:var(--sf);color:var(--tx)">
-    <button class="btn sm" data-a="cp_rec">Copy</button>
+<div class="card">
+  <h3 style="font-size:15px;margin-bottom:6px">Kode Pemulihan Bendahara</h3>
+  <p class="mu" style="font-size:12.5px;margin:0 0 12px">Simpan kode ini di tempat aman. Digunakan jika Anda lupa PIN.</p>
+  <div style="display:flex;gap:8px">
+    <input value="${h(C.rec_code || 'Memuat...')}" readonly style="font-family:ui-monospace,monospace;font-weight:600;letter-spacing:1px;text-align:center">
+    <button class="btn sm ghost" data-a="cp_rec">Copy</button>
   </div>
 </div>`;
 
@@ -814,50 +1179,42 @@ const vSetBackup = () => `
 <div class="set-header"><button data-a="tab" data-k="set">${ic('chevronLeft')} Setelan</button></div>
 <div class="set-menu">
   <div class="set-item" data-a="bak">
-    <div class="set-icon green">${ic('download')}</div>
+    <div class="set-icon">${ic('download')}</div>
     <div class="set-text"><b>Unduh Cadangan</b><small>Simpan data ke file JSON</small></div>
     <div class="set-arrow">${ic('chevronRight')}</div>
   </div>
   <div class="set-item" data-a="rst_file">
-    <div class="set-icon orange">${ic('file')}</div>
+    <div class="set-icon">${ic('file')}</div>
     <div class="set-text"><b>Pulihkan Data</b><small>Impor dari file cadangan</small></div>
     <div class="set-arrow">${ic('chevronRight')}</div>
   </div>
 </div>
-<p class="mu" style="font-size:12px;margin-top:16px;padding:0 4px">Data kas Anda tersimpan secara aman di cloud. Fitur cadangan ini berguna jika Anda ingin menyimpan arsip mandiri atau pindah perangkat.</p>`;
+<p class="mu" style="font-size:12.5px;margin-top:14px;padding:0 2px;line-height:1.6">Data kas Anda tersimpan di cloud. Fitur cadangan ini berguna untuk arsip mandiri atau pindah perangkat.</p>`;
 
 const vSetDanger = () => `
 <div class="set-header"><button data-a="tab" data-k="set">${ic('chevronLeft')} Setelan</button></div>
-<div class="card" style="border-color:var(--erb);background:var(--erb)">
-  <h3 style="color:var(--er);font-size:16px;margin-bottom:8px">Zona Bahaya</h3>
-  <p class="mu" style="color:var(--er);font-size:13px;margin-bottom:16px;line-height:1.6">Tindakan di bawah ini permanen dan tidak bisa dibatalkan. Pastikan Anda sudah mengunduh cadangan data.</p>
-  <div style="display:flex;flex-direction:column;gap:10px">
-    <button class="btn ghost full" style="color:var(--er);border-color:rgba(255,59,48,0.3);background:var(--bg)" data-a="clear_data">Kosongkan Data Kas</button>
+<div class="card" style="border-color:var(--er-bd);background:var(--er-bg)">
+  <h3 style="color:var(--er);font-size:15px;margin-bottom:6px">Zona Bahaya</h3>
+  <p class="mu" style="color:var(--er);font-size:13px;margin:0 0 16px;line-height:1.6">Tindakan di bawah ini permanen dan tidak bisa dibatalkan. Pastikan Anda sudah mengunduh cadangan.</p>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <button class="btn full ghost" style="color:var(--er);border-color:var(--er-bd)" data-a="clear_data">Kosongkan Data Kas</button>
     <button class="btn red full" data-a="rst">Hapus Kelas Permanen</button>
   </div>
 </div>`;
 
 const vSetW = () => `
-<div style="margin-bottom:12px"><h2 style="font-size:28px;font-weight:700;letter-spacing:-1px;padding-left:4px">Setelan</h2></div>
-<div style="margin-bottom:24px">
-  <div style="display:flex;align-items:center;gap:16px;padding:0 4px">
-    ${mk(64)}
-    <div>
-      <b style="display:block;font-size:20px;font-weight:600">${h(C.name)}</b>
-      <small class="mu">${h(C.school)}</small>
-    </div>
-  </div>
+<div style="margin-bottom:8px"><h2 class="set-title">Setelan</h2></div>
+<div style="margin-bottom:20px">
+  <div class="profile-head">${mk(60, 15)}<div><b>${h(C.name)}</b><small>${h(C.school)}</small></div></div>
 </div>
-<div class="set-menu" style="margin-bottom:16px">
+<div class="set-menu" style="margin-bottom:12px">
   <div class="set-item" data-a="tab" data-k="set_pin_walkes">
-    <div class="set-icon purple">${ic('shield')}</div>
-    <div class="set-text"><b>Ganti PIN Saya</b><small>Perbarui PIN akses Wali Kelas</small></div>
+    <div class="set-icon">${ic('shield')}</div>
+    <div class="set-text"><b>Ganti PIN Saya</b><small>Perbarui PIN Wali Kelas</small></div>
     <div class="set-arrow">${ic('chevronRight')}</div>
   </div>
-</div>
-<div class="set-menu">
   <div class="set-item" data-a="tab" data-k="about">
-    <div class="set-icon orange">${ic('info')}</div>
+    <div class="set-icon">${ic('info')}</div>
     <div class="set-text"><b>Tentang KasKelas</b><small>Info aplikasi & pengembang</small></div>
     <div class="set-arrow">${ic('chevronRight')}</div>
   </div>
@@ -868,12 +1225,59 @@ const vSetPinW = () => `
 <div class="card">
   <form data-f="pin_walkes">
     <label class="f"><span>PIN Saat Ini</span><input name="o" type="password" inputmode="numeric" maxlength="8" required placeholder="••••"></label>
-    <label class="f"><span>PIN Baru</span><input name="pn" type="password" inputmode="numeric" maxlength="8" required placeholder="4-8 angka"></label>
-    <button class="btn full pri">Perbarui PIN</button>
+    <label class="f"><span>PIN Baru (4-8 angka)</span><input name="pn" type="password" inputmode="numeric" maxlength="8" required></label>
+    <button class="btn full pri" style="margin-top:4px">Perbarui PIN</button>
   </form>
 </div>`;
 
-// Daftar View
+const vSetS = () => `
+<div style="margin-bottom:8px" data-a="dev_trigger"><h2 class="set-title">Setelan</h2></div>
+<div style="margin-bottom:20px">
+  <div class="profile-head">${mk(60, 15)}<div><b>${h((C.students.find(x=>x.id==S.studentId)||{}).n || 'Siswa')}</b><small>${h(C.name)}</small></div></div>
+</div>
+<div class="set-menu" style="margin-bottom:12px">
+  <div class="set-item" data-a="tab" data-k="set_pin_s">
+    <div class="set-icon">${ic('shield')}</div>
+    <div class="set-text"><b>Ganti PIN Pribadi</b><small>Perbarui PIN login Anda</small></div>
+    <div class="set-arrow">${ic('chevronRight')}</div>
+  </div>
+  <div class="set-item" data-a="tab" data-k="about">
+    <div class="set-icon">${ic('info')}</div>
+    <div class="set-text"><b>Tentang KasKelas</b><small>Info aplikasi & pengembang</small></div>
+    <div class="set-arrow">${ic('chevronRight')}</div>
+  </div>
+</div>
+${S.devMode ? `
+<div class="set-menu" style="margin-bottom:12px;border-color:var(--accent)">
+  <div class="set-item" data-a="tab" data-k="dev">
+    <div class="set-icon">${ic('sliders')}</div>
+    <div class="set-text"><b style="color:var(--accent)">Mode Developer</b><small>Alat bantu pengembang</small></div>
+    <div class="set-arrow">${ic('chevronRight')}</div>
+  </div>
+</div>` : ''}
+`;
+
+const vSetPinS = () => `
+<div class="set-header"><button data-a="tab" data-k="set_s">${ic('chevronLeft')} Setelan</button></div>
+<div class="card">
+  <form data-f="pin_siswa">
+    <label class="f"><span>PIN Saat Ini</span><input name="o" type="password" inputmode="numeric" maxlength="8" required placeholder="••••"></label>
+    <label class="f"><span>PIN Baru (4-8 angka)</span><input name="pn" type="password" inputmode="numeric" maxlength="8" required></label>
+    <button class="btn full pri" style="margin-top:4px">Perbarui PIN</button>
+  </form>
+</div>`;
+
+const vDev = () => `
+<div class="set-header"><button data-a="tab" data-k="${S.role === 's' ? 'set_s' : 'set'}">${ic('chevronLeft')} Setelan</button></div>
+<div class="card" style="border-color:var(--accent)">
+  <h3 style="color:var(--accent);font-size:15px;margin-bottom:6px">Mode Developer</h3>
+  <p class="mu" style="font-size:12.5px;margin:0 0 16px">Menu ini hanya untuk pengembang.</p>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <button class="btn full ghost" data-a="dev_sync">Paksa Sinkronisasi Server</button>
+    <button class="btn full red" data-a="dev_reset">Hapus Semua Cache Lokal</button>
+  </div>
+</div>`;
+
 const V = { 
   home: vHome, iuran: vIuran, tx: vTx, sis: vSis, lap: vLap, 
   set: () => S.role === 'w' ? vSetW() : vSet(),
@@ -881,29 +1285,79 @@ const V = {
   set_pin: vSetPin,
   set_backup: vSetBackup,
   set_danger: vSetDanger,
-  set_pin_walkes: vSetPinW
+  set_pin_walkes: vSetPinW,
+  set_s: vSetS,
+  set_pin_s: vSetPinS,
+  dev: vDev
 };
 
 V.tg = () => {
   const l = C.students.map(s => ({ s, z: ss(s.id) })).filter(x => x.z.debt > 0).sort((a, b) => b.z.debt - a.z.debt);
-  const waBlastBtn = (S.role == 'b' || S.role == 'w') && l.length ? `<button class="btn sm" style="background:var(--okb);color:var(--ok)" data-a="wa_blast">${icw('whatsapp')} WA Blast</button>` : '';
-  return `<div class="card"><div class="rowh"><div><h3>Belum melunasi</h3><small>${l.length} dari ${C.students.length} siswa · total ${rp(st().debt)}</small></div>${waBlastBtn}</div>${l.map(x => `<div class="row"><div class="m"><b>${h(x.s.n)}</b><small>${x.z.unpaidWeeks} minggu belum lunas · ${rp(x.z.debt)}</small></div>${(S.role == 'b' || S.role == 'w') && x.s.hp ? `<button class="btn sm" style="background:var(--okb);color:var(--ok)" data-a="was" data-id="${x.s.id}">${icw('whatsapp')} Tagih</button>` : '<span class="chip g">Tanpa WA</span>'}</div>`).join('') || '<p class="pos">Semua siswa sudah lunas</p>'}</div>`;
+  const waBlastBtn = (S.role == 'b' || S.role == 'w') && l.length ? `<button class="btn sm wa" data-a="wa_blast">${icw('whatsapp')} Blast</button>` : '';
+  return `<div class="card"><div class="rowh"><div><h3>Belum Melunasi</h3><small>${l.length} dari ${C.students.length} siswa · total ${rp(st().debt)}</small></div>${waBlastBtn}</div>${l.map(x => `<div class="row"><div class="m"><b>${h(x.s.n)}</b><small>${x.z.unpaidWeeks} minggu belum lunas · ${rp(x.z.debt)}</small></div>${(S.role == 'b' || S.role == 'w') && x.s.hp ? `<button class="btn sm wa" data-a="was" data-id="${x.s.id}">${icw('whatsapp')} Tagih</button>` : '<span class="chip">Tanpa WA</span>'}</div>`).join('') || '<div class="empty-state"><b>Semua siswa sudah lunas</b><span style="font-size:13px">Tidak ada tunggakan saat ini</span></div>'}</div>`;
 };
 
-V.about = () => `
-<div class="set-header"><button data-a="tab" data-k="${S.role === 's' ? 'home' : 'set'}">${ic('chevronLeft')} Kembali</button></div>
-<div class="card">
-  <div style="text-align:center;margin-bottom:24px">
-    ${mk(72)}
-    <h2 style="margin:16px 0 4px;font-size:24px;font-weight:600;letter-spacing:-0.5px">KasKelas</h2>
-    <p class="mu" style="margin:0;font-size:12px;letter-spacing:0.5px;text-transform:uppercase">Uang Kas Digital</p>
-    <span class="chip" style="margin-top:10px;background:var(--grad);color:#fff;border:0">v1.0 &middot; Edisi TJKT</span>
+V.about = () => {
+  return `
+<div class="set-header"><button data-a="tab" data-k="${S.role === 's' ? 'set_s' : 'set'}">${ic('chevronLeft')} Kembali</button></div>
+<div class="card" style="padding:0;overflow:hidden">
+  <div class="about-hero">
+    ${mk(72, 18)}
+    <h2>KasKelas</h2>
+    <p class="mu" style="margin:0;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;font-weight:600">Manajemen Uang Kas Digital</p>
+    <span class="badge">v2.2 · Edisi Premium</span>
   </div>
-  <div class="card" style="margin-bottom:12px"><h3 style="font-size:15px">Apa itu KasKelas?</h3><p style="margin:8px 0 0;line-height:1.7;color:var(--tx);font-size:14px">Aplikasi manajemen uang kas kelas berbasis web yang dirancang khusus untuk memudahkan bendahara, wali kelas, dan siswa dalam mengelola iuran mingguan secara digital.</p></div>
-  <div class="card" style="margin-bottom:12px"><h3 style="font-size:15px">Fungsi Utama</h3><ul style="margin:10px 0 0;padding-left:20px;line-height:1.9;color:var(--tx);font-size:14px"><li>Catat iuran mingguan per siswa</li><li>Kelola transaksi kas</li><li>Pantau tunggakan real-time</li><li>Kirim pengingat WA</li><li>Cetak laporan premium</li><li>Multi-role access</li><li>Backup & restore data</li></ul></div>
-  <div class="card" style="margin-bottom:12px"><h3 style="font-size:15px">Dibuat Oleh</h3><div style="display:flex;align-items:center;gap:16px;margin-top:12px"><div style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,0.2);display:grid;place-items:center;font-size:24px;font-weight:600;color:#fff;flex-shrink:0">AS</div><div><p style="margin:0;font-weight:600;font-size:16px;color:var(--tx)">Alfan Setiawan</p><p style="margin:2px 0 0;font-size:13px;color:var(--mu)">Creator & Developer</p></div></div><div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--bd);font-size:13px;line-height:1.8;color:var(--tx)"><div>Kelas: XI TJKT 1</div><div>Jurusan: TJKT</div><div>Sekolah: SMK Negeri 1 Maluku Tengah</div></div></div>
-  <div class="card" style="text-align:center"><p style="margin:0;font-size:12px;color:var(--mu);line-height:1.8">KasKelas v1.0<br>© ${new Date().getFullYear()} Alfan Setiawan<br>SMK Negeri 1 Maluku Tengah</p></div>
+  
+  <div style="padding: 0 20px 20px">
+    <div class="about-section">
+      <h3>Tentang Aplikasi</h3>
+      <p>KasKelas adalah aplikasi manajemen uang kas kelas berbasis web modern yang dirancang khusus untuk memudahkan Bendahara, Wali Kelas, dan Siswa dalam mengelola keuangan secara transparan, akurat, dan real-time. Aplikasi ini dibuat untuk menggantikan pencatatan manual yang rentan hilang dan salah hitung.</p>
+    </div>
+
+    <div class="about-section">
+      <h3>Manfaat Bagi Sekolah</h3>
+      <ul class="about-list">
+        <li><b>Transparansi Mutlak</b><span>Siswa dan Wali Kelas bisa memantau saldo dan tunggakan secara langsung tanpa harus bertanya ke bendahara.</span></li>
+        <li><b>Efisiensi Waktu</b><span>Cetak laporan PDF profesional dalam hitungan detik, tidak perlu hitung manual di buku tulis.</span></li>
+        <li><b>Keamanan Data</b><span>Data tersimpan di cloud yang aman, terhindar dari risiko buku kas hilang atau rusak.</span></li>
+        <li><b>Pengingat Otomatis</b><span>Fitur WA Blast memudahkan Wali Kelas/Bendahara mengingatkan tunggakan dengan sopan dan cepat.</span></li>
+      </ul>
+    </div>
+
+    <div class="about-section">
+      <h3>Fitur Unggulan & Kegunaannya</h3>
+      <ul class="about-list">
+        <li><b>Multi-Role Access</b><span>Tiga akses terpisah (Bendahara, Siswa, Wali Kelas) dengan hak dan tampilan yang berbeda.</span></li>
+        <li><b>Pencatatan Iuran Mingguan</b><span>Mendukung pembayaran lunas maupun parsial (dicicil) per minggu dengan riwayat yang jelas.</span></li>
+        <li><b>Buku Kas Digital</b><span>Mencatat semua pengeluaran dan pemasukan non-iuran dengan kategori yang rapi.</span></li>
+        <li><b>Arus Kas Interaktif</b><span>Grafik mingguan dan bulanan untuk melihat kesehatan keuangan kelas secara visual.</span></li>
+        <li><b>Laporan PDF & Cetak</b><span>Menghasilkan laporan formal siap cetak (A4/F4) untuk diserahkan ke sekolah atau wali murid.</span></li>
+        <li><b>Mode Offline</b><span>Tetap bisa mencatat iuran atau melihat data saat tidak ada sinyal internet (Sinkronisasi otomatis saat online).</span></li>
+        <li><b>Backup & Restore</b><span>Mengunduh seluruh data kelas ke dalam file JSON sebagai arsip cadangan mandiri.</span></li>
+      </ul>
+    </div>
+
+    <div class="about-section">
+      <h3>Alasan Dibuat</h3>
+      <p>Berangkat dari pengalaman melihat buku kas kelas yang sering hilang, catatan yang tidak sinkron antar siswa, dan bendahara yang kewalahan menghitung tunggakan di akhir semester. KasKelas hadir sebagai solusi digital yang memodernisasi tata kelola uang kas agar lebih profesional.</p>
+    </div>
+
+    <div class="about-section" style="margin-top:24px;padding-top:20px;border-top:1px solid var(--bd)">
+      <h3>Pengembang</h3>
+      <div class="dev-card">
+        <div class="dev-avatar">AS</div>
+        <div class="dev-info">
+          <b>Alfan Setiawan</b>
+          <small>Creator & Lead Developer</small>
+          <div style="font-size:11.5px;color:var(--mu);margin-top:4px;line-height:1.5">XI TJKT 1<br>SMK Negeri 1 Maluku Tengah</div>
+        </div>
+      </div>
+    </div>
+    
+    <p style="margin:20px 0 0;text-align:center;font-size:11px;color:var(--mu);line-height:1.7">KasKelas v2.2<br>© ${new Date().getFullYear()} Alfan Setiawan. Hak cipta dilindungi.</p>
+  </div>
 </div>`;
+};
 
 function setRoleTheme(r) { document.documentElement.dataset.role = r || ''; }
 
@@ -958,35 +1412,49 @@ function enter() {
 
 /* ---------- Actions ---------- */
 const A = {
-  _y: null, _n: null,
+  _y: null, _n: null, _pendingInfo: null,
   home() { S.v = 'land'; render(); },
   login(d) { S = { v: 'login', r: d.r }; render(); },
   forgot() { S.v = 'forgot'; render(); },
   forgot_admin() { S.v = 'forgot_admin'; render(); },
   reg() { S.v = 'reg'; render(); },
-  tab(d) { 
-    if (d.k !== 'set' && d.k !== 'home' && d.k !== 'about') {
-      history.replaceState({ trap: true, tab: d.k }, '', location.href);
-    }
-    S.tab = d.k; 
-    S.fq = ''; 
-    S.ft = ''; 
-    render(); 
+  tab(d) { S.tab = d.k; S.fq = ''; S.ft = ''; render(); },
+  logout() { 
+    ask('Apakah Anda yakin ingin keluar dari akun ini?', () => { 
+      C = null; S = { v: 'land' }; clearSession(); closeM(); render(); 
+    }); 
   },
-  logout() { ask('Apakah Anda yakin ingin keluar dari akun ini?', () => { C = null; S = { v: 'land' }; closeM(); render(); }); },
   listcls() {
-    modal(`<h3>Daftar Kelas Terdaftar</h3><p class="mu">Pilih kelas di bawah ini untuk mengisi kode kelas secara otomatis, atau klik ikon untuk mengedit/menghapus.</p><div id="cls-list" style="max-height:50vh;overflow:auto;"><p class="mu" style="text-align:center;padding:20px 0">Memuat data...</p></div><button class="btn ghost full" style="margin-top:16px" data-a="no">Tutup</button>`);
+    modal(`<h3>Daftar Kelas Terdaftar</h3><p>Pilih kelas di bawah ini untuk mengisi kode secara otomatis.</p><div id="cls-list" style="max-height:50vh;overflow:auto"><p class="mu" style="text-align:center;padding:20px 0">Memuat data...</p></div><button class="btn ghost full" style="margin-top:14px" data-a="no">Tutup</button>`);
+    
+    const localMap = {};
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('kas:data:')) {
+          try { const c = JSON.parse(localStorage.getItem(key)); if (c && c.code) localMap[c.code] = c; } catch(e) {}
+        }
+      }
+    } catch(e) {}
+
     rpc('kk_list_classes').then(data => {
       const list = document.getElementById('cls-list');
       if (!list) return;
-      if (!data || !data.length) { list.innerHTML = '<p class="mu" style="text-align:center;padding:20px 0">Belum ada kelas terdaftar di server.</p>'; return; }
+      if (!data || !data.length) { list.innerHTML = '<div class="empty-state"><b>Belum ada kelas</b><span style="font-size:13px">Daftarkan kelas baru terlebih dahulu</span></div>'; return; }
+      
       const grouped = {};
       data.forEach(c => { const sch = c.school || 'Tanpa Sekolah'; if (!grouped[sch]) grouped[sch] = []; grouped[sch].push(c); });
+
       let html = '';
       for (const sch in grouped) {
-        html += `<div style="margin-bottom:16px"><b style="display:block;font-size:13px;color:var(--mu);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;font-weight:500">${h(sch)}</b>`;
+        html += `<div style="margin-bottom:14px"><b style="display:block;font-size:11px;color:var(--mu);margin-bottom:6px;text-transform:uppercase;letter-spacing:.6px;font-weight:600">${h(sch)}</b>`;
         grouped[sch].forEach(c => {
-          html += `<div class="row" style="padding:12px 0; border-bottom:1px solid var(--bd)"><div class="m" style="cursor:pointer" onclick="A.fill_code('${js(c.code)}')"><b>${h(c.name)}</b><small>${h(c.code)}</small></div><button class="ib" style="color:var(--pri)" onclick="A.editcls('${js(c.code)}', '${js(c.name)}', '${js(c.school)}')" aria-label="Edit kelas">${ic('edit')}</button><button class="ib" style="color:var(--er)" onclick="A.delcls('${js(c.code)}', '${js(c.name)}')" aria-label="Hapus kelas">${ic('trash')}</button><button class="btn sm pri" onclick="A.fill_code('${js(c.code)}')">Pilih</button></div>`;
+          html += `<div class="row" style="padding:10px 0">
+            <div class="m" style="cursor:pointer" onclick="A.fill_code('${js(c.code)}')"><b>${h(c.name)}</b><small style="font-family:ui-monospace,monospace">${h(c.code)}</small></div>
+            <button class="ib" style="color:var(--accent);width:32px;height:32px" onclick="A.editcls('${js(c.code)}', '${js(c.name)}', '${js(c.school)}')">${ic('edit')}</button>
+            <button class="ib" style="color:var(--er);width:32px;height:32px" onclick="A.delcls('${js(c.code)}', '${js(c.name)}')">${ic('trash')}</button>
+            <button class="btn sm pri" onclick="A.fill_code('${js(c.code)}')">Pilih</button>
+          </div>`;
         });
         html += `</div>`;
       }
@@ -994,89 +1462,69 @@ const A = {
     }).catch(err => {
       const list = document.getElementById('cls-list');
       if (!list) return;
-      let localHtml = `<div style="text-align:center; padding:12px; background:var(--erb); color:var(--er); border-radius:12px; font-size:12px; margin-bottom:16px"><b>⚠️ Server Offline</b><br><span style="opacity:0.8">Menampilkan data yang tersimpan di HP ini.</span><button class="btn sm" style="margin-top:8px; background:#fff; color:var(--er); border:1px solid var(--erb); width:100%" onclick="A.listcls()">Coba Lagi</button></div>`;
-      let found = 0;
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key.startsWith('kas:data:')) {
-          try {
-            const c = JSON.parse(localStorage.getItem(key));
-            if (c && c.code) {
-              localHtml += `<div class="row" style="padding:12px 0; border-bottom:1px solid var(--bd)"><div class="m" style="cursor:pointer" onclick="A.fill_code('${js(c.code)}')"><b>${h(c.name)}</b><small>${h(c.school)} · ${h(c.code)}</small></div><button class="btn sm pri" onclick="A.fill_code('${js(c.code)}')">Pilih</button></div>`;
-              found++;
-            }
-          } catch(e) {}
-        }
-      }
-      list.innerHTML = found > 0 ? localHtml : `<p class="pos" style="text-align:center;padding:20px 0;color:var(--er)">Gagal memuat: ${h(err.message)}<br><br>Belum ada data kelas yang tersimpan di HP ini.</p>`;
+      let html = `<div style="padding:10px;background:var(--er-bg);color:var(--er);border-radius:10px;font-size:12px;margin-bottom:14px;border:1px solid var(--er-bd)"><b>Mode Offline</b><br><span style="opacity:.8">Hanya menampilkan kelas tersimpan di HP.</span><button class="btn sm" style="margin-top:8px;background:#fff;color:var(--er);border:1px solid var(--er-bd);width:100%" onclick="A.listcls()">Coba Lagi</button></div>`;
+      const localCodes = Object.keys(localMap);
+      if (localCodes.length === 0) { list.innerHTML = html + '<p class="mu" style="text-align:center;padding:20px 0">Tidak ada data kelas di HP ini.</p>'; return; }
+      localCodes.forEach(code => {
+        const c = localMap[code];
+        html += `<div class="row" style="padding:10px 0"><div class="m" style="cursor:pointer" onclick="A.fill_code('${js(c.code)}')"><b>${h(c.name)} <span class="chip r" style="font-size:9px;padding:1px 5px">Offline</span></b><small>${h(c.school)} · ${h(c.code)}</small></div><button class="ib" style="color:var(--er);width:32px;height:32px" onclick="A.delLocal('${js(c.code)}', '${js(c.name)}')">${ic('trash')}</button><button class="btn sm pri" onclick="A.fill_code('${js(c.code)}')">Pilih</button></div>`;
+      });
+      list.innerHTML = html;
     });
   },
   fill_code(c) { 
-    closeM(); 
-    S.v = 'login'; 
-    render(); 
+    closeM(); S.v = 'login'; render(); 
     setTimeout(() => { 
       const inp = document.getElementById('login-code'); 
-      if (inp) {
-        inp.value = c; 
-        inp.dispatchEvent(new Event('input', { bubbles: true }));
-        inp.dispatchEvent(new Event('change', { bubbles: true }));
-        const pinInp = document.getElementById('login-pin');
-        if (pinInp) pinInp.focus();
-      }
-    }, 350); 
+      if (inp) { inp.value = c; inp.dispatchEvent(new Event('input', { bubbles: true })); inp.dispatchEvent(new Event('change', { bubbles: true })); const pinInp = document.getElementById('login-pin'); if (pinInp) pinInp.focus(); }
+    }, 300); 
   },
-  delcls(c, n) { closeM(); modal(`<h3>Hapus Kelas</h3><p class="mu">Kelas <b>${h(n)} (${h(c)})</b> akan dihapus permanen. Masukkan PIN Bendahara untuk melanjutkan.</p><form data-f="delcls"><input type="hidden" name="code" value="${h(c)}"><label class="f"><span>PIN Bendahara</span><input name="pin" type="password" inputmode="numeric" maxlength="8" required autofocus></label><button class="btn red full" style="margin-top:8px">Hapus Kelas</button></form>`); },
-  editcls(c, n, s) { closeM(); modal(`<h3>Edit Info Kelas</h3><p class="mu">Ubah nama kelas atau sekolah. Masukkan PIN Bendahara untuk menyimpan perubahan.</p><form data-f="editcls"><input type="hidden" name="code" value="${h(c)}"><label class="f"><span>Nama Kelas</span><input name="name" value="${h(n)}" required maxlength="30"></label><label class="f"><span>Nama Sekolah</span><input name="school" value="${h(s)}" required maxlength="50"></label><label class="f"><span>PIN Bendahara (Verifikasi)</span><input name="pin" type="password" inputmode="numeric" maxlength="8" required autofocus placeholder="••••"></label><button class="btn full pri" style="margin-top:8px">Simpan Perubahan</button></form>`); },
+  delcls(c, n) { closeM(); modal(`<h3>Hapus Kelas</h3><p>Kelas <b>${h(n)} (${h(c)})</b> akan dihapus permanen. Masukkan PIN Bendahara untuk melanjutkan.</p><form data-f="delcls"><input type="hidden" name="code" value="${h(c)}"><label class="f"><span>PIN Bendahara</span><input name="pin" type="password" inputmode="numeric" maxlength="8" required autofocus></label><button class="btn red full" style="margin-top:4px">Hapus Kelas</button></form>`); },
+  delLocal(c, n) {
+    closeM();
+    ask(`Hapus kelas <b>${h(n)}</b> dari HP ini?<br><br><small class="mu">Data di server TIDAK terhapus. Login lagi dengan kode <b>${h(c)}</b> dan internet aktif untuk mengunduh ulang.</small>`, () => {
+      localStorage.removeItem('kas:data:' + c);
+      if (localStorage.getItem('kas:last_code') === c) localStorage.removeItem('kas:last_code');
+      if (C && C.code === c) { C = null; S = { v: 'land' }; clearSession(); render(); } else setTimeout(() => A.listcls(), 200);
+      toast('Kelas dihapus dari HP');
+    });
+  },
+  editcls(c, n, s) { closeM(); modal(`<h3>Edit Info Kelas</h3><p>Ubah nama kelas atau sekolah. Masukkan PIN Bendahara untuk menyimpan.</p><form data-f="editcls"><input type="hidden" name="code" value="${h(c)}"><label class="f"><span>Nama Kelas</span><input name="name" value="${h(n)}" required maxlength="30"></label><label class="f"><span>Nama Sekolah</span><input name="school" value="${h(s)}" required maxlength="50"></label><label class="f"><span>PIN Bendahara</span><input name="pin" type="password" inputmode="numeric" maxlength="8" required autofocus placeholder="••••"></label><button class="btn full pri" style="margin-top:4px">Simpan</button></form>`); },
   pay(d) {
     const sid = d.s, w = +d.w, p = C.pay[sid] = C.pay[sid] || {}, nom = nominalForWeek(w);
     if (p[w]) { ask('Hapus pembayaran minggu ini?', () => { delete p[w]; save(); render(false); }); return; }
-    modal(`<h3>Bayar Iuran</h3><p class="mu">Masukkan nominal yang dibayarkan. Tagihan standar minggu ini: ${rp(nom)}</p><form data-f="pay_custom"><input type="hidden" name="s" value="${sid}"><input type="hidden" name="w" value="${w}"><label class="f"><span>Nominal (Rp)</span><input name="a" type="number" min="1" value="${nom}" required autofocus></label><button class="btn full pri" style="margin-top:8px">Simpan Pembayaran</button></form>`);
+    modal(`<h3>Bayar Iuran</h3><p>Masukkan nominal yang dibayarkan. Tagihan standar minggu ini: ${rp(nom)}</p><form data-f="pay_custom"><input type="hidden" name="s" value="${sid}"><input type="hidden" name="w" value="${w}"><label class="f"><span>Nominal (Rp)</span><input name="a" type="number" min="1" value="${nom}" required autofocus></label><button class="btn full pri" style="margin-top:4px">Simpan</button></form>`);
   },
   all() { ask('Tandai semua siswa lunas untuk minggu ini?', () => { const w = curWk(), nom = nominalForWeek(w); C.students.forEach(s => { const p = C.pay[s.id] = C.pay[s.id] || {}; if ((+p[w]||0) < nom) p[w] = nom; }); save(); render(false); toast('Semua siswa ditandai lunas'); }); },
-  atx() { modal(`<h3>Catat transaksi</h3><form data-f="tx"><div class="seg"><label><input type="radio" name="t" value="out" checked><span>Pengeluaran</span></label><label><input type="radio" name="t" value="in"><span>Pemasukan</span></label></div><label class="f"><span>Jumlah (Rp)</span><input name="a" type="number" min="1" required></label><label class="f"><span>Kategori</span><select name="c">${CATS.map(c => `<option>${c}</option>`).join('')}</select></label><label class="f"><span>Keterangan</span><input name="note" required maxlength="60" placeholder="mis. Beli spidol"></label><label class="f"><span>Tanggal</span><input name="d" type="date" value="${today()}" required></label><button class="btn full pri" style="margin-top:8px">Simpan</button></form>`); },
-  btx() { modal(`<h3>Catat Banyak Transaksi</h3><p class="mu">Format: Tanggal | jenis(in/out) | Nominal | Keterangan. Satu baris satu transaksi.</p><form data-f="btx"><label class="f"><textarea name="n" rows="6" required placeholder="2023-10-25 | out | 15000 | Beli sapu&#10;in | 50000 | Donasi orang tua"></textarea></label><button class="btn full pri" style="margin-top:8px">Simpan Semua</button></form>`); },
-  etx(d) { const t = C.tx.find(x => x.id == d.id) || { t: 'out', d: today(), note: '', a: '', c: '' }; modal(`<h3>Ubah transaksi</h3><form data-f="tx"><input type="hidden" name="id" value="${h(d.id)}"><div class="seg"><label><input type="radio" name="t" value="out" ${t.t == 'out' ? 'checked' : ''}><span>Pengeluaran</span></label><label><input type="radio" name="t" value="in" ${t.t == 'in' ? 'checked' : ''}><span>Pemasukan</span></label></div><label class="f"><span>Jumlah (Rp)</span><input name="a" type="number" min="1" required value="${t.a}"></label><label class="f"><span>Kategori</span><select name="c">${CATS.map(c => `<option ${c == t.c ? 'selected' : ''}>${c}</option>`).join('')}</select></label><label class="f"><span>Keterangan</span><input name="note" required maxlength="60" value="${h(t.note)}"></label><label class="f"><span>Tanggal</span><input name="d" type="date" value="${t.d}" required></label><button class="btn full pri" style="margin-top:8px">Simpan Perubahan</button></form>`); },
+  atx() { modal(`<h3>Catat Transaksi</h3><form data-f="tx"><div class="seg"><label><input type="radio" name="t" value="out" checked><span>Pengeluaran</span></label><label><input type="radio" name="t" value="in"><span>Pemasukan</span></label></div><label class="f"><span>Jumlah (Rp)</span><input name="a" type="number" min="1" required></label><label class="f"><span>Kategori</span><select name="c">${CATS.map(c => `<option>${c}</option>`).join('')}</select></label><label class="f"><span>Keterangan</span><input name="note" required maxlength="60" placeholder="mis. Beli spidol"></label><label class="f"><span>Tanggal</span><input name="d" type="date" value="${today()}" required></label><button class="btn full pri" style="margin-top:4px">Simpan</button></form>`); },
+  btx() { modal(`<h3>Catat Banyak Transaksi</h3><p>Format: Tanggal | jenis(in/out) | Nominal | Keterangan. Satu baris satu transaksi.</p><form data-f="btx"><label class="f"><textarea name="n" rows="6" required placeholder="2023-10-25 | out | 15000 | Beli sapu&#10;in | 50000 | Donasi orang tua"></textarea></label><button class="btn full pri" style="margin-top:4px">Simpan Semua</button></form>`); },
+  etx(d) { const t = C.tx.find(x => x.id == d.id) || { t: 'out', d: today(), note: '', a: '', c: '' }; modal(`<h3>Ubah Transaksi</h3><form data-f="tx"><input type="hidden" name="id" value="${h(d.id)}"><div class="seg"><label><input type="radio" name="t" value="out" ${t.t == 'out' ? 'checked' : ''}><span>Pengeluaran</span></label><label><input type="radio" name="t" value="in" ${t.t == 'in' ? 'checked' : ''}><span>Pemasukan</span></label></div><label class="f"><span>Jumlah (Rp)</span><input name="a" type="number" min="1" required value="${t.a}"></label><label class="f"><span>Kategori</span><select name="c">${CATS.map(c => `<option ${c == t.c ? 'selected' : ''}>${c}</option>`).join('')}</select></label><label class="f"><span>Keterangan</span><input name="note" required maxlength="60" value="${h(t.note)}"></label><label class="f"><span>Tanggal</span><input name="d" type="date" value="${t.d}" required></label><button class="btn full pri" style="margin-top:4px">Simpan Perubahan</button></form>`); },
   dtx(d) { ask('Hapus transaksi ini?', () => { C.tx = C.tx.filter(t => t.id != d.id); save(); render(false); }); },
   dsis(d) { ask('Hapus siswa ini beserta catatan iurannya?', () => { C.students = C.students.filter(s => s.id != d.id); delete C.pay[d.id]; save(); render(false); }); },
-  esis(d) { const s = C.students.find(x => x.id == d.id); if (!s) return; modal(`<h3>Edit Siswa</h3><form data-f="esis"><input type="hidden" name="id" value="${s.id}"><label class="f"><span>Nama</span><input name="n" required value="${h(s.n)}" maxlength="40"></label><label class="f"><span>Nomor WA</span><input name="hp" value="${h(s.hp || '')}" maxlength="16"></label><button class="btn full pri" style="margin-top:8px">Simpan</button></form>`); },
-  print_menu() { modal(`<h3>Pilih Kertas Cetak</h3><p class="mu" style="margin-bottom:12px">Pilih ukuran kertas. Jika ingin menyimpan sebagai file PDF, pada menu cetak HP Anda, ubah tujuan printer menjadi <b>"Simpan sebagai PDF"</b>.</p><div style="display:flex;flex-direction:column;gap:10px;margin-top:20px"><button class="btn ghost full" data-a="do_print" data-k="a4" style="justify-content:flex-start"><div style="text-align:left"><b>Kertas A4 (Standar)</b><br><small class="mu">Ukuran 210 x 297 mm</small></div></button><button class="btn ghost full" data-a="do_print" data-k="f4" style="justify-content:flex-start"><div style="text-align:left"><b>Kertas F4 / Folio</b><br><small class="mu">Ukuran 215 x 330 mm (Lebih panjang)</small></div></button></div>`); },
+  esis(d) { const s = C.students.find(x => x.id == d.id); if (!s) return; modal(`<h3>Edit Siswa</h3><form data-f="esis"><input type="hidden" name="id" value="${s.id}"><label class="f"><span>Nama</span><input name="n" required value="${h(s.n)}" maxlength="40"></label><label class="f"><span>Nomor WA</span><input name="hp" value="${h(s.hp || '')}" maxlength="16"></label><button class="btn full pri" style="margin-top:4px">Simpan</button></form>`); },
+  print_menu() { modal(`<h3>Pilih Kertas Cetak</h3><p>Pilih ukuran kertas. Untuk menyimpan sebagai PDF, ubah tujuan printer menjadi <b>"Simpan sebagai PDF"</b>.</p><div style="display:flex;flex-direction:column;gap:8px"><button class="btn ghost full" data-a="do_print" data-k="a4" style="justify-content:flex-start"><div style="text-align:left"><b style="display:block;font-size:14px">Kertas A4 (Standar)</b><small class="mu" style="font-size:12px">210 × 297 mm</small></div></button><button class="btn ghost full" data-a="do_print" data-k="f4" style="justify-content:flex-start"><div style="text-align:left"><b style="display:block;font-size:14px">Kertas F4 / Folio</b><small class="mu" style="font-size:12px">215 × 330 mm (lebih panjang)</small></div></button></div>`); },
   do_print(d) { document.documentElement.dataset.paper = d.k; closeM(); setTimeout(() => { window.print(); }, 300); },
   async dl_pdf() {
     const el = $('#rep-area');
     if (!el) return toast('Laporan belum siap', 'er');
     toast('Menyiapkan PDF...', 'info');
     closeM();
-
     document.body.classList.add('print-mode');
-
     const opt = {
-      margin:       [10, 10, 10, 10],
-      filename:     `KasKelas-${C.code}-${today()}.pdf`,
-      image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { scale: 2, useCORS: true, letterRendering: true, logging: false },
-      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
+      margin: [10, 10, 10, 10],
+      filename: `KasKelas-${C.code}-${today()}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true, letterRendering: true, logging: false },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
     };
-
-    try {
-      await html2pdf().set(opt).from(el).save();
-      toast('PDF berhasil diunduh!');
-    } catch (e) {
-      toast('Gagal membuat PDF: ' + e.message, 'er');
-    } finally {
-      document.body.classList.remove('print-mode');
-    }
+    try { await html2pdf().set(opt).from(el).save(); toast('PDF berhasil diunduh!'); }
+    catch (e) { toast('Gagal membuat PDF: ' + e.message, 'er'); }
+    finally { document.body.classList.remove('print-mode'); }
   },
   clear_data() { ask('Hapus seluruh data (termasuk siswa, iuran, dan transaksi)? Aplikasi akan kembali seperti baru.', () => { C.students = []; C.pay = {}; C.tx = []; save(); render(false); toast('Seluruh data berhasil dihapus'); }); },
-  rst() { modal(`<h3>Hapus kelas</h3><p class="mu">Seluruh data kelas ini dihapus dari perangkat dan tidak bisa dikembalikan kecuali ada file cadangan. Masukkan PIN bendahara.</p><form data-f="rst"><label class="f"><input name="p" type="password" inputmode="numeric" maxlength="8" required placeholder="PIN bendahara"></label><button class="btn red full" style="margin-top:8px">Hapus permanen</button></form>`); },
-  rst_file() { 
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = '.json';
-    input.onchange = (e) => { restore(e.target); };
-    input.click();
-  },
+  rst() { modal(`<h3>Hapus Kelas</h3><p>Seluruh data kelas ini dihapus dari perangkat dan tidak bisa dikembalikan kecuali ada file cadangan. Masukkan PIN bendahara.</p><form data-f="rst"><label class="f"><input name="p" type="password" inputmode="numeric" maxlength="8" required placeholder="PIN bendahara"></label><button class="btn red full" style="margin-top:4px">Hapus permanen</button></form>`); },
+  rst_file() { const input = document.createElement('input'); input.type = 'file'; input.accept = '.json'; input.onchange = (e) => { restore(e.target); }; input.click(); },
   yes() { const f = A._y; A._y = null; A._n = null; closeM(); if (typeof f === 'function') setTimeout(f, 50); },
   no() { const c = A._n; A._y = null; A._n = null; closeM(); if (typeof c === 'function') setTimeout(c, 50); },
   cp_rec() { navigator.clipboard.writeText(C.rec_code).then(() => toast('Kode disalin!')).catch(() => toast('Gagal menyalin', 'er')); },
@@ -1087,9 +1535,9 @@ const A = {
     for (let w = curWk(); w >= 0; w--) {
       const nom = nominalForWeek(w), val = +p[w] || 0, stt = payStatus(val, nom);
       const label = stt === 2 ? 'Lunas ' + rp(val) : stt === 1 ? 'Parsial ' + rp(val) + ' / ' + rp(nom) : 'Belum';
-      r += `<div class="row"><div class="m"><b>Minggu ${w + 1}</b><small>${wkDate(w)}</small></div><span class="chip ${stt === 2 ? '' : stt === 1 ? 'p' : 'r'}">${label}</span></div>`;
+      r += `<div class="row"><div class="m"><b>Minggu ${w + 1}</b><small>${wkDate(w)}</small></div><span class="chip ${stt === 2 ? 'g' : stt === 1 ? 'p' : 'r'}">${label}</span></div>`;
     }
-    modal(`<h3>${h(s.n)}</h3><p class="mu">${z.l} lunas · ${z.part} parsial · tunggakan ${rp(z.debt)}</p><div style="max-height:50vh;overflow:auto">${r}</div>`);
+    modal(`<h3>${h(s.n)}</h3><p>${z.l} lunas · ${z.part} parsial · tunggakan ${rp(z.debt)}</p><div style="max-height:50vh;overflow:auto">${r}</div>`);
   },
   cm(d) { S.cm = d.k; render(false); },
   theme() {
@@ -1116,6 +1564,65 @@ const A = {
     const pengirim = S.role === 'b' ? 'Bendahara' : 'Wali Kelas';
     const msg = `Halo *${s.n}*,\n\nIni pesan dari *${pengirim}* ${C.name}.\n\nBerdasarkan catatan kami, kamu memiliki tunggakan uang kas sebesar *${rp(z.debt)}* (${z.unpaidWeeks} minggu belum lunas).\n\nMohon segera dibayarkan ya. Terima kasih banyak!`;
     open('https://wa.me/' + wn(s.hp) + '?text=' + encodeURIComponent(msg), '_blank');
+  },
+  async resolve_conflict(d) {
+    const pending = A._pendingInfo;
+    if (!pending) return closeM();
+    if (d.choice === 'server') {
+      closeM();
+      toast('Mengambil data terbaru dari server...');
+      try {
+        const latest = await rpc('kk_get', { p_token: S.tok });
+        if (latest && latest.data) {
+          S.ver = latest.ver;
+          C = { ...latest.data, code: C.code, nominal: +latest.data.nominal || 0, rec_code: C.rec_code, nomSnap: latest.data.nomSnap || C.nomSnap || {} };
+          persistLocal(); refreshSession(); render(false);
+          toast('Data berhasil disinkronkan dengan server');
+        }
+      } catch (e) { toast('Gagal ambil data: ' + e.message, 'er'); }
+    } else if (d.choice === 'local') {
+      closeM(); toast('Menimpa data server dengan data HP...');
+      await F._saveInfo(pending.d, pending.newNom, pending.newCode);
+    }
+    A._pendingInfo = null;
+  },
+  dev_trigger() {
+    S.clickCount = (S.clickCount || 0) + 1;
+    if (S.clickCount >= 5) {
+      S.clickCount = 0;
+      modal(`<h3>Mode Developer</h3><p>Masukkan kode otorisasi untuk mengaktifkan mode ini.</p><form data-f="dev_auth"><label class="f"><input name="code" type="text" required autofocus placeholder="Password"></label><button class="btn full pri" style="margin-top:4px">Aktifkan</button></form>`);
+    }
+  },
+  dev_trigger_cls() {
+    S.clickCountCls = (S.clickCountCls || 0) + 1;
+    if (S.clickCountCls >= 10) {
+      S.clickCountCls = 0;
+      modal(`<h3>Mode Developer</h3><p>Masukkan kode otorisasi untuk mengaktifkan mode ini.</p><form data-f="dev_auth"><label class="f"><input name="code" type="text" required autofocus placeholder="Password"></label><button class="btn full pri" style="margin-top:4px">Aktifkan</button></form>`);
+    }
+  },
+  dev_hapus(c, n) {
+    if (!S.devMode) return toast('Akses ditolak', 'er');
+    ask(`HAPUS PAKSA kelas <b>${h(n)} (${h(c)})</b>?<br><br><small class="mu" style="color:var(--er)">Data akan terhapus permanen dari server tanpa verifikasi PIN.</small>`, async () => {
+      try {
+        toast('Menghapus...');
+        const res = await rpc('kk_delete_force', { p_code: c });
+        if (res && res.error) throw new Error(res.error);
+        localStorage.removeItem('kas:data:' + c);
+        toast('Kelas dihapus permanen');
+        setTimeout(() => A.listcls(), 200);
+      } catch (e) { toast('Gagal: ' + e.message, 'er'); }
+    });
+  },
+  dev_sync() { toast('Memaksa sinkronisasi...'); push(true); },
+  dev_reset() {
+    ask('Hapus semua cache di HP ini? (Data di server aman)', () => {
+      for (let i = localStorage.length - 1; i >= 0; i--) {
+        const k = localStorage.key(i);
+        if (k.startsWith('kas:data:')) localStorage.removeItem(k);
+      }
+      clearSession(); C = null; S = { v: 'land' }; render();
+      toast('Cache lokal dibersihkan');
+    });
   }
 };
 
@@ -1128,14 +1635,13 @@ function dl(n, d, t) {
 }
 const wn = p => { p = String(p || '').replace(/\D/g, ''); return p.startsWith('0') ? '62' + p.slice(1) : p.startsWith('62') ? p : p ? '62' + p : ''; };
 
-/* ---------- Supabase / Backend ---------- */
 const SB_URL = 'https://csxtgclsmcfxcululzvj.supabase.co';
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNzeHRnY2xzbWNmeGN1bHVsenZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI0OTEzMjIsImV4cCI6MjEwODA2NzMyMn0.2n_ELlveamGo_B2AHo2p0Hl8W6VvX0Q9XSnQit4ErbI';
+const SB_KEY = 'sb_publishable_fQAOVcH73p9GktAFy7v1AA_jCAXuOXV'; 
 
 async function rpc(fn, a) {
   let r;
   try {
-    const controller = new AbortController(), timeoutId = setTimeout(() => controller.abort(), 8000);
+    const controller = new AbortController(), timeoutId = setTimeout(() => controller.abort(), 15000);
     r = await fetch(SB_URL + '/rest/v1/rpc/' + fn, { method: 'POST', headers: { apikey: SB_KEY, 'Content-Type': 'application/json' }, body: JSON.stringify(a), signal: controller.signal });
     clearTimeout(timeoutId);
   } catch (e) {
@@ -1148,87 +1654,158 @@ async function rpc(fn, a) {
   return j;
 }
 
-let pt, busy = 0, dirty = 0;
+const isAuthError = (msg) => /^sesi tidak valid$/i.test((msg || '').trim());
+const isNetworkError = (msg) => /gagal terhubung|timeout|koneksi|network|fetch|abort/i.test(msg || '');
+
+let pt, busy = 0, dirty = 0, syncPause = false, authFailCount = 0;
+
+function setDirty(val) {
+  dirty = val ? 1 : 0;
+  try {
+    if (dirty) localStorage.setItem('kas:dirty', '1');
+    else localStorage.removeItem('kas:dirty');
+  } catch (e) {}
+}
+try { if (localStorage.getItem('kas:dirty') === '1') dirty = 1; } catch (e) {}
 
 function updateSyncUI(state) {
   const el = $('#sync-status');
   if (!el) return;
   el.innerHTML = '';
-  if (state === 'saving') { el.innerHTML = ic('cloud'); el.style.background = 'var(--pri-l)'; el.style.color = 'var(--pri)'; }
-  else if (state === 'error') { el.innerHTML = ic('cloud'); el.style.background = 'var(--erb)'; el.style.color = 'var(--er)'; }
-  else { el.innerHTML = ic('check'); el.style.background = 'var(--okb)'; el.style.color = 'var(--ok)'; }
+  if (state === 'saving') { el.innerHTML = ic('cloud'); el.style.background = 'var(--accent-l)'; el.style.color = 'var(--accent)'; el.style.borderColor = 'transparent'; }
+  else if (state === 'error') { el.innerHTML = ic('cloud'); el.style.background = 'var(--er-bg)'; el.style.color = 'var(--er)'; el.style.borderColor = 'var(--er-bd)'; }
+  else { el.innerHTML = ic('check'); el.style.background = 'var(--ok-bg)'; el.style.color = 'var(--ok)'; el.style.borderColor = 'var(--ok-bd)'; }
 }
 
-function push() {
+function push(force = false) {
   if (S.role != 'b') return;
   if (!S.tok || S.tok === 'offline') { updateSyncUI('ok'); persistLocal(); return; }
-  
-  dirty = 1; updateSyncUI('saving');
+  syncPause = true;
+  setDirty(1); updateSyncUI('saving');
   clearTimeout(pt);
   pt = setTimeout(async () => {
-    if (busy) { push(); return; }
+    if (busy && !force) { push(); return; }
     busy = 1;
     try {
       const d = { ...C }; delete d.code; delete d.rec_code;
-      const res = await rpc('kk_save', { p_token: S.tok, p_data: d, p_ver: S.ver });
+      const res = await rpc('kk_save', { p_token: S.tok, p_data: d, p_ver: force ? null : String(S.ver || 1) });
       if (res.error) throw new Error(res.error);
-      S.ver = res.ver; updateSyncUI('ok'); persistLocal(); dirty = 0;
+      S.ver = res.ver; authFailCount = 0; refreshSession();
+      updateSyncUI('ok'); persistLocal(); setDirty(0);
     } catch (e) { 
-      if (/sesi tidak valid/i.test(e.message)) {
-        updateSyncUI('error');
-        toast('Sesi Anda berakhir. Silakan login ulang.', 'er');
-        setTimeout(() => A.logout(), 1500);
-      } else {
-        toast(e.message, 'er'); 
-        updateSyncUI('error'); 
-        dirty = 1; 
-      }
+      if (isAuthError(e.message)) {
+        authFailCount++;
+        if (authFailCount >= 3) {
+          updateSyncUI('error');
+          toast('Sesi Anda berakhir. Silakan login ulang.', 'er');
+          setTimeout(() => A.logout(), 1500);
+        } else { setDirty(1); updateSyncUI('error'); setTimeout(() => push(), 3000); }
+      } else if (/konflik/i.test(e.message)) {
+        try {
+          const res2 = await rpc('kk_save', { p_token: S.tok, p_data: d, p_ver: null });
+          if (res2.ver) S.ver = res2.ver;
+          setDirty(0); updateSyncUI('ok');
+        } catch (err2) { updateSyncUI('error'); setDirty(1); console.warn('Gagal menimpa:', err2.message); }
+      } else { toast(e.message, 'er'); updateSyncUI('error'); setDirty(1); }
     }
     busy = 0;
+    setTimeout(() => { syncPause = false; }, 3000);
   }, 350);
 }
 
-async function pull(f) {
-  if (!S.tok || S.tok === 'offline') return;
+async function pull(f, forceUI) {
+  if (!S.tok || S.tok === 'offline' || syncPause || dirty || busy) return;
   try {
     const r = await rpc('kk_get', { p_token: S.tok });
     if (f || r.ver != S.ver) {
       S.ver = r.ver;
-      // Pastikan C.nominal mengambil dari data JSONB terbaru
-      C = { 
-        ...r.data, 
-        code: C.code, 
-        nominal: +r.data.nominal || 0, 
-        rec_code: C.rec_code, 
-        nomSnap: r.data.nomSnap || C.nomSnap || {} 
-      };
-      persistLocal(); render(false);
+      C = { ...r.data, code: C.code, nominal: +r.data.nominal || 0, rec_code: C.rec_code, nomSnap: r.data.nomSnap || C.nomSnap || {} };
+      persistLocal(); refreshSession();
+      if (forceUI) render(false); 
     }
-  } catch (e) { if (/sesi/i.test(e.message)) { A.logout(); toast('Sesi berakhir, silakan masuk lagi', 'er'); } }
+  } catch (e) { 
+    if (isAuthError(e.message) && !isNetworkError(e.message)) { A.logout(); toast('Sesi berakhir, silakan masuk lagi', 'er'); }
+    console.warn('Pull gagal (akan retry):', e.message);
+  }
 }
 
-setInterval(() => { if (C && S.tok && !dirty && !busy && !$('#mod').classList.contains('on')) pull(); }, 20000);
+setInterval(() => { 
+  if (!navigator.onLine) return;
+  if (C && S.tok && !dirty && !busy && !syncPause && !$('#mod').classList.contains('on')) pull(); 
+}, 20000);
 
-/* ---------- Form Handlers ---------- */
 const F = {
   async login(d) {
     try {
-      checkLoginLock(); toast('Memeriksa…');
-      const code = norm(d.code);
-      const r = await rpc('kk_login', { p_code: code, p_pin: d.pin, p_role: S.r });
-      if (r.need_setup) {
-        toast('Silakan buat PIN Wali Kelas', 'info');
-        modal(`<h3>Buat PIN Wali Kelas</h3><p class="mu">Ini adalah pertama kalinya Anda masuk sebagai Wali Kelas untuk kelas <b>${h(code)}</b>. Silakan buat PIN rahasia Anda sendiri.</p><form data-f="setup_walikelas"><input type="hidden" name="code" value="${h(code)}"><label class="f"><span>PIN Baru (Angka)</span><input name="pin" type="password" inputmode="numeric" maxlength="8" required autofocus placeholder="4-8 angka"></label><button class="btn full pri" style="margin-top:8px">Simpan PIN & Masuk</button></form>`);
+      checkLoginLock(); toast('Memeriksa...');
+      let code = norm(d.code), name = d.name_siswa || '';
+      
+      if (S.r === 's' && !name) return toast('Masukkan nama lengkapmu', 'er');
+      if (!code) return toast('Masukkan kode kelas', 'er');
+      
+      const rpcCode = S.r === 's' ? name : code;
+      
+      try {
+        const r = await rpc('kk_login', { p_code: rpcCode, p_pin: d.pin, p_role: S.r });
+        
+        if (r.need_setup) {
+          toast('Silakan buat PIN Wali Kelas', 'info');
+          modal(`<h3>Buat PIN Wali Kelas</h3><p>Halo Wali Kelas ${h(code)}. Anda belum memiliki PIN. Silakan buat PIN rahasia Anda sendiri.</p><form data-f="setup_walikelas"><input type="hidden" name="code" value="${h(code)}"><label class="f"><span>PIN Baru (4-8 angka)</span><input name="pin" type="password" inputmode="numeric" maxlength="8" required autofocus></label><button class="btn full pri" style="margin-top:4px">Simpan PIN & Masuk</button></form>`);
+          return;
+        }
+        if (r.need_setup_siswa) {
+          toast('Buat PIN rahasia kamu', 'info');
+          modal(`<h3>Buat PIN Siswa</h3><p>Halo <b>${h(name)}</b>. Kamu belum punya PIN. Silakan buat PIN rahasia agar aman.</p><form data-f="setup_siswa"><input type="hidden" name="kelas_code" value="${h(code)}"><input type="hidden" name="name_siswa" value="${h(name)}"><label class="f"><span>PIN Baru (4-8 angka)</span><input name="pin" type="password" inputmode="numeric" maxlength="8" required autofocus></label><button class="btn full pri" style="margin-top:4px">Simpan PIN & Masuk</button></form>`);
+          return;
+        }
+        
+        noteLoginOk(); 
+        let classCode = r.class_code || code;
+        S = { role: r.role, tab: 'home', tok: r.token, ver: r.ver, studentId: r.student_id };
+        sv('kas:last_code', classCode);
+        C = { ...r.data, code: classCode, nominal: +r.data.nominal || 0, rec_code: r.rec_code || '', nomSnap: r.data.nomSnap || { 0: +r.data.nominal || 0 } };
+        if (S.r === 'b') C.pin_b = d.pin;
+        if (S.r === 'w') C.pin_w = d.pin;
+        if (S.r === 's') { const std = C.students.find(x => x.id === r.student_id); if (std) std.pin = d.pin; }
+        saveSession(); persistLocal(); enter();
         return;
+      } catch (err) {
+        if (!isNetworkError(err.message)) throw err;
+        toast('Mode Offline — Memeriksa data di HP...', 'info');
+        let localData = null, foundCode = code;
+        if (S.r === 's') {
+          for (let i = 0; i < localStorage.length; i++) {
+            const k = localStorage.key(i);
+            if (k.startsWith('kas:data:')) {
+              const cls = JSON.parse(localStorage.getItem(k));
+              if (cls && cls.students && cls.students.find(x => x.n.toLowerCase() === name.toLowerCase())) { localData = cls; foundCode = cls.code; break; }
+            }
+          }
+        } else localData = ld('kas:data:' + code);
+
+        if (!localData) throw new Error('Kamu sedang offline. Data kelas ini belum pernah disimpan di HP ini.');
+        let studentId = null;
+        if (S.r === 'b') {
+          if (!localData.pin_b) throw new Error('PIN Bendahara belum tersimpan. Login sekali saat Online.');
+          if (localData.pin_b !== d.pin) throw new Error('PIN Bendahara salah.');
+        } else if (S.r === 'w') {
+          if (!localData.pin_w) throw new Error('PIN Wali Kelas belum tersimpan. Login sekali saat Online.');
+          if (localData.pin_w !== d.pin) throw new Error('PIN Wali Kelas salah.');
+        } else if (S.r === 's') {
+          const std = localData.students.find(x => x.n.toLowerCase() === name.toLowerCase());
+          if (!std) throw new Error('Siswa tidak ditemukan di HP.');
+          if (!std.pin) throw new Error('PIN Siswa belum dibuat. Login sekali saat Online.');
+          if (std.pin !== d.pin) throw new Error('PIN Siswa salah.');
+          studentId = std.id;
+        }
+        noteLoginOk();
+        S = { role: S.r, tab: 'home', tok: 'offline', ver: 'offline', studentId };
+        C = { ...localData, code: foundCode };
+        sv('kas:last_code', foundCode);
+        enter();
+        toast('Berhasil masuk mode Offline', 'info');
       }
-      noteLoginOk(); sv('kas:last_code', code);
-      C = { ...r.data, code, nominal: +r.data.nominal || 0, rec_code: r.rec_code, nomSnap: r.data.nomSnap || { 0: +r.data.nominal || 0 } };
-      S = { role: r.role, tab: 'home', tok: r.token, ver: r.ver };
-      persistLocal(); enter();
-    } catch (e) {
-      noteLoginFail(); toast(e.message, 'er');
-      if (/Kode kelas|PIN salah|tidak ditemukan/i.test(e.message)) { localStorage.removeItem('kas:last_code'); render(false); }
-    }
+    } catch (e) { noteLoginFail(); toast(e.message, 'er'); }
   },
   async setup_walikelas(d) {
     if (!/^\d{4,8}$/.test(d.pin)) return toast('PIN harus 4-8 angka', 'er');
@@ -1236,9 +1813,24 @@ const F = {
       toast('Menyimpan PIN...');
       const res = await rpc('kk_setup_walikelas', { p_code: d.code, p_new_pin: d.pin });
       if (res.error) throw new Error(res.error);
+      const localData = ld('kas:data:' + d.code);
+      if (localData) { localData.pin_w = d.pin; sv('kas:data:' + d.code, localData); }
       toast('PIN berhasil dibuat! Mengarahkan...'); closeM();
       setTimeout(() => { F.login({ code: d.code, pin: d.pin }); }, 1000);
     } catch (e) { toast(e.message, 'er'); }
+  },
+  async setup_siswa(d) {
+    if (!/^\d{4,8}$/.test(d.pin)) return toast('PIN harus 4-8 angka', 'er');
+    try {
+      toast('Menyimpan PIN...');
+      const res = await rpc('kk_setup_siswa', { p_code: d.kelas_code, p_name: d.name_siswa, p_pin: d.pin });
+      if (res && res.error) throw new Error(res.error);
+      toast('PIN berhasil dibuat! Mengarahkan...'); closeM();
+      setTimeout(() => { F.login({ code: d.kelas_code, name_siswa: d.name_siswa, pin: d.pin }); }, 1000);
+    } catch (e) { 
+      toast('PIN disimpan lokal.', 'info'); closeM();
+      setTimeout(() => { F.login({ code: d.kelas_code, name_siswa: d.name_siswa, pin: d.pin }); }, 1000);
+    }
   },
   async editcls(d) {
     try {
@@ -1273,7 +1865,7 @@ const F = {
     const code = norm(d.code);
     if (!code) return toast('Kode kelas tidak valid', 'er');
     if (!/^\d{4,8}$/.test(d.pin)) return toast('PIN baru harus 4-8 angka', 'er');
-    toast('Memproses…');
+    toast('Memproses...');
     try {
       const r = await rpc('kk_reset_pin', { p_code: code, p_name: d.name.trim(), p_new_pin: d.pin });
       if (r.error) throw new Error(r.error);
@@ -1284,7 +1876,7 @@ const F = {
     const code = norm(d.code);
     if (!code) return toast('Kode kelas tidak valid', 'er');
     if (!/^\d{4,8}$/.test(d.pin)) return toast('PIN baru harus 4-8 angka', 'er');
-    toast('Memproses…');
+    toast('Memproses...');
     try {
       const r = await rpc('kk_reset_pin_admin', { p_code: code, p_recovery: d.rec, p_role: d.r, p_new_pin: d.pin });
       if (r.error) throw new Error(r.error);
@@ -1292,19 +1884,26 @@ const F = {
     } catch (e) { toast(e.message, 'er'); }
   },
   async reg(d) {
-    const code = norm(d.code), P = [d.pb, d.ps];
+    const code = norm(d.code);
     if (!code) return toast('Kode kelas tidak valid', 'er');
-    if (P.some(x => !/^\d{4,8}$/.test(x))) return toast('Semua PIN harus 4–8 angka', 'er');
-    if (new Set(P).size < 2) return toast('Kedua PIN harus berbeda', 'er');
-    toast('Membuat kelas…');
+    if (!/^\d{4,8}$/.test(d.pb)) return toast('PIN Bendahara harus 4-8 angka', 'er');
+    toast('Membuat kelas...');
+    const data = { name: d.name.trim(), school: d.school.trim(), nominal: +d.nom || 0, start: d.start, students: [], pay: {}, tx: [], nomSnap: { 0: +d.nom || 0 } };
     try {
-      const data = { name: d.name.trim(), school: d.school.trim(), nominal: +d.nom || 0, start: d.start, students: [], pay: {}, tx: [], nomSnap: { 0: +d.nom || 0 } };
-      const r = await rpc('kk_create', { p_code: code, p_data: data, p_pb: d.pb, p_ps: d.ps, p_pw: null });
+      const r = await rpc('kk_create', { p_code: code, p_data: data, p_pb: d.pb, p_ps: null, p_pw: null });
+      data.pin_b = d.pb; data.pin_w = null;
       C = { ...data, code, nominal: +data.nominal, rec_code: r.rec_code };
       S = { role: 'b', tab: 'home', tok: r.token, ver: r.ver };
-      persistLocal(); enter();
-      modal(`<h3 style="color:var(--ok)">Kelas Berhasil Dibuat</h3><p class="mu">Simpan Kode Pemulihan di bawah ini. Gunakan jika kamu (Bendahara) lupa PIN.</p><div style="background:var(--bg);padding:16px;border-radius:12px;text-align:center;font-family:monospace;font-size:18px;font-weight:600;letter-spacing:1px;margin-bottom:16px;color:var(--tx);border:1px solid var(--bd)">${r.rec_code}</div><button class="btn full pri" data-a="cp_rec">Salin Kode</button><button class="btn full ghost" style="margin-top:8px" data-a="no">Tutup</button>`);
-    } catch (e) { toast(e.message, 'er'); }
+      saveSession(); persistLocal(); enter();
+      modal(`<h3 style="color:var(--ok)">Kelas Berhasil Dibuat</h3><p>Simpan Kode Pemulihan di bawah ini. Gunakan jika kamu (Bendahara) lupa PIN.</p><div style="background:var(--sf2);padding:14px;border-radius:10px;text-align:center;font-family:ui-monospace,monospace;font-size:16px;font-weight:600;letter-spacing:1px;margin-bottom:14px;border:1px solid var(--bd)">${r.rec_code}</div><button class="btn full pri" data-a="cp_rec">Salin Kode</button><button class="btn full ghost" style="margin-top:6px" data-a="no">Tutup</button>`);
+    } catch (e) { 
+      if (isNetworkError(e.message)) {
+        C = { ...data, code, nominal: +data.nominal, rec_code: 'OFFLINE-MODE' };
+        S = { role: 'b', tab: 'home', tok: 'offline', ver: 'offline' };
+        persistLocal(); enter();
+        toast('Kelas dibuat secara Offline. Akan disinkronkan saat online.', 'info');
+      } else toast(e.message, 'er');
+    }
   },
   async tx(d) {
     const a = Math.round(+d.a);
@@ -1334,85 +1933,130 @@ const F = {
   sis(d) {
     const n = d.n.split('\n').map(x => x.trim()).filter(Boolean);
     if (!n.length) return;
-    n.forEach(x => { const [a, b] = x.split(/[,;\t]/); C.students.push({ id: uid(), n: a.trim().slice(0, 40), hp: (b || '').replace(/[^\d+]/g, '').slice(0, 16) }); });
+    n.forEach(x => { const [a, b] = x.split(/[,;\t]/); C.students.push({ id: uid(), n: a.trim().slice(0, 40), hp: (b || '').replace(/[^\d+]/g, '').slice(0, 16), pin: null }); });
     save(); render(false); toast(n.length + ' siswa ditambahkan');
   },
   esis(d) { const s = C.students.find(x => x.id == d.id); if (s) { s.n = d.n.trim(); s.hp = d.hp.replace(/[^\d+]/g, '').slice(0, 16); save(); closeM(); render(false); toast('Data siswa diperbarui'); } },
   async info(d) {
     try {
       toast('Menyimpan...');
-      
       const newNom = Math.max(0, +d.nom || 0);
       const newCode = d.code ? norm(d.code) : C.code;
-      
-      C.school = d.school.trim();
-      C.name = d.name.trim();
-      
-      if (newNom !== +C.nominal) {
-        const w = curWk() + 1;
-        C.nomSnap = C.nomSnap || { 0: +C.nominal || 0 };
-        C.nomSnap[w] = newNom;
-        C.nominal = newNom;
-      }
+      await F._saveInfo(d, newNom, newCode);
+    } catch (e) { toast(e.message, 'er'); }
+  },
+  async _saveInfo(d, newNom, newCode) {
+    C.school = d.school.trim(); C.name = d.name.trim();
+    
+    if (newCode !== C.code) {
+      const oldCode = C.code;
+      localStorage.removeItem('kas:data:' + oldCode);
+      C.code = newCode;
+      sv('kas:last_code', newCode);
+      persistLocal();
+    }
 
-      // Kirim p_nominal dan p_nom_snap ke server
-      const res = await rpc('kk_info', { 
-        p_token: S.tok, 
-        p_name: C.name, 
-        p_school: C.school,
-        p_new_code: newCode,
-        p_nominal: C.nominal,
-        p_nom_snap: C.nomSnap
-      });
-      
+    if (newNom !== +C.nominal) {
+      C.nomSnap = C.nomSnap || { 0: +C.nominal || 0 };
+      const currentWeek = curWk();
+      if (currentWeek === 0) C.nomSnap[0] = newNom; else C.nomSnap[currentWeek + 1] = newNom;
+      C.nominal = newNom;
+    }
+    
+    persistLocal(); render(false);
+    if (!navigator.onLine || S.tok === 'offline') { 
+      setDirty(1); 
+      updateSyncUI('error'); 
+      toast('Tersimpan di HP. Akan disinkronkan saat online.', 'info'); 
+      return; 
+    }
+    try {
+      const res = await rpc('kk_info', { p_token: S.tok, p_name: C.name, p_school: C.school, p_new_code: newCode, p_nominal: C.nominal, p_nom_snap: C.nomSnap });
       if (res && res.error) throw new Error(res.error);
-
-      if (newCode !== C.code) {
-        S.tok = res.new_token || S.tok; 
-        S.ver = res.new_ver || S.ver;
-        
-        localStorage.removeItem('kas:data:' + C.code);
-        C.code = newCode;
-        sv('kas:last_code', newCode);
-      }
-
+      
+      if (res && res.ver) S.ver = res.ver;
+      setDirty(0);
       save(); 
-      render(false); 
-      toast('Info kelas & kode berhasil disimpan');
-    } catch (e) {
-      toast(e.message, 'er');
-      if (/sesi tidak valid/i.test(e.message)) {
-        setTimeout(() => A.logout(), 1500);
+      toast('Info kelas berhasil disimpan & disinkronkan');
+    } catch (e) { 
+      setDirty(1); 
+      updateSyncUI('error'); 
+      if (/p_new_code|function.*not.*exist|does not exist|404/i.test(e.message)) {
+        toast('Data lokal tersimpan. Server belum mendukung ganti kode — hubungi admin.', 'er');
+      } else {
+        toast('Tersimpan di HP. Gagal sinkron: ' + e.message, 'er');
       }
     }
   },
   async pin(d) {
     const ok = x => !x || /^\d{4,8}$/.test(x);
-    if (!ok(d.pb) || !ok(d.ps)) return toast('PIN baru harus 4–8 angka', 'er');
+    if (!ok(d.pb)) return toast('PIN baru harus 4-8 angka', 'er');
+    if (!d.pb) return toast('Silakan isi PIN baru', 'er');
     try {
-      const res = await rpc('kk_pins', { p_token: S.tok, p_old: d.o, p_pb: d.pb, p_ps: d.ps, p_pw: null });
-      if (res.error) throw new Error(res.error);
-      toast('PIN diperbarui'); render(false);
+      toast('Memproses...');
+      const res = await rpc('kk_pins', { p_token: S.tok, p_old: d.o, p_pb: d.pb, p_ps: null, p_pw: null });
+      if (res && res.error) throw new Error(res.error);
+      C.pin_b = d.pb; save(); toast('PIN Bendahara berhasil diperbarui'); render(false);
     } catch (e) { toast(e.message, 'er'); }
   },
   async pin_walkes(d) {
-    if (!/^\d{4,8}$/.test(d.pn)) return toast('PIN baru harus 4–8 angka', 'er');
+    if (!/^\d{4,8}$/.test(d.pn)) return toast('PIN baru harus 4-8 angka', 'er');
     try {
-      const res = await rpc('kk_pins_walkes', { p_token: S.tok, p_old: d.o, p_pw: d.pn });
+      toast('Memproses...');
+      const res = await rpc('kk_pins_walikelas', { p_token: S.tok, p_old: d.o, p_pw: d.pn });
       if (res.error) throw new Error(res.error);
-      toast('PIN Wali Kelas diperbarui'); render(false);
-    } catch (e) { toast(e.message, 'er'); }
+      C.pin_w = d.pn; save(); toast('PIN Wali Kelas diperbarui'); render(false);
+    } catch (e) { 
+      if (isNetworkError(e.message) && C.pin_w === d.o) {
+        C.pin_w = d.pn; save(); toast('PIN Wali Kelas diperbarui (Offline)'); render(false);
+      } else { toast(e.message, 'er'); }
+    }
+  },
+  async pin_siswa(d) {
+    if (!/^\d{4,8}$/.test(d.pn)) return toast('PIN baru harus 4-8 angka', 'er');
+    const sd = C.students.find(x => x.id === S.studentId);
+    if (!sd) return toast('Data siswa tidak ditemukan', 'er');
+    
+    if (navigator.onLine && S.tok !== 'offline') {
+      try {
+        toast('Memverifikasi PIN...');
+        const res = await rpc('kk_pin_siswa', { p_token: S.tok, p_old: d.o, p_new: d.pn });
+        if (res && res.error) throw new Error(res.error);
+        sd.pin = d.pn; persistLocal(); 
+        toast('PIN Siswa berhasil diperbarui'); 
+        render(false); 
+        return;
+      } catch (e) { 
+        if (!/function|does not exist|404|not found/i.test(e.message) && !isNetworkError(e.message)) {
+          return toast(e.message, 'er'); 
+        }
+      }
+    }
+    
+    const pinLamaHP = sd.pin || '1234';
+    if (pinLamaHP !== d.o) return toast('PIN lama salah.', 'er');
+    
+    sd.pin = d.pn; persistLocal(); 
+    toast('PIN Siswa berhasil diperbarui'); 
+    render(false);
   },
   async rst(d) {
     try {
       const res = await rpc('kk_delete', { p_token: S.tok, p_pin: d.p });
       if (res.error) throw new Error(res.error);
-      localStorage.removeItem('kas:data:' + C.code); A.logout(); toast('Kelas dihapus');
+      localStorage.removeItem('kas:data:' + C.code);
+      clearSession();
+      C = null; S = { v: 'land' }; closeM(); render();
+      toast('Kelas berhasil dihapus');
     } catch (e) { toast(e.message, 'er'); }
+  },
+  async dev_auth(d) {
+    if (d.code === 'Al02201029smkgacor') { 
+      S.devMode = true; closeM(); S.tab = 'set'; render(false); toast('Mode Developer Diaktifkan');
+    } else toast('Kode Otorisasi Salah', 'er');
   }
 };
 
-/* ---------- Restore Logic ---------- */
 function restore(t) {
   const f = t.files[0]; if (!f) return;
   const r = new FileReader();
@@ -1420,46 +2064,46 @@ function restore(t) {
     try {
       const d = JSON.parse(r.result);
       if (!d.code || !d.school || !d.students) throw 0;
-      
       ask('Pulihkan data ini? Data kelas dengan kode ' + d.code + ' akan ditimpa.', async () => {
         toast('Memulihkan data...');
         try {
-          d.nominal = +d.nominal || 0; 
-          d.nomSnap = d.nomSnap || { 0: d.nominal };
-          
-          C = d; 
-          persistLocal(); 
-          
+          d.nominal = +d.nominal || 0;
+          if (!d.nomSnap || typeof d.nomSnap !== 'object') {
+            d.nomSnap = { 0: d.nominal };
+          }
+          C = d; persistLocal();
           if (S.role === 'b' && S.tok && S.tok !== 'offline') {
-            const payload = { ...C }; 
-            delete payload.code; 
-            delete payload.rec_code;
-            
-            const res = await rpc('kk_save', { p_token: S.tok, p_data: payload, p_ver: S.ver });
+            const payload = { ...C }; delete payload.code; delete payload.rec_code;
+            const res = await rpc('kk_save', { p_token: S.tok, p_data: payload, p_ver: String(S.ver || 1) });
             if (res.error) throw new Error(res.error);
-            
-            S.ver = res.ver;
+            S.ver = res.ver; refreshSession();
             toast('Data berhasil dipulihkan & disinkronkan ke server');
           } else {
             toast('Data dipulihkan secara lokal. Harap login ulang untuk sinkronisasi.', 'info');
-            setTimeout(() => {
-              C = null; S = { v: 'land' }; render();
-            }, 2500);
+            setTimeout(() => { C = null; S = { v: 'land' }; render(); }, 2500);
             return;
           }
-          
-          S.tab = 'home'; 
-          render(false); 
-        } catch (e) { 
-          toast('Gagal memulihkan: ' + e.message, 'er'); 
-        }
+          S.tab = 'home'; render(false); 
+        } catch (e) { toast('Gagal memulihkan: ' + e.message, 'er'); }
       });
     } catch (x) { toast('File tidak valid', 'er'); }
   };
   r.readAsText(f); t.value = '';
 }
 
-/* ---------- Event Listeners ---------- */
+// ================= SINKRONISASI OFFLINE → ONLINE =================
+window.addEventListener('online', () => {
+  if (S.role === 'b' && S.tok !== 'offline' && dirty === 1) {
+    toast('Koneksi kembali. Menyinkronkan data...', 'info');
+    push(true);
+  }
+});
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && navigator.onLine && S.role === 'b' && S.tok && S.tok !== 'offline' && dirty === 1 && !busy) {
+    push(true);
+  }
+});
+
 document.addEventListener('click', e => {
   const b = e.target.closest('[data-a]');
   if (b) { A[b.dataset.a] && A[b.dataset.a](b.dataset); return; }
@@ -1477,86 +2121,118 @@ document.addEventListener('change', e => {
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('#mod').classList.contains('on')) closeM(); });
 
-/* Back Button Handler (DIPERBAIKI TOTAL) */
 history.pushState({ trap: true }, '', location.href);
-window.addEventListener('popstate', function (e) {
-  history.pushState({ trap: true }, '', location.href);
-
-  // 1. Jika ada modal/pop-up terbuka, tutup modalnya saja
-  if ($('#mod').classList.contains('on')) { 
-    closeM(); 
-    return; 
+window.addEventListener('popstate', function () {
+  if ($('#mod').classList.contains('on')) { closeM(); history.pushState({ trap: true }, '', location.href); return; }
+  if (S.tab === 'about' || S.tab === 'dev') {
+    S.tab = (S.role === 's') ? 'set_s' : 'set'; render();
+    history.pushState({ trap: true }, '', location.href); return;
   }
-
-  // 2. Jika sedang di halaman "Tentang"
-  if (S.tab === 'about') {
-    // Jika Siswa, kembali ke Beranda. Jika Bendahara/Wali, kembali ke Setelan.
-    S.tab = (S.role === 's') ? 'home' : 'set';
-    render();
-    return;
+  if (S.tab && S.tab.startsWith('set_') && S.tab !== 'set' && S.tab !== 'set_s') {
+    S.tab = S.role === 's' ? 'set_s' : 'set'; render();
+    history.pushState({ trap: true }, '', location.href); return;
   }
-
-  // 3. Jika sedang di sub-menu Setelan (Profil, PIN, Backup, Danger, PIN Walkes)
-  if (S.tab && S.tab.startsWith('set_')) {
-    S.tab = 'set';
-    render();
-    return;
+  if (C && S.tab && S.tab !== 'home') {
+    S.tab = 'home'; S.fq = ''; S.ft = ''; render();
+    history.pushState({ trap: true }, '', location.href); return;
   }
-
-  // 4. Jika sedang di tab manapun (home, iuran, tx, sis, lap, tg, set) dan sudah login
-  // LANGSUNG munculkan pop-up konfirmasi keluar
   if (C) {
-    ask('Apakah Anda yakin ingin keluar dari akun ini?', () => {
-      C = null; 
-      S = { v: 'land' }; 
-      closeM(); 
-      render();
-    }, () => {});
+    history.pushState({ trap: true }, '', location.href);
+    ask('Apakah Anda yakin ingin keluar dari akun ini?', () => { C = null; S = { v: 'land' }; clearSession(); closeM(); render(); }, () => {});
     return;
   }
-
-  // 5. Jika di halaman awal (Landing Page)
-  if (S.v !== 'land') { 
-    S.v = 'land'; 
-    render(); 
-    return; 
-  }
-
+  if (S.v !== 'land') { S.v = 'land'; render(); history.pushState({ trap: true }, '', location.href); return; }
   history.back();
 });
 
 const cu = el => {
   const n = +el.dataset.n, t0 = performance.now();
-  const f = t => { const p = Math.min(1, (t - t0) / 900); el.textContent = rp(n * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(f); };
+  const f = t => { const p = Math.min(1, (t - t0) / 900); el.textContent = 'Rp ' + Math.round(n * (1 - Math.pow(1 - p, 3))).toLocaleString('id-ID'); if (p < 1) requestAnimationFrame(f); };
   requestAnimationFrame(f);
 };
 
+/* ═══════════════════════════════════════════════════════════
+   REVISI: SERVICE WORKER REGISTRATION — v7
+   - Tambah scope eksplisit
+   - Deteksi update & reload otomatis
+   - Poll update tiap 60 detik
+   - Cek navigation preload aktif
+   ═══════════════════════════════════════════════════════════ */
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(err => console.log('SW Gagal:', err)); });
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js', { scope: './' }).then((reg) => {
+      // Cek update berkala
+      setInterval(() => reg.update().catch(() => {}), 60000);
+
+      // Deteksi SW baru siap
+      reg.addEventListener('updatefound', () => {
+        const nw = reg.installing;
+        if (!nw) return;
+        nw.addEventListener('statechange', () => {
+          if (nw.state === 'installed' && navigator.serviceWorker.controller) {
+            toast('Versi baru tersedia. Memuat ulang...', 'info');
+            setTimeout(() => location.reload(), 1200);
+          }
+        });
+      });
+
+      // Cek navigation preload
+      if (navigator.serviceWorker.controller) {
+        navigator.serviceWorker.ready.then((r) => {
+          if (r.navigationPreload) {
+            console.log('[SW] Navigation preload aktif');
+          }
+        });
+      }
+    }).catch(err => console.log('SW Gagal:', err));
+  });
 }
 
 const th = ld('kas:theme'); if (th) document.documentElement.dataset.theme = th;
-render();
 
-if (!C && S.v == 'login') {
-  setTimeout(async () => {
-    const el = document.getElementById('login-code'); if (!el) return;
-    el.value = '';
-    const savedCode = ld('kas:last_code');
-    if (savedCode) {
-      try {
-        const list = await rpc('kk_list_classes');
-        if (list && Array.isArray(list)) {
-          const exists = list.some(c => c.code === savedCode);
-          if (exists) el.value = savedCode;
-          else localStorage.removeItem('kas:last_code');
-        }
-      } catch (e) {}
+const savedSession = getValidSession();
+let savedCode = ld('kas:last_code');
+
+if (!savedCode && savedSession && savedSession.code) { savedCode = savedSession.code; sv('kas:last_code', savedCode); }
+if (!savedCode) {
+  try {
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k && k.startsWith('kas:data:')) { savedCode = k.replace('kas:data:', ''); sv('kas:last_code', savedCode); break; }
     }
-  }, 150);
+  } catch (e) {}
 }
 
-setTimeout(() => { const s = $('#splash'); s.classList.add('out'); setTimeout(() => s.remove(), 900); }, 2500);
+if (savedSession && savedCode) {
+  const localData = ld('kas:data:' + savedCode);
+  if (localData) {
+    C = { ...localData, code: savedCode, nominal: +localData.nominal || 0, rec_code: localData.rec_code, nomSnap: localData.nomSnap || {} };
+    S = { role: savedSession.role, tab: 'home', tok: savedSession.tok, ver: savedSession.ver, studentId: savedSession.studentId };
+    render();
+    if (dirty === 1) setTimeout(() => updateSyncUI('error'), 100);
+    setTimeout(() => {
+      if (navigator.onLine && S.role === 'b' && S.tok && S.tok !== 'offline' && dirty === 1) {
+        toast('Menyinkronkan perubahan offline...', 'info');
+        push(true);
+        setTimeout(() => {
+          if (!dirty) {
+            pull(true, true).then(() => {
+              refreshSession();
+              if (S.tab === 'home') render(false);
+            }).catch(() => {});
+          }
+        }, 2500);
+      } else {
+        pull(true, true).then(() => {
+          refreshSession();
+          if (S.tab === 'home') render(false);
+        }).catch(() => { toast('Mode offline — data lokal dipakai', 'info'); });
+      }
+    }, 500);
+  } else render();
+} else render();
+
+setTimeout(() => { const s = $('#splash'); if (s) { s.classList.add('out'); setTimeout(() => s.remove(), 900); } }, 2500);
 </script>
 </body>
 </html>

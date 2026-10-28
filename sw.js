@@ -1,99 +1,176 @@
-// ── Naik versi tiap update biar cache lama kehapus ──
-const CACHE_NAME = 'kaskelas-v4';
-const ASSETS_TO_CACHE = [
+/* ============================================================
+   KasKelas Service Worker — v7
+   Strategi:
+   - Core assets (HTML/manifest): network-first, fallback cache
+   - Fonts (Google Fonts + .woff2): cache-first
+   - CDN libs (html2pdf): cache-first
+   - Supabase API: bypass total (real-time)
+   - Navigation preload: aktifkan untuk performa
+   ============================================================ */
+
+const CACHE_NAME = 'kaskelas-v7';
+
+const CORE_ASSETS = [
   './',
   './index.html',
-  './manifest.json',
-  'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap'
+  './manifest.json'
 ];
 
-// ── 1. INSTALL ──
-self.addEventListener('install', event => {
-  self.skipWaiting(); // Paksa SW baru langsung aktif
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      // Pakai add() per item biar kalau satu gagal, yang lain tetep ke-cache
-      return Promise.all(
-        ASSETS_TO_CACHE.map(url => {
-          return cache.add(url).catch(err => {
-            console.warn('[SW] Gagal cache aset:', url, err);
-          });
-        })
-      );
-    })
+// Harus SAMA PERSIS dengan URL di index.html
+const EXT_ASSETS = [
+  'https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700&display=swap',
+  'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js'
+];
+
+// ---------- INSTALL ----------
+self.addEventListener('install', (e) => {
+  e.waitUntil(
+    caches.open(CACHE_NAME).then(async (cache) => {
+      // File utama wajib berhasil
+      try {
+        await cache.addAll(CORE_ASSETS);
+      } catch (err) {
+        console.error('[SW] Gagal cache core assets:', err.message);
+      }
+
+      // Aset eksternal: toleran gagal
+      for (const url of EXT_ASSETS) {
+        try {
+          await cache.add(url);
+        } catch (err) {
+          console.warn('[SW] Gagal cache aset eksternal:', url, err.message);
+        }
+      }
+    }).then(() => self.skipWaiting())
   );
 });
 
-// ── 2. ACTIVATE ──
-self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cacheName => {
-          if (cacheName !== CACHE_NAME) {
-            console.log('[SW] Menghapus cache lama:', cacheName);
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    })
+// ---------- ACTIVATE ----------
+self.addEventListener('activate', (e) => {
+  e.waitUntil(
+    Promise.all([
+      caches.keys().then((keys) =>
+        Promise.all(
+          keys.map((key) => {
+            if (key !== CACHE_NAME) {
+              console.log('[SW] Hapus cache lama:', key);
+              return caches.delete(key);
+            }
+          })
+        )
+      ),
+      (async () => {
+        if (self.registration.navigationPreload) {
+          try { await self.registration.navigationPreload.enable(); }
+          catch (err) { console.warn('[SW] Navigation preload gagal:', err); }
+        }
+      })()
+    ]).then(() => self.clients.claim())
   );
-  return self.clients.claim(); // Ambil kendali tab yang udah kebuka
 });
 
-// ── 3. FETCH ──
-self.addEventListener('fetch', event => {
-  const req = event.request;
-  const url = new URL(req.url);
+// ---------- FETCH ----------
+self.addEventListener('fetch', (e) => {
+  const url = e.request.url;
 
-  // Abaikan request non-GET (POST, PUT, dll) — biar gak ganggu API Supabase
-  if (req.method !== 'GET') return;
+  // Bypass Supabase (database real-time)
+  if (url.includes('supabase.co')) return;
 
-  // Abaikan request ke origin lain (Supabase, dll), kecuali Google Fonts
-  if (url.origin !== location.origin &&
-      !url.href.includes('fonts.googleapis.com') &&
-      !url.href.includes('fonts.gstatic.com')) {
-    return;
-  }
+  // Hanya GET
+  if (e.request.method !== 'GET') return;
 
-  // ── STRATEGI A: NETWORK-FIRST UNTUK HTML & NAVIGASI ──
-  // Selalu ambil dari server dulu, biar update index.html langsung kebaca.
-  // Kalau offline, baru pakai cache.
-  if (req.mode === 'navigate' || url.pathname.endsWith('.html') || url.pathname === '/') {
-    event.respondWith(
-      fetch(req)
-        .then(response => {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(req, clone));
-          return response;
-        })
-        .catch(() => {
-          return caches.match(req).then(cached => {
-            return cached || caches.match('./index.html');
-          });
-        })
+  // A. Cache-first: font files & Google Fonts CSS
+  if (
+    e.request.destination === 'font' ||
+    url.includes('fonts.gstatic.com') ||
+    url.includes('fonts.googleapis.com')
+  ) {
+    e.respondWith(
+      caches.match(e.request).then((cached) => {
+        if (cached) return cached;
+        return fetch(e.request)
+          .then((res) => {
+            if (res && res.status === 200) {
+              const clone = res.clone();
+              caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone));
+            }
+            return res;
+          })
+          .catch(() => cached);
+      })
     );
     return;
   }
 
-  // ── STRATEGI B: CACHE-FIRST UNTUK ASET STATIS (Font, Gambar, Manifest) ──
-  event.respondWith(
-    caches.match(req).then(cachedResponse => {
-      if (cachedResponse) return cachedResponse;
-      return fetch(req).then(networkResponse => {
-        if (networkResponse && networkResponse.status === 200) {
-          const clone = networkResponse.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(req, clone));
+  // B. Cache-first: library CDN (html2pdf)
+  if (url.includes('cdnjs.cloudflare.com')) {
+    e.respondWith(
+      caches.match(e.request).then((cached) => {
+        if (cached) return cached;
+        return fetch(e.request)
+          .then((res) => {
+            if (res && res.status === 200) {
+              const clone = res.clone();
+              caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone));
+            }
+            return res;
+          })
+          .catch(() => cached);
+      })
+    );
+    return;
+  }
+
+  // C. Network-first untuk navigasi (dengan navigation preload)
+  if (e.request.mode === 'navigate') {
+    e.respondWith(
+      (async () => {
+        try {
+          const preload = await e.preloadResponse;
+          if (preload) {
+            const clone = preload.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone));
+            return preload;
+          }
+          const response = await fetch(e.request);
+          if (response && response.status === 200) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone));
+          }
+          return response;
+        } catch (err) {
+          const cached = await caches.match(e.request);
+          if (cached) return cached;
+          const fallback = await caches.match('./index.html');
+          if (fallback) return fallback;
+          throw err;
         }
-        return networkResponse;
-      }).catch(() => {
-        if (req.mode === 'navigate') return caches.match('./index.html');
-      });
-    })
+      })()
+    );
+    return;
+  }
+
+  // D. Network-first untuk aset lain
+  e.respondWith(
+    fetch(e.request)
+      .then((response) => {
+        if (
+          response &&
+          response.status === 200 &&
+          (response.type === 'basic' || response.type === 'cors')
+        ) {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone));
+        }
+        return response;
+      })
+      .catch(() => caches.match(e.request))
   );
 });
 
-// ── 4. MESSAGE HANDLER (Opsional, buat paksa update) ──
-self.addEventListener('message', event => {
-  if (event.data === 'SKIP_WAITING') self.skipWaiting();
+// ---------- MESSAGE (skipWaiting manual) ----------
+self.addEventListener('message', (e) => {
+  if (e.data && e.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
